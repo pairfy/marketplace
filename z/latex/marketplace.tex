@@ -48,7 +48,7 @@
  {\endlist}
  
 
-\title{\textbf{Pairfy,\\A P2P ecommerce protocol based on trust rating and blind peers }}
+\title{\textbf{Pairfy,\\A P2P e-commerce protocol based on trust rating and blind peers }}
 
 \author{Juan C. Rey\footnote{@pairfy  website: \url{www.pairfy.io} - Plutus pioneer first cohort. This personal project was born as a proposal to Y Combinator in 2019 and has been activated for contribution to the open source community.  }\\}
 
@@ -149,9 +149,13 @@ Legal certainty is declared by the blind peers and refers to the absence of reas
 
 
 
+
+
 When the shipping company confirms the effective delivery of the product the seller can invoke the @delivered endpoint.
 The script transitions from \emph{Locking} to the \emph{Delivery} state which indicates that the seller has fulfilled its delivery obligation.
 Finally, the buyer confirms whether he received the product by invoking the @received endpoint. By doing so, the script transitions to the last state \emph{Finish} which releases the funds to the seller's wallet.
+
+
 \subsubsection { Finish }
 
 \begin{figure}[ht]
@@ -162,8 +166,32 @@ Finally, the buyer confirms whether he received the product by invoking the @rec
 \end{figure}
 
 The seller receives 50 ADA of collateral and 100 ADA equivalent to the price of the product he sold to the buyer.
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
+\\
 
 \subsubsection { State machine }
+A state machine also known as a finite state machine (FSM), is a mathematical model used to describe the behavior of a system or process that can exist in a limited number of distinct states. The system transitions from one state to another in response to specific events or input conditions and these transitions are defined by a set of rules or conditions known as transitions.
+
+A deterministic finite state machine (DFSM) is a specific type of state machine that exhibits deterministic behavior, meaning that for any given state and input there is a unique and unambiguous next state. In a deterministic state machine, the transition from one state to another is uniquely determined by the current state and the input with no ambiguity or randomness involved.
+
+Figure 5 shows the deterministic state machine concepts applied to the steps of a negotiation session. 
+The EUTXO model of the Cardano blockchain implies that smart contracts need an initial transaction for their logic to be activated and establish their initial state.
+When the seller activates a slot his wallet deploys a plutus script that receives the collateral in ADA and necessary parameters for the session. 
 
 \begin{figure}[ht]
   \centering
@@ -172,14 +200,6 @@ The seller receives 50 ADA of collateral and 100 ADA equivalent to the price of 
   \label{fig:States}
 \end{figure}
 
-A state machine also known as a finite state machine (FSM), is a mathematical model used to describe the behavior of a system or process that can exist in a limited number of distinct states. The system transitions from one state to another in response to specific events or input conditions and these transitions are defined by a set of rules or conditions known as transitions.
-
-A deterministic finite state machine (DFSM) is a specific type of state machine that exhibits deterministic behavior, meaning that for any given state and input there is a unique and unambiguous next state. In a deterministic state machine, the transition from one state to another is uniquely determined by the current state and the input with no ambiguity or randomness involved.
-
-Figure 5 shows the deterministic state machine concepts applied to the steps of a negotiation session. 
-The EUTXO model of the Cardano blockchain implies that smart contracts need an initial transaction for their logic to be activated and establish their initial state.
-When the seller activates a slot his wallet deploys a plutus script that receives the collateral in ADA and necessary parameters for the session. 
-\\
 
 \begin{tabular}{lr}
 \textbf{sessionState} \emph{:: SessionState}\\
