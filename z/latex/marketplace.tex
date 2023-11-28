@@ -57,11 +57,13 @@
 \renewcommand*\abstractname{\textbf{}\hfill}
 
 \abstract{
-\textbf{Abstract.} Pairfy is an electronic commerce protocol that uses smart contracts to decentralize functional requirements necessary for the processes of selling and buying a physical product.
+\textbf{Abstract.}
+Pairfy is an electronic commerce protocol that uses smart contracts to decentralize functional requirements necessary for the processes of selling and buying a physical product.
 Any member of the community can post a product for sale and any member of the community can express an intention to purchase that product.
-If the stock of a product is 15, only the 15 fastest people who express their intention to buy will be able to occupy a slot and secure a negotiation session.
-The slot of a product is a concept that represents the availability to open a negotiation session similar to a sell order on a DEX. A slot can be released if the buyer or seller cancels the session.
-A negotiation session is defined as the process of trading a product for a limited time. The buyer and seller generate the negotiation context by engaging in bilateral communication.
+The slot of a product is a concept that represents the availability to open a negotiation session similar to a sell order on a DEX. 
+A negotiation session is defined as the process of trading a product for a limited time.
+During the session the buyer and seller generate the negotiation context by engaging in bilateral communication through live chat via websocket.
+If there is a dispute situation during the session it is possible to use the appeal resource so that a group of three mediators decide on the specific case according to the fulfillment of the obligations of the buyer and the seller. The fundamental idea of Pairfy is to avoid using expensive infrastructure and oracles as a source of truth. Instead, use mediators as a source of truth in a disputed negotiation session.
 
 }
 
@@ -70,11 +72,17 @@ A negotiation session is defined as the process of trading a product for a limit
 
 Pairfy is an electronic commerce protocol that uses smart contracts to decentralize functional requirements necessary for the processes of selling and buying a physical product.
 Any member of the community can post a product for sale and any member of the community can express an intention to purchase that product.
-If the stock of a product is 15, only the 15 fastest people who express their intention to buy will be able to occupy a slot and secure a negotiation session.
-The slot of a product is a concept that represents the availability to open a negotiation session similar to a sell order on a DEX. A slot can be released if the buyer or seller cancels the session.
-A negotiation session is defined as the process of trading a product for a limited time. The buyer and seller generate the negotiation context by engaging in bilateral communication.
+The slot of a product is a concept that represents the availability to open a negotiation session similar to a sell order on a DEX. 
+A negotiation session is defined as the process of trading a product for a limited time.
+A slot can be released if the buyer or seller cancels the session.
+During the session the buyer and seller generate the negotiation context by engaging in bilateral communication through live chat via websocket.
+If there is a dispute situation during the session it is possible to use the appeal resource so that a group of three mediators decide on the specific case according to the fulfillment of the obligations of the buyer and the seller.
 
-
+A completely decentralized e-commerce protocol can be described as trading in physical products or services where parties use digital devices and blockchain to fulfill their obligations.
+The seller's obligation is to deliver the product or service and the buyer's obligation is to pay the price corresponding to the product or service. 
+The entire process can be digital if the product or service is digital.
+Regarding physical products it is necessary to use the service of shipping companies to physical destinations.
+To apply blockchain to the physical process of delivering a product it is necessary to establish a digital channel that provides infallible information about the delivery of the product and therefore the fulfillment of the seller's obligation. This can be done by implementing oracles and physical hardware that work together with the blockchain as a source of truth. The fundamental idea of Pairfy is to avoid using expensive infrastructure and oracles as a source of truth. Instead, use mediators as a source of truth in a disputed negotiation session.
 
 \section{ Requirements }
 
