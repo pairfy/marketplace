@@ -4,6 +4,13 @@
 
 Pairfy is an e-commerce protocol that uses smart contracts for the process of selling and buying physical products on Cardano using the ADA cryptocurrency.
 
+| Stack    | Type      | Description                  | Keywords                          | Version | Licence            | Repository                                                               |
+| -------- | --------- | ---------------------------- | --------------------------------- | ------- | ------------------ | ------------------------------------------------------------------------ |
+| Vitess   | database  | cloud-native database        | sharding, scalability, kubernetes | v18.0   | Apache Version 2.0 | [https://github.com/vitessio/vitess](https://github.com/vitessio/vitess) |
+| Debezium | cdc       | database change data capture | cdc, kafka, stream, sync          | v2.5    | Apache Version 2.0 | [https://github.com/debezium](https://github.com/debezium)               |
+| Kafka    | streaming | event streaming              | high-throughput, low-latency      | v3.6.1  | Apache Version 2.0 | [https://github.com/apache/kafka](https://github.com/apache/kafka)       |
+| Node.js  | runtime   | javascript runtime           | code, javascript                  | alpine  | MIT                | [https://github.com/nodejs/node](https://github.com/nodejs/node)         |
+
 ### Features
 
 | Feature      | yes | Description |
@@ -23,16 +30,7 @@ Pairfy is an e-commerce protocol that uses smart contracts for the process of se
 ### [✅](https://emojipedia.org/check-mark-button)
 
 | Developer |
-| Multi-wallet | [✅](https://emojipedia.org/check-mark-button) |   |
-
-### Stack
-
-| Stack    | Type      | Description                  | Keywords                          | Version | Licence            | Repository                                                               |
-| -------- | --------- | ---------------------------- | --------------------------------- | ------- | ------------------ | ------------------------------------------------------------------------ |
-| Vitess   | database  | cloud-native database        | sharding, scalability, kubernetes | v18.0   | Apache Version 2.0 | [https://github.com/vitessio/vitess](https://github.com/vitessio/vitess) |
-| Debezium | cdc       | database change data capture | cdc, kafka, stream, sync          | v2.5    | Apache Version 2.0 | [https://github.com/debezium](https://github.com/debezium)               |
-| Kafka    | streaming | event streaming              | high-throughput, low-latency      | v3.6.1  | Apache Version 2.0 | [https://github.com/apache/kafka](https://github.com/apache/kafka)       |
-| Node.js  | runtime   | javascript runtime           | code, javascript                  | alpine  | MIT                | [https://github.com/nodejs/node](https://github.com/nodejs/node)         |
+| Multi-wallet | [✅](https://emojipedia.org/check-mark-button) | nami |
 
 ### Introduction
 
