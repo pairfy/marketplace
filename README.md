@@ -1,6 +1,6 @@
 # Pairfy marketplace
 
-🚀 Star us on GitHub — Everyone can modify and use it.
+Star us on GitHub — Everyone can modify and use it. 🚀
 
 Pairfy is an e-commerce protocol that uses smart contracts for the process of selling and buying physical products on Cardano using the ADA cryptocurrency.
 
@@ -8,8 +8,8 @@ Pairfy is an e-commerce protocol that uses smart contracts for the process of se
 
 | Feature      | yes | Description                                          |
 | ------------ | --- | ---------------------------------------------------- |
-| Peer-to-Peer | ✅  | Cardano  preview-testnet, testnet, mainnet           |
-| End-to-End   | ✅  | Signing and sending transactions only in the browser |
+| P2P          | ✅  | Cardano  preview-testnet, testnet, mainnet           |
+| E2E          | ✅  | Signing and sending transactions only in the browser |
 | Multi-wallet | ✅  | nami                                                 |
 | PAB          | ✅  | Does not depend on third-party tools                 |
 
@@ -24,7 +24,7 @@ Pairfy is an e-commerce protocol that uses smart contracts for the process of se
 
 ### Introduction
 
-Pairfy aims to allow the community to sell physical products and be purchased with ADA by the same community using a **plutus P2P exchange system** based on blind mediators and trust rating.
+Pairfy aims to allow the community to sell physical products and be purchased with ADA by the same community using a **plutus** P2P exchange system based on blind mediators and trust rating.
 
 In a successful P2P negotiation the seller delivers the product and the buyer pays the price of the product in this case the trade ends naturally. The problem arises when one of the participants does not fulfill their obligations such as when the seller does not deliver the product but argues that he does. Using physical blockchain infrastructure, i.e. hardware connected to oracles it is possible to determine if the product was actually delivered. The problem with this is that many shipping companies do not have blockchain infrastructure so humans inevitably participate throughout the product delivery process.
 
@@ -46,7 +46,7 @@ The fundamental idea of Pairfy is to avoid using expensive infrastructure and or
 
 [BINANCE ACTIVE USERS](https://www.binance.com/en/feed/post/2023-12-28-binance-ends-2023-with-30-user-growth-committed-to-compliance-and-web3-products-1989369934178)
 
-At the end of 2023, Binance reached approximately 170M+ registered users. A large percentage of users carry out P2P negotiations using bank accounts and physical world payment methods. Binance has demonstrated that the Peer-to-Peer exchange system with appeal mechanism has proven to be effective and scalable.
+At the end of 2023, Binance reached approximately 170M+ registered users. A large percentage of users carry out P2P negotiations using bank accounts and physical world payment methods. Binance has demonstrated that the Peer-to-Peer exchange system with appeal mechanism is effective and scalable.
 
 ## Table Of Content
 
