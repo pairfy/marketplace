@@ -4,6 +4,29 @@
 
 Pairfy is an e-commerce protocol that uses smart contracts for the process of selling and buying physical products on Cardano using the ADA cryptocurrency.
 
+### Features
+
+| Feature      | yes | Description |
+| ------------ | --- | ----------- |
+| Peer-to-peer |
+
+### [✅](https://emojipedia.org/check-mark-button)
+
+| Engineer |
+| End-to-end |
+
+### [✅](https://emojipedia.org/check-mark-button)
+
+| Designer |
+| Signature in the browser |
+
+### [✅](https://emojipedia.org/check-mark-button)
+
+| Developer |
+| Multi-wallet | [✅](https://emojipedia.org/check-mark-button) |   |
+
+### Stack
+
 | Stack    | Type      | Description                  | Keywords                          | Version | Licence            | Repository                                                               |
 | -------- | --------- | ---------------------------- | --------------------------------- | ------- | ------------------ | ------------------------------------------------------------------------ |
 | Vitess   | database  | cloud-native database        | sharding, scalability, kubernetes | v18.0   | Apache Version 2.0 | [https://github.com/vitessio/vitess](https://github.com/vitessio/vitess) |
