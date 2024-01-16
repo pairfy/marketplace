@@ -42,7 +42,7 @@ Both the buyer and seller are afforded the opportunity to present evidence or ex
 
 The fundamental idea of Pairfy is to avoid using expensive infrastructure and oracles as a source of truth. Instead, use mediators as a source of truth in a disputed negotiation session.
 
-### Mediator pool Scalability
+### Mediator Pool Scalability
 
 [BINANCE ACTIVE USERS](https://www.binance.com/en/feed/post/2023-12-28-binance-ends-2023-with-30-user-growth-committed-to-compliance-and-web3-products-1989369934178)
 
