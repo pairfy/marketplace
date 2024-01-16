@@ -4,35 +4,22 @@
 
 Pairfy is an e-commerce protocol that uses smart contracts for the process of selling and buying physical products on Cardano using the ADA cryptocurrency.
 
+### Features
+
+| Feature      | yes | No  |
+| ------------ | --- | --- |
+| Peer-to-peer | ✅  |     |
+| Engineer     | ✅  |     |
+| End-to-end   | ✅  |     |
+
+### Introduction
+
 | Stack    | Type      | Description                  | Keywords                          | Version | Licence            | Repository                                                               |
 | -------- | --------- | ---------------------------- | --------------------------------- | ------- | ------------------ | ------------------------------------------------------------------------ |
 | Vitess   | database  | cloud-native database        | sharding, scalability, kubernetes | v18.0   | Apache Version 2.0 | [https://github.com/vitessio/vitess](https://github.com/vitessio/vitess) |
 | Debezium | cdc       | database change data capture | cdc, kafka, stream, sync          | v2.5    | Apache Version 2.0 | [https://github.com/debezium](https://github.com/debezium)               |
 | Kafka    | streaming | event streaming              | high-throughput, low-latency      | v3.6.1  | Apache Version 2.0 | [https://github.com/apache/kafka](https://github.com/apache/kafka)       |
 | Node.js  | runtime   | javascript runtime           | code, javascript                  | alpine  | MIT                | [https://github.com/nodejs/node](https://github.com/nodejs/node)         |
-
-### Features
-
-| Feature      | yes | Description |
-| ------------ | --- | ----------- |
-| Peer-to-peer |
-
-### [✅](https://emojipedia.org/check-mark-button)
-
-| Engineer |
-| End-to-end |
-
-### [✅](https://emojipedia.org/check-mark-button)
-
-| Designer |
-| Signature in the browser |
-
-### [✅](https://emojipedia.org/check-mark-button)
-
-| Developer |
-| Multi-wallet | [✅](https://emojipedia.org/check-mark-button) | nami |
-
-### Introduction
 
 Connecting the blockchain to the real world is an expensive challenge at least for trading physical products. Shipping companies would have to connect their vehicles to supervised oracles and the products must have an infallible tracker to check if were delivered. A lot of infrastructure deployed around the world is necessary to achieve a fully decentralized e-commerce protocol. Clearly this represents a very difficult challenge to achieve in contrast to another option which is to use the human brain as a source of truth. With the right conditions the human brain can make logical reasoning about facts or propositions to declare a truth.
 
