@@ -26,13 +26,13 @@
      inkscape:pagecheckerboard="0"
      inkscape:document-units="px"
      showgrid="false"
-     inkscape:zoom="1.2535928"
-     inkscape:cx="316.68976"
-     inkscape:cy="198.62909"
+     inkscape:zoom="0.88642397"
+     inkscape:cx="119.5816"
+     inkscape:cy="227.88192"
      inkscape:window-width="1920"
-     inkscape:window-height="1043"
-     inkscape:window-x="1920"
-     inkscape:window-y="0"
+     inkscape:window-height="1011"
+     inkscape:window-x="0"
+     inkscape:window-y="32"
      inkscape:window-maximized="1"
      inkscape:current-layer="layer2"
      showguides="false" />
@@ -53,17 +53,10 @@
        style="display:inline;fill:#0069f5;fill-opacity:1;stroke:#f9f9f9;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
        d="M 199.99999,5e-7 A 199.99999,199.99999 0 0 0 4.9999997e-7,199.99999 199.99999,199.99999 0 0 0 199.99999,399.99998 199.99999,199.99999 0 0 0 399.99998,199.99999 199.99999,199.99999 0 0 0 199.99999,5e-7 Z" />
     <path
-       d="m 278.75495,171.26619 h -78.16186 l -78.2847,-86.116887 91.85827,-8.13e-4 z M 120.85814,339.5 c -168.398376,-262.192043 -84.199179,-131.09603 0,0 z m 81.79894,-139.5279 h 73.37086 L 120.85814,339.5 Z"
+       d="m 278.75495,171.26619 h -78.16186 l -78.2847,-86.116887 91.85827,-8.13e-4 z m -76.09787,28.70591 h 73.37086 L 120.85814,339.5 Z"
        id="path9322"
-       style="fill:#ffffff;stroke-width:14.353"
-       sodipodi:nodetypes="ccccccccccc" />
-    <rect
-       style="display:inline;opacity:0.690798;fill:#000000;fill-opacity:1;stroke:#0069f5;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
-       id="rect6634"
-       width="91.858971"
-       height="0.86757916"
-       x="122.30768"
-       y="84.280914" />
+       style="fill:#ffffff;stroke:#ffffff;stroke-width:7.25;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       sodipodi:nodetypes="ccccccccc" />
   </g>
   <g
      inkscape:groupmode="layer"
