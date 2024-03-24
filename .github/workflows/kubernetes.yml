@@ -1,0 +1,20 @@
+name: deploy-kubemanifest
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'A/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.OCEAN_API_TOKEN }}
+      - run: doctl kubernetes cluster kubeconfig save k8pairfy
+      - run: kubectl apply -f A/k8s && kubectl apply -f A/k8s-prod
+      

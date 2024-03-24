@@ -1,0 +1,24 @@
+apiVersion: skaffold/v2alpha3
+kind: Config
+deploy:
+  statusCheckDeadlineSeconds: 300
+  kubectl:
+    manifests:
+      - ./A/k8s/*
+      - ./A/k8s-dev/*         
+build:
+  local:
+    useDockerCLI: true
+    push: false
+    concurrency: 0
+  tagPolicy:
+    sha256: {}    
+  artifacts:                                       
+    - image: pairfy/healthcheck
+      context: healthcheck
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .  
