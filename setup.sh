@@ -12,12 +12,6 @@ cd $WORKDIR
 
 sh z/ingress/setup.sh
 
-
-
-
-
-
-
 # Prompt for input
 read response
 
