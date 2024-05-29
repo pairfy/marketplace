@@ -1,0 +1,20 @@
+/* Mobile devices (portrait and landscape) */
+@media only screen and (max-width: 767px) {
+    /* CSS rules for mobile devices */
+  }
+  
+  /* Tablets and small desktops */
+  @media only screen and (min-width: 768px) and (max-width: 991px) {
+    /* CSS rules for tablets and small desktops */
+  }
+  
+  /* Medium desktops */
+  @media only screen and (min-width: 992px) and (max-width: 1199px) {
+    /* CSS rules for medium desktops */
+  }
+  
+  /* Large desktops and widescreen monitors */
+  @media only screen and (min-width: 1200px) {
+    /* CSS rules for large desktops and widescreen monitors */
+  }
+  

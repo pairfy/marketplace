@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120px"
+   height="30px"
+   viewBox="0 0 120 30"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="logo.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/debian/Documents/GitHub/pairfy/frontend-seller/src/pages/dashboard/assets/logo.png"
+   inkscape:export-xdpi="128"
+   inkscape:export-ydpi="128"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview137"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="4.6492271"
+     inkscape:cx="45.598977"
+     inkscape:cy="-10.86202"
+     inkscape:window-width="1495"
+     inkscape:window-height="970"
+     inkscape:window-x="344"
+     inkscape:window-y="89"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="text2212"
+     inkscape:pageshadow="2" />
+  <defs
+     id="defs132">
+    <rect
+       x="-1.4777668"
+       y="42.333266"
+       width="127.8846"
+       height="23.821752"
+       id="rect3454" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <g
+       aria-label="pαirfy"
+       transform="matrix(0.66172457,0,0,0.66431987,34.658668,2.8120814)"
+       id="text2212"
+       style="font-size:24px;line-height:1.25;font-family:Manrope;-inkscape-font-specification:Manrope;letter-spacing:-0.25px;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.471295;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+       inkscape:export-filename="/home/debian/Documents/GitHub/pairfy/frontend-seller/src/pages/dashboard/assets/text2212.png"
+       inkscape:export-xdpi="192"
+       inkscape:export-ydpi="192">
+      <path
+         d="m 10.836831,23.549788 q -2.1330004,0 -3.5775003,-1.0125 -1.4445,-1.0125 -2.1735,-2.754 -0.729,-1.755 -0.729,-3.9285 0,-2.2005 0.729,-3.942 0.729,-1.7415 2.133,-2.7405001 1.4174999,-1.0125 3.4965003,-1.0125 2.0655,0 3.5775,1.0125 1.5255,0.9990001 2.3625,2.7405001 0.837,1.728 0.837,3.942 0,2.187 -0.8235,3.9285 -0.8235,1.7415 -2.322,2.754 -1.4985,1.0125 -3.51,1.0125 z m -7.0335002,6.075 V 8.5647879 H 6.6788307 V 18.797788 h 0.405 v 10.827 z m 6.5340002,-8.991 q 1.269,0 2.0925,-0.6345 0.8235,-0.6345 1.215,-1.7145 0.405,-1.0935 0.405,-2.43 0,-1.323 -0.405,-2.403 -0.405,-1.0935 -1.2555,-1.728 -0.8505,-0.648 -2.16,-0.648 -1.2420004,0 -2.0250004,0.6075 -0.7829999,0.594 -1.1609999,1.674 -0.3645,1.0665 -0.3645,2.4975 0,1.4175 0.3645,2.4975 0.378,1.08 1.1744999,1.6875 0.81,0.594 2.1195004,0.594 z"
+         style="font-weight:bold;-inkscape-font-specification:'Manrope Bold';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.530207;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path103268" />
+      <path
+         d="m 26.09406,23.549788 q -2.0655,0 -3.5775,-1.0125 -1.512,-1.0125 -2.3355,-2.754 -0.81,-1.7415 -0.81,-3.9285 0,-2.214 0.837,-3.942 0.837,-1.7415 2.3625,-2.7405001 1.5255,-1.0125 3.618,-1.0125 1.6335,0 2.8485,0.675 1.2285,0.6750001 1.9575,1.8630001 l -0.4995,0.6885 V 8.5647879 h 2.8755 V 23.144788 h -2.8755 v -2.8485 l 0.4995,0.675 q -0.729,1.2015 -2.0115,1.89 -1.269,0.6885 -2.889,0.6885 z m 0.4995,-2.916 q 1.269,0 2.052,-0.594 0.7965,-0.6075 1.161,-1.6875 0.378,-1.08 0.378,-2.4975 0,-1.431 -0.378,-2.4975 -0.3645,-1.08 -1.1475,-1.674 -0.783,-0.6075 -2.025,-0.6075 -1.215,0 -2.0655,0.594 -0.8505,0.5805 -1.3095,1.6605 -0.4455,1.0665 -0.4455,2.538 0,1.323 0.3915,2.403 0.3915,1.08 1.2285,1.728 0.837,0.6345 2.16,0.6345 z"
+         style="font-weight:bold;-inkscape-font-specification:'Manrope Bold';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.530207;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path103270" />
+      <path
+         d="M 37.139309,23.144788 V 8.5647879 h 3.2535 V 23.144788 Z"
+         style="font-weight:bold;-inkscape-font-specification:'Manrope Bold';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.530207;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path103272"
+         sodipodi:nodetypes="ccccc" />
+      <path
+         d="M 44.161519,23.144788 V 8.5647879 h 2.8755 v 3.5505001 l -0.351,-0.459 q 0.27,-0.729 0.7155,-1.323 0.459,-0.6075 1.0935,-0.999 0.54,-0.3645001 1.188,-0.5670001 0.6615,-0.216 1.35,-0.2565 0.6885,-0.054 1.3365,0.054 v 3.0375001 q -0.648,-0.189 -1.4985,-0.1215 -0.837,0.0675 -1.512,0.4725 -0.675,0.3645 -1.107,0.9315 -0.4185,0.567 -0.621,1.296 -0.2025,0.7155 -0.2025,1.5525 v 7.4115 z"
+         style="font-weight:bold;-inkscape-font-specification:'Manrope Bold';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.530207;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path103274" />
+      <path
+         d="M 55.922222,23.144788 V 8.3352879 q 0,-0.5535 0.0405,-1.215 0.0405,-0.675 0.2295,-1.3365 0.189,-0.6615 0.6885,-1.2015 0.621,-0.6884999 1.3365,-0.9449999 0.729,-0.27 1.431,-0.297 0.702,-0.0405 1.2285,-0.0405 h 1.8225 v 2.6459999 h -1.6875 q -0.9315,0 -1.3905,0.4725 -0.4455,0.459 -0.4455,1.215 V 23.144788 Z m -2.349,-12.0285 V 8.5647879 h 9.126 v 2.5515001 z"
+         style="font-weight:bold;-inkscape-font-specification:'Manrope Bold';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.530207;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path103276" />
+      <path
+         d="m 67.424926,29.624788 2.808,-7.7085 0.054,2.268 -6.3585,-15.6195001 h 3.3885 l 4.509,11.5560001 h -0.864 l 4.3875,-11.5560001 h 3.2535 l -8.127,21.0600001 z"
+         style="font-weight:bold;-inkscape-font-specification:'Manrope Bold';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.530207;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+         id="path103278" />
+    </g>
+    <circle
+       style="display:inline;fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0.615192;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:7;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers"
+       id="path20348-4"
+       cx="60.304592"
+       cy="6.0416389"
+       r="1.0655127"
+       inkscape:export-filename="/home/debian/Documents/GitHub/pairfy/frontend-seller/src/pages/dashboard/assets/text2212.png"
+       inkscape:export-xdpi="192"
+       inkscape:export-ydpi="192" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 3"
+     style="display:inline">
+    <path
+       style="display:inline;fill:#0069f5;fill-opacity:1;stroke:#0069f5;stroke-width:0.751668;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="m 16.250009,12.828457 h 7.062984 l -14.937279,12.795856 1.968565,-3.198969 1.968576,-3.19896 1.968577,-3.198956 z"
+       id="path7720"
+       sodipodi:nodetypes="ccccccc" />
+    <path
+       style="display:inline;fill:#0069f5;fill-opacity:1;stroke:#0069f5;stroke-width:0.727009;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke fill markers"
+       d="M 23.312993,10.189544 H 16.209955 L 9.0957521,2.3635863 17.443471,2.3635046 Z"
+       id="path9322-1"
+       inkscape:export-filename="/home/debian/Documents/GitHub/pairfy/frontend-home/src/assets/path9322-1.png"
+       inkscape:export-xdpi="121.6"
+       inkscape:export-ydpi="121.6" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="limit"
+     style="display:none">
+    <rect
+       style="display:inline;opacity:0.557195;fill:#ff5e00;fill-opacity:1;stroke:#0069f5;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1592-1"
+       width="15"
+       height="14.999998"
+       x="1.8808064e-06"
+       y="14.999999" />
+    <rect
+       style="display:inline;opacity:0.557195;fill:#ff0000;stroke:#0069f5;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1592"
+       width="120"
+       height="14.999998"
+       x="1.8808064e-06"
+       y="6.7562792e-07" />
+  </g>
+</svg>
