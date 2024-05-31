@@ -12,6 +12,9 @@ cd $WORKDIR
 
 sh z/ingress/setup.sh
 
+sh z/secrets/secrets.sh
+
+
 # Prompt for input
 read response
 

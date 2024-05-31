@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: service-product
+  template:
+    metadata:
+      labels:
+        role: service-product
+    spec:
+      containers:
+        - name: service-product
+          image: pairfy/service-product
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name                                       
+            - name: SELLER_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: seller-token-secret
+                  key: SELLER_TOKEN_KEY                       
+            - name: POD_TIMEOUT
+              value: '120000'   
+            - name: EXPRESS_PORT
+              value: "8000"
+            - name: EXPRESS_TIMEOUT
+              value: "120000"                                                                  
+            - name: BUS_STREAMING_URI  
+              valueFrom:
+                configMapKeyRef:
+                  name: streaming-config
+                  key: redis                                                                                  
+            - name: TOKEN_EXPIRATION
+              value: "7d"
+            - name: CORS_DOMAINS
+              value: "https://pairfy.dev,http://pairfy.dev,http://localhost:8080,https://pairfy.dev,https://dashboard.pairfy.dev"                           
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "256Mi"       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-product
+spec:
+  selector:
+    role: service-product
+  ports:
+    - name: service-product
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

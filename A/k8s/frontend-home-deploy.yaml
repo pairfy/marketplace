@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-home
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: frontend-home
+  template:
+    metadata:
+      labels:
+        role: frontend-home
+    spec:
+      containers:
+        - name: frontend-home
+          image: pairfy/frontend-home
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "256Mi"               
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-home
+spec:
+  selector:
+    role: frontend-home
+  ports:
+    - name: frontend-home
+      protocol: TCP
+      port: 8000
+      targetPort: 80

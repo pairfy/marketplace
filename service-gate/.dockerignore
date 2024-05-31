@@ -1,0 +1,6 @@
+node_modules
+dist
+/src/__test
+/src/__mocks__
+/src/routes/__test__
+package-lock.json

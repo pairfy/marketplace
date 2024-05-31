@@ -13,12 +13,60 @@ build:
     concurrency: 0
   tagPolicy:
     sha256: {}    
-  artifacts:                                       
-    - image: pairfy/healthcheck
-      context: healthcheck
+  artifacts:
+    - image: pairfy/frontend-home
+      context: frontend-home
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .  
+    - image: pairfy/frontend-seller
+      context: frontend-seller
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .              
+    - image: pairfy/service-seller
+      context: service-seller
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .                         
+    - image: pairfy/service-product
+      context: service-product
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .               
+    - image: pairfy/service-gate
+      context: service-gate
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .
+    - image: pairfy/service-media
+      context: service-media
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .    
+    - image: pairfy/debezium-mysql-connector
+      context: plugin-debezium
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .               

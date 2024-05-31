@@ -1,0 +1,19 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaConnector
+metadata:
+  name: service-seller-stream
+  labels:
+    strimzi.io/cluster: debezium-connect-cluster
+spec:
+  class: io.debezium.connector.mysql.MySqlConnector
+  tasksMax: 1
+  config:
+    connector.class: io.debezium.connector.mysql.MySqlConnector
+    database.hostname: "mysql"
+    database.port: 3306
+    database.user: "marketplace"
+    database.password: "password"
+    database.server.id: "5050" 
+    database.include.list": "service_seller"
+    topic.prefix: "fullfillment"
+    tasks.max: 1 

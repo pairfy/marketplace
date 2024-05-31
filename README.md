@@ -80,15 +80,5 @@ https://kubernetes.io/docs/tasks/tools/install-kubectl-linux
 Command
 
 ```
-chmod +x setup.sh
-```
-
-```
-sh ./setup.sh
-```
-
-Command
-
-```
 skaffold dev
 ```
