@@ -1,0 +1,1 @@
+kubectl apply -f A/k8s && kubectl apply -f A/k8s-prod

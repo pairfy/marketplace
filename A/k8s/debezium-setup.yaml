@@ -5,8 +5,8 @@ metadata:
   namespace: default
 type: Opaque
 data:
-  username: dXNlcm5hbWU=
-  password: cGFzc3dvcmQ=
+  username: bWFya2V0cGxhY2UK
+  password: cGFzc3dvcmQK
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
