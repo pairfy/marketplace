@@ -1,7 +1,7 @@
 <template>
   <div class="grid">
-    <div class="grid-item" v-for="row of getter__allProducts" :key="row">
-      <div class="grid-item-title">{{ row.title }}</div>
+    <div class="grid-item" v-for="row of getTimelineData.timeline" :key="row">
+      <div class="grid-item-category">{{ row.category }}</div>
 
       <div class="grid-row">
         <div
@@ -11,14 +11,12 @@
           @click="handleClick(item.id)"
         >
           <div class="card-header">
-            <div class="card-image">
-              <img :src="item.image" alt="" />
-            </div>
+            <img class="card-image" :src="buildImage(item)" alt="" />
           </div>
 
           <div class="card-body">
             <div class="card-body-name">
-              <span> {{ item.name.slice(0, 60) }}...</span>
+              <span> {{ item.name.slice(0, 100) }}...</span>
             </div>
 
             <div class="card-body-rating">
@@ -30,33 +28,8 @@
               />
               <span>({{ item.review_count }})</span>
             </div>
-
             <div class="card-body-price">
               <span> {{ formatPrice(item.price) }}</span>
-            </div>
-
-            <div class="card-body-collateral">
-              <span> {{ formatPrice(item.collateral) }} Coll.</span>
-            </div>
-
-            <div class="card-body-seller">
-              <span>{{ item.discount_label }}</span>
-              <span>
-                <svg
-                  class="badge"
-                  viewBox="0 0 24 24"
-                  width="1rem"
-                  height="1rem"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M16.438 4.313L14.814 1.5 12 3.124 9.187 1.5 7.562 4.313H4.313v3.25L1.5 9.186 3.124 12 1.5 14.813l2.813 1.625v3.248h3.25L9.186 22.5 12 20.876l2.813 1.624 1.625-2.814h3.248v-3.248l2.814-1.624L20.876 12 22.5 9.187l-2.814-1.625V4.313h-3.248zm-.902 4.215l1.414 1.414-6.364 6.364L7.05 12.77l1.414-1.414 2.122 2.122 4.95-4.95z"
-                    fill="#F0B90B"
-                  ></path>
-                </svg>
-              </span>
             </div>
           </div>
         </div>
@@ -73,21 +46,25 @@ export default {
   setup() {
     const router = useRouter();
 
-    const { getter__allProducts } = homeAPI();
+    const { getTimelineData } = homeAPI();
 
-    return { router, getter__allProducts };
+    return { router, getTimelineData };
   },
   methods: {
     handleClick(id) {
       this.router.push({ name: "product", params: { id } });
     },
 
+    buildImage(value) {
+      return value.media_url + value.media_path + value.image_main;
+    },
+
     formatPrice(num) {
       const price = num || 0;
 
-      const customCurrencySymbol = "ADA";
+      const customCurrencySymbol = "₳";
 
-      const formattedNumber = `${price.toLocaleString(
+      const formattedNumber = `  ${price.toLocaleString(
         "en-US"
       )} ${customCurrencySymbol}`;
 
@@ -103,19 +80,6 @@ export default {
   height: var(--text-size-a);
 }
 
-.card-body-seller {
-  text-align: left;
-  font-size: var(--text-size-a);
-  display: flex;
-  align-items: center;
-  color: var(--text-a);
-  font-weight: 200;
-  margin-top: 1rem;
-  border: 1px solid var(--border-a);
-  padding: 0 0.5rem;
-  display: none;
-}
-
 .card-body-rating {
   display: flex;
   align-items: center;
@@ -125,7 +89,7 @@ export default {
 .card-body-rating span {
   font-size: var(--text-size-a);
   margin-left: 0.5rem;
-  color: var(--blue-a);
+  color: var(--primary-a);
 }
 
 .card-body-collateral {
@@ -139,32 +103,32 @@ export default {
 }
 
 .card-body-price {
-  font-weight: 600;
+  font-weight: 500;
   text-align: left;
-  font-size: var(--text-size-d);
+  font-size: var(--text-size-e);
   color: var(--text-a);
   margin-top: 1rem;
 }
 
-.grid-item-title {
+.grid-item-category {
   font-size: var(--text-size-g);
   font-weight: bold;
-  text-align: start;
+  text-align: left;
+  text-transform: capitalize;
   color: var(--text-a);
-  padding: 1rem 0;
-  margin: 1rem 0;
+  padding: 2rem;
+  font-weight: 700;
 }
 
 .grid {
   display: grid;
   grid-template-columns: 1fr;
   grid-auto-rows: minmax(100px, auto);
-  gap: 20px;
-  padding: 0 2rem;
+  padding: 0 10%;
   min-height: 100vh;
   border-top-left-radius: 0px;
   border-top-right-radius: 0px;
-  background: var(--base-a);
+  background: linear-gradient(180deg, var(--primary-a) 0%, var(--base-c) 30%);
 }
 
 .grid-item {
@@ -174,35 +138,38 @@ export default {
 
 .grid-row {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 0.5rem;
+
 }
 
 .card {
-  width: 300px;
+  width: 100%;
   height: 600px;
   transition: box-shadow 0.25s ease-in-out 0s, transform 0.25s ease 0s;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   cursor: pointer;
-  padding: 1rem;
   margin: auto;
-  line-height: 1.5rem;
-  border: 1px solid var(--border-b);
+  background: var(--base-a);
+  padding: 1rem;
 }
 
 .card-header {
   flex-basis: 50%;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .card-image {
 }
 
-.card-image img {
-  width: 100%;
-  height: 257px;
+.card-image {
+  width: 200px;
+  height: 200px;
   display: flex;
   justify-content: center;
   border-radius: 12px;
@@ -211,22 +178,24 @@ export default {
 }
 
 .card-body {
-  flex-basis: 45%;
+  flex-basis: 25%;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: start;
+  align-items: flex-start;
 }
 
 .card-body-name {
-  color: var(--blue-c);
-  font-size: var(--text-size-b);
-  text-align: left;
+  margin-top: 1rem;
+  color: var(--text-a);
+  font-size: var(--text-size-c);
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 400;
-  text-transform: capitalize;
+  font-style: normal;
+  text-transform: none;
+  text-decoration: none;
 }
 
 .card-body-name:hover {
@@ -234,7 +203,8 @@ export default {
 }
 
 .card-body-name span {
-  text-align: inherit;
+  text-align: left;
+  line-height: 24px;
 }
 
 .card-body-name span::first-letter {

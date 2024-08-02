@@ -187,12 +187,12 @@
 </template>
 
 <script>
-import { walletAPI, CardanoWasm, balanceTx } from "@/api/wallet-api";
+import { walletClient, CardanoWasm, balanceTx } from "@/api/wallet-api";
 import { ref } from "vue";
 
 export default {
   setup() {
-    const wallet = walletAPI();
+    const wallet = walletClient();
     const selectedCountry = ref({ name: "United States", code: "US" });
     const countries = ref([
       { name: "United States", code: "US" },

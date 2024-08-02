@@ -1,10 +1,13 @@
-
 const commit__getAllProducts = (state, data) => {
   state.allProducts = data;
 };
 
-
-
-export {
-  commit__getAllProducts
+const getProduct = (state, data) => {
+  state.productData = data;
 };
+
+const getOrders = (state, data) => {
+  state.ordersData = data;
+};
+
+export { commit__getAllProducts, getProduct, getOrders };

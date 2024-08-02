@@ -11,23 +11,26 @@
 
   --text-a: #040c13;
   --text-b: #58667e;
-  --text-c: #06c;
+  --text-c: #0457c8;
   --text-w: #ffffff;
 
-  --black-a: #040c13;
-  --black-b: #191919;
+  --black-a: #131921;
+  --black-b: #192f45;
+
+  --primary-a: #0046be;
+  --primary-b:  #ffe000;
+  --primary-c: #0866FF;
+  --primary-s: rgba(8, 102, 255, 0.1);
+
+  --orange: #FFBD54;
 
   --base-a: #ffffff;
   --base-b: #f5f5f7;
   --base-c: #ebebeb;
-  --base-d: #131921;
-  --base-e: #232f3e;
 
-  --blue-a: #0069f5;
-  --blue-b: #0043cf;
-  --blue-c: #1a83ff;
-  --blue-t: #0457c8;
-  --blue-s: hsla(214, 100%, 48%, 0.1);
+  --blue-a: #0046be;
+  --blue-b: #1A60D8;
+  --blue-c: #3379F1;
 
   --gradient-a: linear-gradient(
     to right top,
@@ -51,22 +54,21 @@
   --orange-a: #ff5c38;
   --orange-s: rgba(255, 92, 56, 0.1);
 
-  --yellow-a: #ffe600;
-  --yellow-b: #f0b90b;
+  --yellow-a: #fff200;
+  --yellow-b: #FEBA3E;
   --yellow-s: rgba(255, 242, 0, 0.1);
 
-  --green-a: #27b46a;
-  --green-s: rgba(39, 180, 106, 0.1);
-  --green-b: rgba(0, 126, 89, 1);
+  --palette-a: #131921;
+  --palette-b: #0098fa;
+  --palette-c: #f0faff;
+  --palette-d: #192f45;
+
+  --green-a: #34d399;
+  --green-b: #34d399;
   --green-c: #34d399;
 
-  --secondary-a: #131a22;
-  --secondary-b: #2d313c;
-  --secondary-c: #e3f1ff;
-  --secondary-d: #c7e3ff;
-  --secondary-e: #ffffff;
-
-  --transition-a: box-shadow 0.2s cubic-bezier(0.2, 0, 0, 1);
+  --transition-a: 0.2s cubic-bezier(0.2, 0, 0, 1);
+  --transition-b: 0.3s ease-in-out;
 
   --shadow-a: 0 3px 12px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.08);
 
@@ -80,13 +82,17 @@
   --border-shadow: rgb(0 0 0/8%) 0 1px 0;
 
   --border-a: #e9ecef;
-  --border-b: #d0d3d6;
+  --border-b: #c5cbd5;
 }
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap");
 
 * {
   font-optical-sizing: auto;
+  text-rendering: optimizeLegibility;
   font-style: normal;
+
+  font-family: "IBM Plex Sans", sans-serif;
   font-family: "Open Sans", sans-serif;
 }
 

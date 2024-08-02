@@ -2,47 +2,102 @@ import { Wallet } from "@cardano-foundation/cardano-connect-with-wallet-core";
 
 import * as CardanoWasm from "@emurgo/cardano-serialization-lib-browser";
 
-const Buffer = require('buffer/').Buffer
+import { Lucid } from "lucid-cardano";
 
-const walletAPI = () => {
+const Buffer = require("buffer/").Buffer;
+
+let connectedWallet = null;
+
+const lucidClient = await Lucid.new();
+
+const walletEnabledEvent = new CustomEvent("walletEnabledEvent", {
+  detail: {
+    payload: "wallet enabled",
+  },
+});
+
+const walletClient = () => {
   return {
-    setup,
-    stop,
+    startWalletService,
+    stopWalletService,
     connect,
+    reconnect,
+    getWallet,
   };
 };
 
+const getWallet = async () => {
+  if (!connectedWallet) {
+    await reconnect();
+  }
+
+  return connectedWallet;
+};
+
 const connect = async (walletName) => {
-  await Wallet.connect(walletName, "testnet", () => {
-    console.log("connect call");
-    window.cardano.enable();
+  await Wallet.connect(walletName, "testnet", async () => {
+    connectedWallet = await window.cardano[walletName].enable();
+
+    localStorage.setItem("pairfy-wallet", walletName);
+
+    console.log("CONNECTED " + walletName);
   });
 };
 
-const setup = () => {
-  Wallet.addEventListener("enabled", async (e) => {
-    console.log("enabled", e, await window.cardano.isEnabled());
-  });
-  Wallet.addEventListener("connecting", (e) => {
-    console.log("connecting", e);
-  });
+const reconnect = async () => {
+  const walletName = localStorage.getItem("pairfy-wallet");
 
-  Wallet.addEventListener("connected", (e) => {
-    console.log("connected", e);
-  });
+  if (walletName !== null) {
+    await connect(walletName);
+    console.log("RECONNECTED " + walletName);
+  } else {
+    return false;
+  }
+};
 
-  Wallet.addEventListener("enabledWallet", async (e) => {
-    console.log("enabledW", e, await window.cardano.isEnabled());
-  });
+const getAddress = async () => {
+  if (!connectedWallet) {
+    await reconnect();
+  }
 
-  Wallet.addEventListener("accountBalance", (e) => {
-    console.log("balance", e);
+  const address = await connectedWallet.getUsedAddresses();
+
+  return address[0];
+};
+
+const getMessage = () => {
+  const message = "PLEASE SIGN TO AUTHENTICATE IN PAIRFY";
+
+  return Buffer.from(message, "utf8").toString("hex");
+};
+
+const signMessage = async () => {
+  if (!connectedWallet) {
+    await reconnect();
+  }
+
+  return await connectedWallet.signData(await getAddress(), getMessage());
+};
+
+const startWalletService = async () => {
+  Wallet.addEventListener("enabledWallet", async (walletName) => {
+    const isEnabled = await window.cardano[walletName].isEnabled();
+
+    if (isEnabled) {
+      localStorage.setItem("pairfy-wallet", walletName);
+
+      window.dispatchEvent(walletEnabledEvent);
+
+      console.info("ENABLED_WALLET", walletName);
+    }
   });
 
   Wallet.startInjectWalletListener();
+
+  await reconnect();
 };
 
-const stop = () => {
+const stopWalletService = () => {
   Wallet.disconnect();
 
   Wallet.removeEventListener("enabled", (e) => {
@@ -67,15 +122,15 @@ const stop = () => {
   Wallet.stopInjectWalletListener();
 };
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 const balanceTx = (unbalancedTx) => {
   return Promise.all([
-    window.cardano.getChangeAddress(),
-    window.cardano.getUtxos(),
+    connectedWallet.getChangeAddress(),
+    connectedWallet.getUtxos(),
     fetchProtocolParameters(),
   ]).then(async (promises) => {
     const changeAddrCbor = promises[0];
-
-    console.log(typeof changeAddrCbor);
 
     const changeAddrBech32 = CardanoWasm.Address.from_bytes(
       fromHexString(changeAddrCbor)
@@ -99,7 +154,6 @@ const balanceTx = (unbalancedTx) => {
     );
 
     /////////////
-  
 
     const transactionWitnessSet = CardanoWasm.TransactionWitnessSet.new();
 
@@ -109,8 +163,8 @@ const balanceTx = (unbalancedTx) => {
         transactionWitnessSet.to_bytes()
       )
     );
-    console.log("yes");
-    let txVkeyWitnesses = await window.cardano.signTx(
+
+    let txVkeyWitnesses = await connectedWallet.signTx(
       Buffer.from(tx.to_bytes(), "utf8").toString("hex"),
       true
     );
@@ -126,7 +180,7 @@ const balanceTx = (unbalancedTx) => {
       transactionWitnessSet
     );
 
-    return window.cardano.submitTx(
+    return connectedWallet.submitTx(
       Buffer.from(signedTx.to_bytes(), "utf8").toString("hex")
     );
   });
@@ -177,8 +231,6 @@ const buildTx = async (
 
   if (auxiliaryData) txBuilder.set_auxiliary_data(auxiliaryData);
 
-
-
   const utxosCore = CardanoWasm.TransactionUnspentOutputs.new();
 
   utxos.forEach((utxo) => utxosCore.add(utxo));
@@ -192,7 +244,6 @@ const buildTx = async (
   txBuilder.add_change_if_needed(
     CardanoWasm.Address.from_bech32(account.paymentAddr)
   );
-
 
   return txBuilder.build();
 };
@@ -242,4 +293,12 @@ const fromHexString = (hexString) =>
 
 //const toHexString = (uint8) => Array.from(uint8).map(i2hex).join("");
 
-export { walletAPI, CardanoWasm, balanceTx };
+export {
+  walletClient,
+  CardanoWasm,
+  balanceTx,
+  lucidClient,
+  signMessage,
+  getAddress,
+  getMessage
+};

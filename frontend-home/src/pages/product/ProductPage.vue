@@ -2,27 +2,27 @@
   <div class="product">
     <MainHeader />
     <MobileHeader />
-    <div class="product-body">
-      <div class="product-body-top">
+
+    <div v-if="isLoaded" class="product-body">
+      <div class="page-1">
         <HeadView />
         <MobileHeadView />
       </div>
 
-      <div class="product-body-body"></div>
+      <div class="page-2">x</div>
     </div>
+
+    <div v-if="isFailed">Failed</div>
   </div>
 </template>
 
 <script>
 import productAPI from "@/pages/product/api";
-import MainHeader from "@/components/MainHeader.vue";
-import MobileHeader from "@/components/MobileHeader.vue";
+import MainHeader from "@/components/header/MainHeader.vue";
+import MobileHeader from "@/components/header/MobileHeader.vue";
 import HeadView from "@/pages/product/components/HeadView.vue";
 import MobileHeadView from "@/pages/product/components/MobileHeadView.vue";
-
 import { ref } from "vue";
-import { Lucid, getAddressDetails } from "lucid-cardano";
-import { balanceTx } from "@/api/wallet-api";
 
 export default {
   components: {
@@ -32,111 +32,63 @@ export default {
     MobileHeadView,
   },
   setup() {
-    const { lockingEndpoint } = productAPI();
+    const { getProduct, getOrders, getProductData } = productAPI();
 
-    const product = ref({
-      rating_count: 4.8,
-      review_count: 756,
-    });
+    const isLoaded = ref(false);
+    const isFailed = ref(false);
 
+    const setupData = (id) => {
+      getProduct({ id }).then((res) => {
+        if (res.success === true) {
+          return (isLoaded.value = true);
+        }
+
+        if (res.success === false) {
+          return (isFailed.value = true);
+        }
+      });
+
+      getOrders({ id });
+    };
 
     return {
-      product,
-    
-      lockingEndpoint,
+      setupData,
+      isLoaded,
+      isFailed,
+      getProductData,
     };
   },
   data() {
-    return {
-      lucid: null,
-      slot_id: "",
-      buyer_pubkeyhash: "",
-      tx1: "84a400800181a300581d70c11355d423aed1273fa29eb0aaae09f63f025890f03fedd6ade0b4f5011a01312d0b028201d8185841d8799f004777616974696e67d87980d87980d87980581c4068ce72a0f73e850f19899a10b82ec534a55a6d860e5c5267dca2b9d87a801a01c9c38b1a01312d0bff02000e81581c4068ce72a0f73e850f19899a10b82ec534a55a6d860e5c5267dca2b9a0f5f6",
-      tx2: "",
-    };
+    return {};
   },
 
   created() {
     this.$watch(
       () => this.$route.params,
-      (e) => (this.slot_id = e.id),
+      (params) => this.setupData(params.id),
       { immediate: true }
     )();
   },
   methods: {
-    isGalleryImage(index) {
-      return this.galleryImageIndex === index;
-    },
-    setupData() {
-      this.galleryImage[0] = this.images[0];
-    },
-    changeGalleryImage(index) {
-      this.galleryImageIndex = index;
-      this.galleryImage[0] = this.images[this.galleryImageIndex];
-    },
-    async setupLucid() {
-      this.lucid = await Lucid.new();
-    },
-    async setupWallet() {
-      try {
-        const api = await window.cardano.nami.enable();
-
-        this.lucid.selectWallet(api);
-      } catch (err) {
-        console.error(err);
-      }
-    },
-    async buyProduct() {
-      const addr = await this.lucid.wallet.address();
-      const address = await getAddressDetails(addr);
-
-      this.buyer_pubkeyhash = address.paymentCredential.hash;
-
-      const params = {
-        slot_id: this.slot_id,
-        buyer_pubkeyhash: address.paymentCredential.hash,
-      };
-
-      this.lockingEndpoint(params)
-        .then((res) => balanceTx(res.response.payload.transaction))
-        .then((tx) => console.log(tx))
-        .catch((err) => console.log(err));
-    },
-
-    async buyProduct1(e) {
-      const addr = await this.lucid.wallet.address();
-      const address = await getAddressDetails(addr);
-
-      this.buyer_pubkeyhash = address.paymentCredential.hash;
-
-      if (e === "1") {
-        await balanceTx(this.tx1)
-          .then((tx) => console.log(tx))
-          .catch((err) => console.log(err));
-      }
-
-      if (e === "2") {
-        await balanceTx(this.tx2)
-          .then((tx) => console.log(tx))
-          .catch((err) => console.log(err));
-      }
+    scrollTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: "auto",
+      });
     },
   },
 
   mounted() {
-    this.setupLucid();
-
-    this.setupWallet();
+    this.scrollTop();
   },
 };
 </script>
 
 <style lang="css" scoped>
-
 .product-body {
-  width: calc(80% - 2rem);
+  padding: 0 12%;
+  width: 100%;
 }
-
 
 .product {
   display: flex;
@@ -147,12 +99,14 @@ export default {
   align-items: center;
 }
 
-.product-body-top {
+.page-1 {
   min-height: 150vh;
-  margin-top: 120px;
+  margin-top: 150px;
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
+  border-top: 1px solid var(--border-b);
+  padding-top: 100px;
 }
 
 @media only screen and (max-width: 767px) {
@@ -160,7 +114,7 @@ export default {
     width: 100%;
   }
 
-  .product-body-top {
+  .page-1 {
     margin-top: 100px;
   }
 }
@@ -171,7 +125,7 @@ export default {
     width: 100%;
   }
 
-  .product-body-top {
+  .page-1 {
     margin-top: 100px;
   }
 }
@@ -182,7 +136,7 @@ export default {
     width: 100%;
   }
 
-  .product-body-top {
+  .page-1 {
     margin-top: 100px;
   }
 }

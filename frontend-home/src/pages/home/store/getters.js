@@ -1,7 +1,7 @@
-const getter__allProducts = (state) => {
-  return state.allProducts;
+const getTimelineData = (state) => {
+  return state.timeline;
 };
 
 
 
-export { getter__allProducts };
+export { getTimelineData };

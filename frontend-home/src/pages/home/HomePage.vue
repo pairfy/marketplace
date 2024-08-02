@@ -2,25 +2,21 @@
   <div class="store">
     <MainHeader />
     <MobileHeader />
-
-    <div class="banner">
-      <div class="banner-mask" />
-
-      <div class="banner-screen"></div>
-    </div>
-
+    <BannerWrap />
     <GridWrap />
     <MobileGrid />
   </div>
 </template>
 
 <script>
-import MainHeader from "@/components/MainHeader.vue";
-import MobileHeader from "@/components/MobileHeader.vue";
+import MainHeader from "@/components/header/MainHeader.vue";
+import MobileHeader from "@/components/header/MobileHeader.vue";
 import GridWrap from "@/pages/home/components/GridWrap.vue";
 import MobileGrid from "@/pages/home/components/MobileGrid.vue";
 //import storeAPI from "@/pages/home/composable/home-api";
 import { useRouter } from "vue-router";
+import BannerWrap from "@/pages/home/components/BannerWrap.vue";
+import homeAPI from "@/pages/home/composable/home-api";
 
 export default {
   components: {
@@ -28,10 +24,15 @@ export default {
     MobileHeader,
     MobileGrid,
     GridWrap,
+    BannerWrap,
   },
 
   setup() {
     const router = useRouter();
+
+    const { getTimeline } = homeAPI();
+
+    getTimeline();
 
     return { router };
   },
@@ -49,50 +50,12 @@ export default {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background-image: var(--gradient-a);
-}
-
-.store .banner {
-  width: inherit;
-  height: 625px;
-  min-height: 625px;
-  z-index: 1;
-  position: relative;
-  inset: 0px 0px -1px;
-  background-size: contain;
-  display: flex;
-  flex-direction: column;
-}
-
-.store .banner .banner-mask {
-  width: inherit;
-  height: inherit;
-  z-index: 2;
-  position: absolute;
-  backdrop-filter: blur(0px);
-  background: linear-gradient(180deg, transparent 90%, rgba(0, 0, 0, 0.1) 100%);
-}
-
-.store .banner .banner-screen {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 2rem;
-  z-index: 100;
-  padding: 0 4rem;
+  background: var(--primary-a);
 }
 
 @media only screen and (max-width: 767px) {
   .store {
     background: var(--base-b);
-  }
-
-  .store .banner {
-    height: 400px;
-    min-height: 400px;
-  }
-
-  .store .banner .banner-mask {
-    display: none;
   }
 }
 

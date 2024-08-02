@@ -1,13 +1,12 @@
-import App from './App.vue'
-import PrimeVue from 'primevue/config';
+import App from "./App.vue";
+import PrimeVue from "primevue/config";
 import { stores } from "./store";
 import { router } from "./router";
-import { createApp } from 'vue';
-import  { walletAPI }  from '@/api/wallet-api';
-import 'primeicons/primeicons.css';
-import './style/theme.css';
-import './style/flags.css';
+import { createApp } from "vue";
 
+import "primeicons/primeicons.css";
+import "./style/theme.css";
+import "./style/flags.css";
 
 import AutoComplete from "primevue/autocomplete";
 import Accordion from "primevue/accordion";
@@ -108,15 +107,15 @@ import VirtualScroller from "primevue/virtualscroller";
 import ConfirmationService from "primevue/confirmationservice";
 import ToastService from "primevue/toastservice";
 import DialogService from "primevue/dialogservice";
-import MeterGroup from 'primevue/metergroup';
+import MeterGroup from "primevue/metergroup";
 
-const app = createApp(App)
 
+const app = createApp(App);
 
 app.use(stores);
 app.use(router);
 
-app.use(PrimeVue, { ripple: true  });
+app.use(PrimeVue, { ripple: true });
 app.use(ConfirmationService);
 app.use(ToastService);
 app.use(DialogService);
@@ -129,6 +128,7 @@ app.directive("focustrap", FocusTrap);
 app.directive("animateonscroll", AnimateOnScroll);
 
 /* eslint-disable */
+
 app.component("MeterGroup", MeterGroup);
 app.component("Accordion", Accordion);
 app.component("AccordionTab", AccordionTab);
@@ -221,9 +221,10 @@ app.component("TreeTable", TreeTable);
 app.component("TriStateCheckbox", TriStateCheckbox);
 app.component("VirtualScroller", VirtualScroller);
 
-router.isReady().then(() => {
-    app.mount("#app");
-    walletAPI().stop() 
-    walletAPI().setup() 
-});
 
+
+
+
+router.isReady().then(() => {
+  app.mount("#app"); 
+});
