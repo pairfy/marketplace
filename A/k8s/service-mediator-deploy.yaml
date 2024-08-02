@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-mediator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: service-mediator
+  template:
+    metadata:
+      labels:
+        role: service-mediator
+    spec:
+      containers:
+        - name: service-mediator
+          image: pairfy/service-mediator
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name                                       
+            - name: MEDIATOR_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: mediator-token-secret
+                  key: MEDIATOR_TOKEN_KEY                       
+            - name: POD_TIMEOUT
+              value: '120000'   
+            - name: EXPRESS_PORT
+              value: "8000"
+            - name: EXPRESS_TIMEOUT
+              value: "120000"                                                                                                                                                  
+            - name: TOKEN_EXPIRATION
+              value: "7d"
+            - name: CORS_DOMAINS
+              value: "http://localhost:3000,http://localhost:8080,http://localhost:8081,http://localhost:443,localhost,https://pairfy.dev,https://dashboard.pairfy.dev"                           
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "256Mi"       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-mediator
+spec:
+  selector:
+    role: service-mediator
+  ports:
+    - name: service-mediator
+      protocol: TCP
+      port: 8000
+      targetPort: 8000
