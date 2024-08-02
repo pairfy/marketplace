@@ -1,20 +1,36 @@
 import axiosApi from "@/api/axios-api";
 
-
-const action__getAllProducts = async ({ commit }) => {
+const getTimeline = async ({ commit }) => {
   try {
-    
-    const response = await axiosApi.get("/api/store/get-all-products");
+    const query = `
+    query Timeline {
+      timeline {
+        id
+        name
+        category
+        price
+        collateral
+        discount
+        stock
+        media_url
+        media_path
+        image_main
+      }
+    }
+  `;
 
-    commit("commit__getAllProducts", response.data);
+    const response = await axiosApi.post("/api/query", {
+      query,
+    });
 
-    return { ok: true, response: response.data };
+    console.log(response.data);
+
+    commit("getTimeline", response.data.data);
+
+    return { success: true, response: response.data };
   } catch (error) {
-    throw { ok: false, response: error.response.data };
+    return { success: false, response: error.response };
   }
 };
 
-
-
-
-export { action__getAllProducts };
+export { getTimeline };

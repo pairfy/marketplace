@@ -5,17 +5,17 @@ const homeAPI = () => {
   const store = useStore();
 
 
-  const action__getAllProducts = async (params) =>
-    await store.dispatch("home/action__getAllProducts", params);
+  const getTimeline = async (params) =>
+    await store.dispatch("home/getTimeline", params);
 
   const sleep = (timeInMs) =>
     new Promise((resolve) => setTimeout(() => resolve(false), timeInMs));
 
   return {
-    getter__allProducts: computed(
-      () => store.getters["home/getter__allProducts"]
+    getTimelineData: computed(
+      () => store.getters["home/getTimelineData"]
     ),
-    action__getAllProducts,
+    getTimeline,
     sleep,
   };
 };

@@ -95,14 +95,14 @@
     :baseZIndex="10"
     dismissableMask
     closeOnEscape
-    header="Wallet"
+    header="Sign In"
     :style="{ width: '23rem' }"
   >
     <div class="wallet">
       <div class="wallet-title">Choose a Cardano wallet.</div>
 
       <div class="wallet-grid">
-        <div class="wallet-icon" @click="connectWallet('nami')">
+        <div class="wallet-icon">
           <img src="@/assets/nami.svg" alt="logo" />
         </div>
       </div>
@@ -123,23 +123,22 @@
   <header class="header responsive">
     <div class="header-left">
       <img
-        class="header-left-logo white"
-        @click="reloadPage"
+        class="header-logo white"
+        @click="openHome"
         src="@/assets/logo-white.png"
         alt="logo"
       />
 
       <img
-        class="header-left-logo blue"
-        @click="reloadPage"
+        class="header-logo blue"
+        @click="openHome"
         src="@/assets/logo-blue.png"
         alt="logo"
       />
 
       <div class="header-button left" @click="visible = true">
-        <label for=""> <img src="@/assets/location.svg" alt="" /></label>
         <div>
-          <span>{{ selectedLanguage.code }}</span>
+          <span>Deliver to</span>
           <span>{{ selectedCountry.name }}</span>
         </div>
       </div>
@@ -172,9 +171,6 @@
 
     <div class="header-right">
       <div class="header-button right">
-        <label v-badge.secondary for="">
-          <img src="@/assets/gift.svg" alt=""
-        /></label>
         <div>
           <span>Be a</span>
           <span>Mediator</span>
@@ -184,63 +180,44 @@
       <div class="header-button right">
         <label for=""> <img src="@/assets/cart.svg" alt="" /></label>
 
-        <div class="header-right-count">
-          <span>0</span>
-        </div>
+        <div class="header-right-count">0</div>
       </div>
 
       <div class="header-button right">
-        <button @click="openWalletDialog">
+        <button @click="displaySetupWallet(true)">
           <i class="pi pi-bars" />
           <img src="@/assets/user.svg" alt="" />
         </button>
+
+        <SignWrap />
       </div>
     </div>
 
     <!--SUBMENU-->
 
-    <div class="header-menu" :class="{ blue: currentRoute === 'product' }">
-      <div class="header-menu-col left">
-        <div class="header-menu-nav">
-          <div
-            v-for="item in navTabs"
-            :key="item"
-            :class="{ selected: selectedTab === item.value }"
-          >
-            {{ item.label }}
-          </div>
-        </div>
-      </div>
-
-      <div class="header-menu-col center" />
-      <div class="header-menu-col right" />
-    </div>
+    <NavWrap />
   </header>
 </template>
 
 <script>
-import { walletAPI, CardanoWasm, balanceTx } from "@/api/wallet-api";
+import { CardanoWasm } from "@/api/wallet-api";
 import { ref } from "vue";
+import headerAPI from "./composable/header-api";
+import NavWrap from "./components/NavWrap.vue";
+import SignWrap from "./components/SignWrap.vue";
 
 export default {
+  components: {
+    NavWrap,
+    SignWrap,
+  },
   setup() {
-    window.addEventListener(
-      "scroll",
-      function () {
-        let currentScroll =
-          window.scrollY || document.documentElement.scrollTop;
+    let currentRoute = ref("");
 
-        if (currentScroll <= 0) {
-          document.querySelector(".header-menu").style.display = "flex";
-        } else {
-          document.querySelector(".header-menu").style.display = "none";
-        }
-      },
-      false
-    );
+    const { displaySetupWallet } = headerAPI();
 
-    const wallet = walletAPI();
     const selectedCountry = ref({ name: "United States", code: "US" });
+
     const countries = ref([
       { name: "United States", code: "US" },
       { name: "Ecuador", code: "EC" },
@@ -248,17 +225,19 @@ export default {
     ]);
 
     const selectedLanguage = ref({ name: "English", code: "EN" });
+
     const languages = ref([
       { name: "English", code: "EN" },
       { name: "Spanish", code: "ES" },
     ]);
 
     return {
-      wallet,
+      currentRoute,
       selectedCountry,
       countries,
       selectedLanguage,
       languages,
+      displaySetupWallet,
     };
   },
   data() {
@@ -266,68 +245,26 @@ export default {
       isScrolled: false,
       visible: false,
       walletVisible: false,
-      currentRoute: "",
-      selectedTab: "all",
-      navTabs: [
-        {
-          label: "All Products",
-          value: "all-products",
-          badge: false,
-          badgeLabel: "",
-        },
-        {
-          label: "Last Discounts",
-          value: "last-discounts",
-          badge: false,
-          badgeLabel: "",
-        },
-        {
-          label: "Best Sellers",
-          value: "best-sellers",
-          badge: false,
-          badgeLabel: "",
-        },
-        {
-          label: "Documentation",
-          value: "documentation",
-          badge: false,
-          badgeLabel: "",
-        },
-        {
-          label: "P2P",
-          value: "p2p",
-          badge: false,
-          badgeLabel: "",
-        },
-        {
-          label: "Bounties",
-          value: "bounties",
-          badge: false,
-          badgeLabel: "",
-        },
-        {
-          label: "Help",
-          value: "help",
-          badge: false,
-          badgeLabel: "",
-        },
-      ],
     };
   },
   created() {
     this.$watch(
       () => this.$route.name,
-      (e) => (this.currentRoute = e),
+      (routeName) => (this.currentRoute = routeName),
       { immediate: true }
     )();
   },
   methods: {
-    connectWallet(e) {
-      this.wallet.connect(e);
-    },
-
     openWalletDialog() {
       this.walletVisible = true;
+    },
+
+    openHome() {
+      if (this.currentRoute === "home") {
+        return location.reload();
+      }
+
+      this.$router.push({ name: "home" });
     },
 
     async getPubKeyHash() {
@@ -358,13 +295,6 @@ export default {
       console.log(JSON.stringify(addrMap));
       console.log("contractAddr", JSON.stringify(contractPkh));
     },
-
-    async deploy() {
-      const tx = "-";
-
-      const result = await balanceTx(tx);
-      console.log(result);
-    },
   },
   mounted() {
     window.addEventListener("scroll", () => {
@@ -380,7 +310,7 @@ export default {
 
 <style lang="css" scoped>
 .header {
-  padding: 0.75rem 5%;
+  padding: 0.5rem 10%;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -390,30 +320,30 @@ export default {
   width: 100%;
   box-sizing: border-box;
   background: initial;
-  color: var(--text-a);
-  background: var(--blue-b);
+  background: var(--primary-a);
   box-shadow: var(--border-shadow);
 }
 
 .header .header-left {
-  flex-basis: 25%;
+  flex-basis: 20%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
 }
 
-.header .header-left .header-left-logo {
+.header .header-left .header-logo {
   cursor: pointer;
   image-rendering: optimizeQuality;
   display: initial;
+  margin-right: auto;
 }
 
-.header .header-left .header-left-logo.blue {
+.header .header-left .header-logo.blue {
   display: none;
 }
 
 .header .header-center {
-  flex-basis: 50%;
+  flex-basis: 60%;
   width: auto;
   display: flex;
   align-items: center;
@@ -421,25 +351,21 @@ export default {
 }
 
 .header .header-center .header-center-search {
-  background: var(--base-b);
-  transition: var(--button-transition-a);
+  background: var(--base-a);
   cursor: text;
   display: flex;
   align-items: center;
   border-radius: 4px;
-  width: 90%;
+  width: 100%;
   color: var(--text-a);
   font-size: var(--text-size-b);
-  border: 1px solid transparent;
-  box-shadow: 0 0 5px var(--blue-c), 0 0 5px var(--blue-c),
-    0 0 5px var(--blue-c);
-  transition: box-shadow 0.3s ease-in-out;
+  box-shadow: initial;
+  transition: var(--transition-b);
 }
 
 .header .header-center .header-center-search:focus-within {
   background: var(--base-a);
-  border: 1px solid rgba(0, 0, 0, 0.8);
-  box-shadow: initial;
+  box-shadow: 0 0 0 2px var(--primary-b), 0 0 0 3px var(--primary-b);
 }
 
 .header .header-center .header-center-search div {
@@ -463,7 +389,7 @@ export default {
   width: 100%;
   font-size: var(--text-size-b);
   color: inherit;
-  padding: calc(0.5rem + 0.125rem) 1rem;
+  padding: 0.75rem 1rem;
 }
 
 .header .header-center .header-center-search input::placeholder {
@@ -473,7 +399,7 @@ export default {
 }
 
 .header .header-right {
-  flex-basis: 25%;
+  flex-basis: 20%;
   display: flex;
   justify-content: flex-end;
 }
@@ -489,6 +415,7 @@ export default {
   display: flex;
   align-items: center;
   cursor: pointer;
+  border: none;
 }
 
 .header .header-right button img {
@@ -504,11 +431,9 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-}
-
-.header-right-count span {
-  font-weight: 700 !important;
-  font-size: var(--text-size-e) !important;
+  font-weight: 700;
+  font-size: var(--text-size-d);
+  color: var(--text-w);
 }
 
 .header .header-button {
@@ -519,23 +444,20 @@ export default {
   white-space: nowrap;
   cursor: pointer;
   color: var(--text-w);
-  transition: var(--button-transition-a);
-  padding: 0 1rem;
+  transition: var(--transition-a);
 }
 
 .header .header-button.left {
-  margin: auto;
+  margin-right: auto;
 }
 
 .header .header-button.right {
-  margin: auto;
+  margin-left: auto;
 }
 
 .header .header-button div {
   display: flex;
   flex-direction: column;
-  margin-left: 1rem;
-  color: var(--text-w);
 }
 
 .header .header-button div:hover {
@@ -546,6 +468,7 @@ export default {
   font-size: var(--text-size-b);
   line-height: 1.25rem;
   text-align: left;
+  font-weight: 600;
 }
 
 .header .header-button span:nth-child(1) {
@@ -569,87 +492,6 @@ export default {
 
 i {
   line-height: 0;
-}
-
-.header-menu {
-  padding: 0 5%;
-  z-index: 100;
-  display: flex;
-  position: fixed;
-  top: 72px;
-  left: 0;
-  width: 100%;
-  align-items: center;
-  background: var(--blue-b);
-  color: var(--text-w);
-  font-weight: 500;
-  border-top: 1px solid #1a83ff;
-  border-bottom: 1px solid var(--base-c);
-}
-
-.header-menu.main {
-  color: var(--text-w);
-  background: var(--blue-c);
-  font-weight: 600;
-  border-bottom: 1px solid transparent;
-}
-
-.header-menu .header-menu-col {
-  flex-basis: 33.33%;
-}
-
-.header-menu .header-menu-col.left {
-  flex-basis: 33.33%;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.header-menu .header-menu-col.right {
-  flex-basis: 33.33%;
-  display: flex;
-  justify-content: center;
-}
-
-.header-menu .header-menu-col.center {
-  flex-basis: 66.66%;
-  width: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.header-menu .header-menu-col .header-menu-nav {
-  display: flex;
-  align-items: center;
-}
-
-.header-menu .header-menu-col .header-menu-button {
-  cursor: pointer;
-  margin-right: 1rem;
-}
-
-.header-menu .header-menu-col .header-menu-button img {
-  width: var(--text-size-e);
-}
-
-.header-menu .header-menu-col .header-menu-nav div {
-  font-size: var(--text-size-a);
-  white-space: nowrap;
-  cursor: pointer;
-  padding: calc(0.75rem + 0.125rem) 1rem;
-  font-weight: inherit;
-  color: inherit;
-  background: transparent;
-  font-weight: 400;
-}
-
-.header-menu .header-menu-col .header-menu-nav div:nth-child(1) {
-  padding-left: initial;
-}
-
-.header-menu .header-menu-col .header-menu-nav div:hover {
-  opacity: 0.8;
 }
 
 .country,
@@ -728,11 +570,11 @@ i {
   .header-left {
     justify-content: space-between;
   }
-  .header-left-logo.white {
+  .header-logo.white {
     display: none;
   }
 
-  .header-left-logo.blue {
+  .header-logo.blue {
     display: initial;
   }
 }
@@ -751,11 +593,11 @@ i {
 
 @media only screen and (min-width: 1200px) {
   .header .header-center .header-center-search {
-    width: 80%;
+    width: 100%;
   }
 
   .header-left {
-    flex-basis: 30%;
+    flex-basis: 20%;
   }
 
   .header-center {
@@ -763,7 +605,7 @@ i {
   }
 
   .header-right {
-    flex-basis: 30%;
+    flex-basis: 20%;
   }
 }
 </style>

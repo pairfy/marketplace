@@ -1,10 +1,23 @@
+const getTimeline = (state, data) => {
+  const timelineGrouped = data.timeline.reduce((acc, item) => {
+    const category = item.category;
+    if (!acc[category]) {
+      acc[category] = {
+        category: category,
+        items: [],
+      };
+    }
+    acc[category].items.push(item);
+    return acc;
+  }, {});
 
-const commit__getAllProducts = (state, data) => {
-  state.allProducts = data;
+  const scheme = {
+    timeline: Object.values(timelineGrouped),
+  };
+
+  console.log(scheme);
+
+  state.timeline = scheme;
 };
 
-
-
-export {
-  commit__getAllProducts
-};
+export { getTimeline };

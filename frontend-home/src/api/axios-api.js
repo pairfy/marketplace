@@ -3,7 +3,7 @@ import { baseURL, env } from './index.js';
 
 axios.defaults.withCredentials = true;
 
-const axiosApi = axios.create({
+const axiosAPI = axios.create({
   baseURL: baseURL[env],
   timeout: 60000,
   headers: {
@@ -12,4 +12,4 @@ const axiosApi = axios.create({
   },
 });
 
-export default axiosApi;
+export default axiosAPI;
