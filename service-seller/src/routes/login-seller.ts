@@ -61,7 +61,7 @@ const loginSellerHandler = async (req: Request, res: Response) => {
 
     _.error(err);
 
-    throw new BadRequestError("invalid credentials or unverified check your email");
+    throw new BadRequestError("Invalid credentials or unverified.");
   } finally {
     connection.release();
   }
