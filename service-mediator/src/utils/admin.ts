@@ -2,24 +2,20 @@ import { Request, Response, NextFunction } from "express";
 import { _ } from "./pino";
 import jwt from "jsonwebtoken";
 
-interface UserToken {
+interface AdminToken {
   id: string;
   role: string;
-  address: string;
-  pubkeyhash: string;
-  country: string;
-  username: string;
 }
 
 declare global {
   namespace Express {
     interface Request {
-      userData: UserToken;
+      adminData: AdminToken;
     }
   }
 }
 
-const userMiddleware = (req: Request, res: Response, next: NextFunction) => {
+const adminMiddleWare = (req: Request, res: Response, next: NextFunction) => {
   if (!req.session?.jwt) {
     return next();
   }
@@ -27,10 +23,10 @@ const userMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     const sessionData = jwt.verify(
       req.session.jwt,
-      process.env.USER_JWT_KEY!
-    ) as UserToken;
+      process.env.ADMIN_JWT_KEY!
+    ) as AdminToken;
 
-    if (sessionData.role !== "USER") {
+    if (sessionData.role !== "ADMIN") {
       return next();
     }
 
@@ -39,7 +35,7 @@ const userMiddleware = (req: Request, res: Response, next: NextFunction) => {
       token: req.session.jwt
     }
 
-    req.userData = scheme;
+    req.adminData = scheme;
   } catch (err) {
     _.error(err);
   }
@@ -47,4 +43,4 @@ const userMiddleware = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { userMiddleware, UserToken };
+export { adminMiddleWare, AdminToken };

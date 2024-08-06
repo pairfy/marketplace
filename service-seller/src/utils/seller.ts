@@ -34,7 +34,12 @@ const sellerMiddleware = (req: Request, res: Response, next: NextFunction) => {
       return next();
     }
 
-    req.sellerData = sessionData;
+    const scheme =  {
+      ...sessionData,
+      token: req.session.jwt
+    }
+
+    req.sellerData = scheme;
   } catch (err) {
     _.error(err);
   }

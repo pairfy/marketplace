@@ -2,9 +2,8 @@ import compression from "compression";
 import DB from "./db";
 import * as route from "./routes";
 import { catcher, check, checkpoint } from "./pod/index";
-import { NotFoundError, errorMiddleware } from "./errors";
+import { errorMiddleware, NotFoundError } from "./errors";
 import { app } from "./app";
-
 
 const main = async () => {
   try {
@@ -26,6 +25,10 @@ const main = async () => {
 
     if (!process.env.MEDIATOR_JWT_KEY) {
       throw new Error("MEDIATOR_JWT_KEY error");
+    }
+
+    if (!process.env.ADMIN_JWT_KEY) {
+      throw new Error("ADMIN_JWT_KEY error");
     }
 
     if (!process.env.TOKEN_EXPIRATION) {
@@ -55,32 +58,31 @@ const main = async () => {
 
     app.post(
       "/api/mediator/create-mediator",
-
       route.createMediatorMiddlewares,
+      route.createMediatorHandler,
+    );
 
-      route.createMediatorHandler
+    app.post(
+      "/api/mediator/delete-mediator",
+      route.deleteMediatorMiddlewares,
+      route.deleteMediatorHandler,
     );
 
     app.post(
       "/api/mediator/login-mediator",
-
       route.loginMediatorMiddlewares,
-
-      route.loginMediatorHandler
+      route.loginMediatorHandler,
     );
 
     app.get(
       "/api/mediator/current-mediator",
-
       route.currentMediatorMiddlewares,
-
-      route.currentMediatorHandler
+      route.currentMediatorHandler,
     );
 
     app.get(
       "/api/mediator/logout",
-
-      route.logoutHandler
+      route.logoutHandler,
     );
 
     app.get("/api/mediator/healthcheck", (req, res) => {

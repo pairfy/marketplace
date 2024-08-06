@@ -24,7 +24,12 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: user-token-secret
-                  key: USER_TOKEN_KEY                       
+                  key: USER_TOKEN_KEY 
+            - name: ADMIN_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: admin-token-secret
+                  key: ADMIN_TOKEN_KEY                                         
             - name: POD_TIMEOUT
               value: '120000'   
             - name: EXPRESS_PORT
