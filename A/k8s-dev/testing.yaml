@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-master
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust-master
+  template:
+    metadata:
+      labels:
+        app: locust-master
+    spec:
+      containers:
+      - name: locust-master
+        image: pairfy/testing
+        env:
+          - name: LOCUST_MODE_MASTER
+            value: "yes"
+          - name: LOCUST_MASTER_NODE_HOST
+            value: "locust-master"             
+          - name: LOCUST_MASTER_NODE_PORT
+            value: "5557"                 
+        ports:
+        - containerPort: 8089 # Locust web UI
+        - containerPort: 5557 # For worker communication
+        - containerPort: 5558
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: locust-master
+spec:
+  selector:
+    app: locust-master
+  ports:
+    - name: locust-master
+      protocol: TCP
+      port: 5557
+      targetPort: 5557
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: locust-master-node
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 8089
+    targetPort: 8089
+  selector:
+    app: locust-master
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: locust-worker
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: locust-worker
+  template:
+    metadata:
+      labels:
+        app: locust-worker
+    spec:
+      containers:
+      - name: locust-worker
+        image: pairfy/testing
+        env:
+          - name: LOCUST_MODE_WORKER
+            value: "yes"
+          - name: LOCUST_MASTER_NODE_HOST
+            value: "locust-master"                
+          - name: LOCUST_MASTER_NODE_PORT
+            value: "5557"                   
+        ports:
+          - containerPort: 5557
+          - containerPort: 5558
+

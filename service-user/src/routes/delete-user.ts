@@ -15,7 +15,7 @@ const deleteUserHandler = async (req: Request, res: Response) => {
 
         await connection.beginTransaction();
 
-        const schemeData = 'DELETE FROM users WHERE id = ?';
+        const schemeData = 'DELETE FROM users WHERE pubkeyhash = ?';
 
         const schemeValue = [
             params.user_id,

@@ -1,9 +1,9 @@
+import compression from "compression";
+import DB from "./db";
 import * as route from "./routes";
 import { catcher, check, checkpoint } from "./pod/index";
 import { NotFoundError, errorMiddleware } from "./errors";
 import { app } from "./app";
-import compression from "compression";
-import DB from "./db";
 
 const main = async () => {
   try {
@@ -23,8 +23,8 @@ const main = async () => {
       throw new Error("CORS_DOMAINS error");
     }
 
-    if (!process.env.USER_JWT_KEY) {
-      throw new Error("USER_JWT_KEY error");
+    if (!process.env.AGENT_JWT_KEY) {
+      throw new Error("AGENT_JWT_KEY error");
     }
 
     if (!process.env.ADMIN_JWT_KEY) {
@@ -35,12 +35,32 @@ const main = async () => {
       throw new Error("TOKEN_EXPIRATION error");
     }
 
+    if (!process.env.DATABASE_HOST) {
+      throw new Error("DATABASE_HOST error");
+    }
+
+    if (!process.env.DATABASE_PORT) {
+      throw new Error("DATABASE_PORT error");
+    }
+
+    if (!process.env.DATABASE_USER) {
+      throw new Error("DATABASE_USER error");
+    }
+
+    if (!process.env.DATABASE_PASSWORD) {
+      throw new Error("DATABASE_PASSWORD error");
+    }
+
+    if (!process.env.DATABASE_NAME) {
+      throw new Error("DATABASE_NAME error");
+    }
+
     DB.connect({
-      host: "mysql",
-      port: 3306,
-      user: "marketplace",
-      password: "password",
-      database: "service_user",
+      host: process.env.DATABASE_HOST,
+      port: parseInt(process.env.DATABASE_PORT) || 3306,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME
     });
 
     checkpoint("ready");
@@ -52,6 +72,8 @@ const main = async () => {
       "SIGQUIT",
       "uncaughtException",
       "unhandledRejection",
+      "SIGHUP",
+      "SIGCONT"
     ];
 
     errorEvents.forEach((e: string) => process.on(e, (err) => catcher(err)));
@@ -82,11 +104,10 @@ const main = async () => {
 
     app.get(
       "/api/user/logout",
-
       route.logoutHandler
     );
 
-    app.get("/api/user/healthcheck", (req, res) => {
+    app.get("/api/user/health", (req, res) => {
       res.status(200).send("Test OK");
     });
 
@@ -94,7 +115,7 @@ const main = async () => {
       throw new NotFoundError();
     });
 
-    app.use(errorMiddleware);
+    app.use(errorMiddleware as any);
 
     app.use(compression());
   } catch (e) {

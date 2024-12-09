@@ -5,6 +5,7 @@ import { app } from "./app";
 import compression from "compression";
 import DB from "./db";
 
+
 const main = async () => {
   try {
     if (!process.env.POD_TIMEOUT) {
@@ -23,49 +24,42 @@ const main = async () => {
       throw new Error("CORS_DOMAINS error");
     }
 
-    if (!process.env.SELLER_JWT_KEY) {
-      throw new Error("SELLER_JWT_KEY error");
+    if (!process.env.AGENT_JWT_KEY) {
+      throw new Error("AGENT_JWT_KEY error");
     }
 
     if (!process.env.TOKEN_EXPIRATION) {
       throw new Error("TOKEN_EXPIRATION error");
     }
 
+    if (!process.env.DATABASE_HOST) {
+      throw new Error("DATABASE_HOST error");
+    }
+
+    if (!process.env.DATABASE_PORT) {
+      throw new Error("DATABASE_PORT error");
+    }
+
+    if (!process.env.DATABASE_USER) {
+      throw new Error("DATABASE_USER error");
+    }
+
+    if (!process.env.DATABASE_PASSWORD) {
+      throw new Error("DATABASE_PASSWORD error");
+    }
+
+    if (!process.env.DATABASE_NAME) {
+      throw new Error("DATABASE_NAME error");
+    }
+
     DB.connect({
-      host: "mysql",
-      port: 3306,
-      user: "marketplace",
-      password: "password",
-      database: "service_seller",
-    });
-    /*
-    const { Kafka } = require("kafkajs");
-
-    const kafka = new Kafka({
-      clientId: "service-seller",
-      ssl: false,
-      enforceRequestTimeout: false,
-      brokers: [
-        "10.109.196.17:9092",
-        "10.109.196.17:9092",
-        "10.109.196.17:9092",
-      ],
+      host: process.env.DATABASE_HOST,
+      port: parseInt(process.env.DATABASE_PORT) || 3306,
+      user: process.env.DATABASE_USER,
+      password: process.env.DATABASE_PASSWORD,
+      database: process.env.DATABASE_NAME
     });
 
-    const run = async () => {
-      const producer = kafka.producer();
-
-      await producer.connect();
-      await producer.send({
-        topic: "seller.topic",
-        messages: [{ value: "Hello KafkaJS user!" }],
-      });
-
-      await producer.disconnect();
-    };
-
-    run().catch(console.error);
-*/
     checkpoint("ready");
 
     const errorEvents: string[] = [
@@ -75,6 +69,8 @@ const main = async () => {
       "SIGQUIT",
       "uncaughtException",
       "unhandledRejection",
+      "SIGHUP",
+      "SIGCONT"
     ];
 
     errorEvents.forEach((e: string) => process.on(e, (err) => catcher(err)));
@@ -117,7 +113,7 @@ const main = async () => {
       throw new NotFoundError();
     });
 
-    app.use(errorMiddleware);
+    app.use(errorMiddleware as any);
 
     app.use(compression());
   } catch (e) {

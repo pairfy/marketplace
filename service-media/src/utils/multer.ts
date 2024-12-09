@@ -6,14 +6,20 @@ const uploadMiddleware = multer({
   limits: { fileSize: 10 * 1024 * 1024 },
   storage: storage,
   fileFilter: function (req, file, callback) {
-  
-    const whitelist = ["image/png", "image/jpeg", "image/gif", "image/webp"];
+
+    console.log(file);
+
+    const whitelist = ["image/png", "image/jpeg", "image/webp"];
 
     if (!whitelist.includes(file.mimetype)) {
       return callback(null, false);
     }
 
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
+    if (file.fieldname !== 'image') {
+      return callback(null, false);
+    }
+
+    if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
       return callback(null, false);
     }
 

@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-price
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: service-price 
+  template:
+    metadata:
+      labels:
+        role: service-price 
+    spec:
+      containers:
+        - name: service-price 
+          image: pairfy/service-price 
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_TIMEOUT
+              value: "120000"
+            - name: REDIS_HOST
+              value: redis://service-state-redis:6379
+          resources:
+            limits:
+              memory: "300Mi"
+            requests:
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-price
+spec:
+  selector:
+    role: service-price
+  ports:
+    - name: service-price
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

@@ -1,14 +1,17 @@
+import jwt from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
 import { _ } from "./pino";
-import jwt from "jsonwebtoken";
+
 
 interface SellerToken {
   id: string;
   role: string;
   email: string;
   avatar: string;
+  address: string;
   country: string;
   username: string;
+  pubkeyhash: string;
 }
 
 declare global {
@@ -27,7 +30,7 @@ const sellerMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     const sessionData = jwt.verify(
       req.session.jwt,
-      process.env.SELLER_JWT_KEY!
+      process.env.AGENT_JWT_KEY!
     ) as SellerToken;
 
     if (sessionData.role !== "SELLER") {

@@ -30,16 +30,28 @@ spec:
             - name: EXPRESS_PORT
               value: "8000"
             - name: EXPRESS_TIMEOUT
-              value: "120000"                                                                  
-            - name: BUS_STREAMING_URI  
+              value: "120000"
+            - name: DATABASE_HOST  
               valueFrom:
                 configMapKeyRef:
-                  name: streaming-config
-                  key: redis                                                                                  
-            - name: TOKEN_EXPIRATION
-              value: "7d"
+                  name: database-config
+                  key: master  
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: port                                     
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password
+                  key: password   
+            - name: DATABASE_NAME
+              value: service_product        
+            - name: DATABASE_USER
+              value: marketplace                                                                                                                                                                                       
             - name: CORS_DOMAINS
-              value: "https://pairfy.dev,http://pairfy.dev,http://localhost:8080,https://pairfy.dev,https://dashboard.pairfy.dev"                           
+              value: "http://localhost:5173,http://localhost:8080,http://localhost:8081,http://localhost:443,localhost,https://pairfy.dev,https://dashboard.pairfy.dev"                          
           resources:
             limits:
               memory: "500Mi"
@@ -56,5 +68,5 @@ spec:
   ports:
     - name: service-product
       protocol: TCP
-      port: 8000
-      targetPort: 8000
+      port: 4000
+      targetPort: 4000

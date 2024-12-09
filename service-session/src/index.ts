@@ -1,5 +1,5 @@
 import DB from "./db";
-import listenSlots from "./kafka/slots";
+import listenOrders from "./kafka/orders";
 import compression from "compression";
 import express from "express";
 import http from "http";
@@ -101,7 +101,7 @@ const main = async () => {
       .then(() => console.log("sessionRedis connected"))
       .catch((err: any) => catcher(err));
 
-    listenSlots();
+    listenOrders();
 
     socketServer.use(authMiddleware);
 
@@ -138,7 +138,7 @@ const main = async () => {
       throw new NotFoundError();
     });
 
-    app.use(errorMiddleware);
+    app.use(errorMiddleware as any);
 
     app.use(compression());
 

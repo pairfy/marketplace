@@ -1,23 +1,18 @@
-FROM node:alpine
+FROM node:lts
 
 WORKDIR /app
 
-COPY package.json .
+COPY package*.json ./
 
-RUN npm config set fetch-timeout 30000
-
-RUN npm config set fetch-retry-maxtimeout 30000
-
-RUN npm config set fetch-retry-mintimeout 30000
+RUN ls
 
 RUN npm install --verbose
 
 COPY . .
 
-RUN npm run build 
+RUN npm run build
 
-RUN rm -rf node_modules
+EXPOSE 4000
 
-RUN npm install --omit=dev
+CMD ["sh", "-c", "npm run database && npm start"]
 
-CMD ["npm", "start"]

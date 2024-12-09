@@ -1,0 +1,99 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-store
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: service-store
+  template:
+    metadata:
+      labels:
+        role: service-store
+    spec:
+      containers:
+        - name: service-store
+          image: pairfy/service-store
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_TIMEOUT
+              value: '120000'                    
+            - name: MONGO_DB_NAME
+              value: "srv-store"
+            - name: MONGO_DB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: master                                   
+            - name: EVENT_BUS_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: streaming-config
+                  key: redis
+            - name: CACHE_STORE
+              valueFrom:
+                configMapKeyRef:
+                  name: cache-config
+                  key: service-store          
+            - name: CACHE_INTERVAL
+              value: "5"                           
+            - name: LIMITER_STORE
+              valueFrom:
+                configMapKeyRef:
+                  name: limiter-config
+                  key: service-store                 
+            - name: USERS_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-secret
+                  key: JWT_KEY                  
+            - name: AUDITS_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: audits-jwt-secret
+                  key: AUDITS_JWT_KEY
+            - name: ADMIN_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: admin-jwt-secret
+                  key: ADMIN_JWT_KEY   
+            - name: GENERAL_LIMIT_TIME
+              value: "9000"     
+            - name: GENERAL_LIMIT_MAX
+              value: "15000"
+            - name: CRITICAL_LIMIT_TIME
+              value: "86400" 
+            - name: CRITICAL_LIMIT_MAX
+              value: "2000"                                                                     
+            - name: TOKEN_EXPIRATION_TIME
+              value: 2h
+            - name: EXPRESS_PORT
+              value: "8000"
+            - name: EXPRESS_TIMEOUT
+              value: "180000"
+            - name: PUBLISHER_ROLE
+              value: "publisher-store"
+            - name: CORS_DOMAINS
+              value: "https://pairfy.io"                           
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "256Mi"       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-store
+spec:
+  selector:
+    role: service-store
+  ports:
+    - name: service-store
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

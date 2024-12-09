@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-gemini
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: service-gemini
+  template:
+    metadata:
+      labels:
+        role: service-gemini
+    spec:
+      containers:
+        - name: service-gemini
+          image: pairfy/service-gemini
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name                                       
+            - name: SELLER_JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: seller-token-secret
+                  key: SELLER_TOKEN_KEY                       
+            - name: POD_TIMEOUT
+              value: '120000'   
+            - name: EXPRESS_PORT
+              value: "8000"
+            - name: EXPRESS_TIMEOUT
+              value: "120000"          
+            - name: GEMINI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-api-key
+                  key: key                                                                                                                                                                                          
+            - name: CORS_DOMAINS
+              value: "http://localhost:5173,http://localhost:8080,http://localhost:8081,http://localhost:443,localhost,https://pairfy.dev,https://dashboard.pairfy.dev"                          
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "256Mi"       
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-gemini
+spec:
+  selector:
+    role: service-gemini
+  ports:
+    - name: service-gemini
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

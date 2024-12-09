@@ -3,10 +3,9 @@ import { _ } from "./pino";
 import jwt from "jsonwebtoken";
 
 interface UserToken {
-  id: string;
+  pubkeyhash: string;
   role: string;
   address: string;
-  pubkeyhash: string;
   country: string;
   username: string;
 }
@@ -27,7 +26,7 @@ const userMiddleware = (req: Request, res: Response, next: NextFunction) => {
   try {
     const sessionData = jwt.verify(
       req.session.jwt,
-      process.env.USER_JWT_KEY!
+      process.env.AGENT_JWT_KEY!
     ) as UserToken;
 
     if (sessionData.role !== "USER") {

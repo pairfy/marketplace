@@ -1,11 +1,9 @@
 import { createStore } from "vuex";
-import { dashboard } from "@/pages/dashboard/store";
-import { entry } from "@/pages/entry/store";
+import { dashboard } from "@/views/store/index";
 
 const stores = createStore({
   modules: {
-    dashboard,
-    entry
+    dashboard
   },
 });
 

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="120"
+   height="50"
+   viewBox="0 0 120 50"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="logo-white.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/logo-white.png"
+   inkscape:export-xdpi="121.6"
+   inkscape:export-ydpi="121.6"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview137"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="1.7771776"
+     inkscape:cx="94.250568"
+     inkscape:cy="47.547301"
+     inkscape:window-width="1450"
+     inkscape:window-height="932"
+     inkscape:window-x="470"
+     inkscape:window-y="168"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     inkscape:pageshadow="2"
+     showguides="false" />
+  <defs
+     id="defs132">
+    <rect
+       x="11.236365"
+       y="7.2846913"
+       width="69.72084"
+       height="10.069939"
+       id="rect3" />
+    <rect
+       x="12.94258"
+       y="23.094154"
+       width="88.413605"
+       height="18.186064"
+       id="rect1" />
+    <rect
+       x="-1.4777668"
+       y="42.333267"
+       width="127.8846"
+       height="23.821753"
+       id="rect3454" />
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:26.6667px;line-height:0;font-family:Manrope;-inkscape-font-specification:Manrope;letter-spacing:-1px;fill:#ffffff;stroke:#ff9a00;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       x="1.033332"
+       y="31.343609"
+       id="text2"
+       inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/logo-white.png"
+       inkscape:export-xdpi="121.6"
+       inkscape:export-ydpi="121.6"><tspan
+         sodipodi:role="line"
+         id="tspan2"
+         x="1.033332"
+         y="31.343609"
+         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:26.6667px;font-family:Manrope;-inkscape-font-specification:'Manrope Ultra-Bold';fill:#ffffff;fill-opacity:1;stroke:none">αdαbuy</tspan></text>
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 3"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="limit"
+     style="display:none">
+    <rect
+       style="display:inline;opacity:0.557195;fill:#ff5e00;fill-opacity:1;stroke:#0069f5;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1592-1"
+       width="15"
+       height="14.999998"
+       x="1.8808064e-06"
+       y="14.999999" />
+    <rect
+       style="display:inline;opacity:0.557195;fill:#ff0000;stroke:#0069f5;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1592"
+       width="120"
+       height="14.999998"
+       x="1.8808064e-06"
+       y="6.7562792e-07" />
+  </g>
+</svg>
