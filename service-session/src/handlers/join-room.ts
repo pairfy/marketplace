@@ -11,18 +11,18 @@ export const joinRoomHandler = async (payload: string, AGENT: any) => {
     try {
       connection = await DB.client.getConnection();
 
-      const [slots] = await connection.execute(
-        "SELECT seller_id FROM slots WHERE id = ?",
+      const [orders] = await connection.execute(
+        "SELECT seller_id FROM orders WHERE id = ?",
         [data.room]
       );
 
-      if (slots.length === 0) {
+      if (orders.length === 0) {
         return;
       }
 
-      const SLOT = slots[0];
+      const ORDER = orders[0];
 
-      if (SLOT.seller_id === AGENT.id) {
+      if (ORDER.seller_id === AGENT.id) {
         sockets[AGENT.id].join(data.room);
 
         console.log("USER JOINED TO ROOM " + data.room);
@@ -44,18 +44,18 @@ export const joinRoomHandler = async (payload: string, AGENT: any) => {
     try {
       connection = await DB.client.getConnection();
 
-      const [slots] = await connection.execute(
-        "SELECT buyer_pubkeyhash FROM slots WHERE id = ?",
+      const [orders] = await connection.execute(
+        "SELECT buyer_pubkeyhash FROM orders WHERE id = ?",
         [data.room]
       );
 
-      if (slots.length === 0) {
+      if (orders.length === 0) {
         return;
       }
 
-      const SLOT = slots[0];
+      const ORDER = orders[0];
 
-      if (SLOT.buyer_pubkeyhash === AGENT.pubkeyhash) {
+      if (ORDER.buyer_pubkeyhash === AGENT.pubkeyhash) {
         sockets[AGENT.id].join(data.room);
 
         console.log("BUYER JOINED TO ROOM " + data.room);

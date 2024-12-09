@@ -1,0 +1,26 @@
+{
+  "name": "service-query",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "database": "node setup.js",
+    "start": "node dist/index.js",
+    "build": "tsc --build"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.1",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.2",
+    "cors": "^2.8.5",
+    "express": "^4.21.1",
+    "graphql": "^16.9.0",
+    "mysql2": "^3.11.4",
+    "nanoid": "^5.0.8",
+    "redis": "^4.7.0",
+    "tslog": "^4.9.3"
+  }
+}

@@ -52,7 +52,7 @@ const main = async () => {
       throw new NotFoundError();
     });
 
-    app.use(errorMiddleware);
+    app.use(errorMiddleware as any);
 
     app.use(compression());
   } catch (e) {

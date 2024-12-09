@@ -2,18 +2,16 @@
 
 WORKDIR=$(pwd)
 
-sh z/kafka/kafka.sh
+cd $WORKDIR
 
-cd plugin-debezium
+cd z/nats
 
-sh ./setup.sh
+helm install nats nats/nats --set=config.jetstream.enabled=true
 
 cd $WORKDIR
 
-sh z/ingress/setup.sh
-
-sh z/secrets/secrets.sh
-
+cd z/secrets
+sh ./secrets.sh
 
 # Prompt for input
 read response

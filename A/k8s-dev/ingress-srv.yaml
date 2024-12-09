@@ -25,7 +25,7 @@ spec:
             pathType: ImplementationSpecific
             backend:
               service:
-                name: frontend-home
+                name: frontend-main
                 port:
                   number: 8000
           - path: /api/seller/?(.*)
@@ -42,20 +42,34 @@ spec:
                 name: service-user
                 port:
                   number: 8000
-          - path: /api/product/?(.*)
+          - path: /api/gemini/?(.*)
             pathType: ImplementationSpecific
+            backend:
+              service:
+                name: service-gemini
+                port:
+                  number: 8000                  
+          - path: /api/product/graphql
+            pathType: Prefix
             backend:
               service:
                 name: service-product
                 port:
-                  number: 8000
-          - path: /api/gate/?(.*)
-            pathType: ImplementationSpecific
+                  number: 4000
+          - path: /api/gateway/graphql
+            pathType: Prefix
             backend:
               service:
-                name: service-gate
+                name: service-gateway
                 port:
-                  number: 8000
+                  number: 4000
+          - path: /api/query/graphql
+            pathType: Prefix
+            backend:
+              service:
+                name: service-query
+                port:
+                  number: 4000                  
           - path: /api/media/?(.*)
             pathType: ImplementationSpecific
             backend:
@@ -63,13 +77,6 @@ spec:
                 name: service-media
                 port:
                   number: 8000
-          - path: /api/query/?(.*)
-            pathType: ImplementationSpecific
-            backend:
-              service:
-                name: service-query
-                port:
-                  number: 4000
           - path: /socket.io/?(.*)
             pathType: ImplementationSpecific
             backend:

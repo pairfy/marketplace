@@ -10,7 +10,7 @@ import { _ } from "../utils/pino";
 const createImageMiddlewares: any = [
   sellerMiddleware,
   requireAuth,
-  uploadMiddleware.array("image", 5),
+  uploadMiddleware.array("image", 15),
 ];
 
 const createImageHandler = async (req: Request, res: Response) => {
@@ -22,53 +22,59 @@ const createImageHandler = async (req: Request, res: Response) => {
 
   try {
     if (!req.files) {
-      throw new Error("NON_FILES");
+      throw new Error("NOT_FILES");
     }
 
     connection = await DB.client.getConnection();
 
     await connection.beginTransaction();
 
-    for (const item of req.files as Express.Multer.File[]) {
+    for (const file of req.files as Express.Multer.File[]) {
       const schemeData = `
       INSERT INTO media (
         media_id,
+        media_name,
         seller_id,
         media_type,
         media_mimetype,
         media_data,
         schema_v
-       ) VALUES (?, ?, ?, ?, ?, ?)`;
+       ) VALUES (?, ?, ?, ?, ?, ?, ?)`;
 
-      const imageId = getImageId();
+      const mediaId = getImageId();
+
+      const mediaName = mediaId + "." + file.mimetype.split("/")[1]
 
       const schemeValue = [
-        imageId,
+        mediaId,
+        mediaName,
         SELLER.id,
         "image",
-        item.mimetype,
-        item.buffer,
+        file.mimetype,
+        file.buffer,
         0,
       ];
 
       const [result] = await connection.execute(schemeData, schemeValue);
 
       if (result.affectedRows === 1) {
-        response.push(imageId);
+        response.push(mediaName);
       }
     }
 
     await connection.commit();
 
     res.status(200).send({ success: true, payload: response });
-  } catch (err) {
+  } catch (err: any) {
     await connection.rollback();
 
     _.error(err);
 
-    throw new BadRequestError("failed");
+    throw new BadRequestError(err.message);
   } finally {
-    connection.release();
+    if (connection) {
+      connection.release();
+    }
   }
 };
 

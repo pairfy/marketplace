@@ -25,7 +25,7 @@ const sessionOptions: object = {
   signed: false,
   secure: true,
   httpOnly: true,
-  sameSite: "none", //
+  sameSite: "none", 
 };
 
 app.set("trust proxy", 1);

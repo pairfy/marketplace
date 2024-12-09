@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-state
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: service-state
+  template:
+    metadata:
+      labels:
+        role: service-state
+    spec:
+      containers:
+        - name: service-state
+          image: pairfy/service-state
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_TIMEOUT
+              value: "120000"
+            - name: DATABASE_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: master
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: port
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password
+                  key: password
+            - name: DATABASE_NAME
+              value: service_state
+            - name: DATABASE_USER
+              value: marketplace
+            - name: REDIS_HOST
+              value: redis://service-state-redis:6379
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-state
+spec:
+  selector:
+    role: service-state
+  ports:
+    - name: service-state
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

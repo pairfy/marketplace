@@ -1,21 +1,40 @@
-import { createRouter, createWebHistory } from "vue-router";
-import dashboardRoute from "@/pages/dashboard/router";
-import entryRoute from "@/pages/entry/router";
-
+import { createRouter, createWebHistory } from 'vue-router'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: "/",
-      ...entryRoute,
+      path: '/',
+      name: 'home',
+      component: () => import('../views/HomeView.vue'),
     },
     {
-      path: "/dashboard",
-      ...dashboardRoute,
+      path: '/entry',
+      name: 'entry',
+      component: () => import('../views/EntryView.vue'),
     },
-    { path: "/:notFound(.*)", redirect: "/" },
-  ],
-});
+    {
+      path: '/create-product',
+      name: 'create-product',
+      component: () => import('../views/CreateProduct.vue'),
+    },
+    {
+      path: '/product-list',
+      name: 'product-list',
+      component: () => import('../views/ProductList.vue'),
+    },
+    {
+      path: '/product-list/edit-product/:id',
+      name: 'edit-product',
+      component: () => import('../views/EditProduct.vue'),
+    },
 
-export { router };
+    {
+      path: '/product-books',
+      name: 'product-books',
+      component: () => import('../views/ProductBooks.vue'),
+    },
+  ],
+})
+
+export default router

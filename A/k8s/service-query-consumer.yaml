@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-query-consumer
+spec:
+  selector:
+    matchLabels:
+      role: service-query-consumer
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        role: service-query-consumer
+    spec:
+      terminationGracePeriodSeconds: 15
+      containers:
+        - name: service-query-consumer
+          image: pairfy/base-consumer
+          ports:
+            - containerPort: 3000    
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 3000
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 5
+            failureThreshold: 3                  
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_TIMEOUT
+              value: "120000"
+            - name: DATABASE_HOST  
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: master  
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: port                                     
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password
+                  key: password   
+            - name: DATABASE_NAME
+              value: service_query       
+            - name: DATABASE_USER
+              value: marketplace 
+            - name: STREAM_LIST
+              value: product
+            - name: SERVICE_NAME
+              value: service-query
+            - name: CONSUMER_GROUP
+              value: service-query-group
+            - name: DURABLE_NAME
+              value: service-query-consumer
+          resources:
+            limits:
+              memory: "500Mi"
+            requests:
+              memory: "256Mi"
+
+
+     

@@ -1,0 +1,85 @@
+
+test cancel() {
+  let own_ref =
+    OutputReference {
+      transaction_id: #"ee220ba9258ef159bb44f0d3522b840a80475eac2df7176f2c513d59a2ead71f",
+      output_index: 0,
+    }
+  let threadtoken = #"99999999999999999999999999999999999999999999999999999999"
+  let token_name = #"02"
+  let own_val_hash = #"88888888888888888888888888888888888888888888888888888888"
+  let input_utxo =
+    Input {
+      output_reference: own_ref,
+      output: Output {
+        address: Address {
+          payment_credential: Script(own_val_hash),
+          stake_credential: None,
+        },
+        value: assets.add(
+          assets.from_lovelace(25_000_000),
+          threadtoken,
+          token_name,
+          1,
+        ),
+        datum: NoDatum,
+        reference_script: None,
+      },
+    }
+  let new_data: Data = StateMachineDatum {
+      state : -1,
+      seller : #"00000000000000000000000000000000000000000000000000000000",
+      collateral : 25000000,
+      price: 50000000,
+      buyer: None,
+      range: None
+  }  
+  let new_datum = InlineDatum(new_data)
+  let output =
+    Output {
+      address: Address {
+        payment_credential: Script(own_val_hash),
+        stake_credential: None,
+      },
+      value: assets.add(
+        assets.from_lovelace(25_000_000),
+        threadtoken,
+        token_name,
+        1,
+      ),
+      datum: new_datum,
+      reference_script: None,
+    }
+  let redeemer = Cancel
+  let old_datum =
+    StateMachineDatum {
+      state: 0,
+      seller: #"00000000000000000000000000000000000000000000000000000000",
+      collateral: 25000000,
+      price: 50000000,
+      buyer: None,
+      range: None
+    }
+
+  let transaction =
+    Transaction {
+      inputs: [input_utxo],
+      reference_inputs: [],
+      outputs: [output],
+      fee: 0,
+      mint: transaction.placeholder.mint,
+      certificates: [],
+      withdrawals: [],
+      validity_range: transaction.placeholder.validity_range,
+      extra_signatories: [old_datum.seller],
+      redeemers: [],
+      datums: transaction.placeholder.datums,
+      id: transaction.placeholder.id,
+      votes: transaction.placeholder.votes,
+      proposal_procedures: transaction.placeholder.proposal_procedures,
+      current_treasury_amount: transaction.placeholder.current_treasury_amount,
+      treasury_donation: transaction.placeholder.treasury_donation
+    }
+
+  statemachine.spend(threadtoken, Some(old_datum), redeemer, own_ref, transaction)
+}

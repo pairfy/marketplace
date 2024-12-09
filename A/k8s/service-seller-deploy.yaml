@@ -20,26 +20,40 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.name                                       
-            - name: SELLER_JWT_KEY
+            - name: AGENT_JWT_KEY
               valueFrom:
                 secretKeyRef:
-                  name: seller-token-secret
-                  key: SELLER_TOKEN_KEY                       
+                  name: agent-token-secret
+                  key: AGENT_TOKEN_KEY                       
             - name: POD_TIMEOUT
               value: '120000'   
             - name: EXPRESS_PORT
               value: "8000"
             - name: EXPRESS_TIMEOUT
               value: "120000"                                                                  
-            - name: BUS_STREAMING_URI  
+            - name: DATABASE_HOST  
               valueFrom:
                 configMapKeyRef:
-                  name: streaming-config
-                  key: redis                                                                                  
+                  name: database-config
+                  key: master  
+            - name: DATABASE_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: database-config
+                  key: port                                     
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-password
+                  key: password   
+            - name: DATABASE_NAME
+              value: service_gateway       
+            - name: DATABASE_USER
+              value: marketplace 
             - name: TOKEN_EXPIRATION
               value: "7d"
             - name: CORS_DOMAINS
-              value: "http://localhost:8080,http://localhost:443,localhost,https://pairfy.dev,https://dashboard.pairfy.dev"                           
+              value: "http://localhost:5173,http://localhost:8080,http://localhost:8081,http://localhost:443,localhost,https://pairfy.dev,https://dashboard.pairfy.dev"                           
           resources:
             limits:
               memory: "500Mi"

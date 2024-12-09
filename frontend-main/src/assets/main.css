@@ -1,0 +1,87 @@
+@import './base.css';
+
+#app {
+  font-weight: normal;
+  width: 100%;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.p-select-sm .p-select-label {
+  font-size: var(--text-size-a) !important;
+}
+
+.p-select-option {
+  font-size: var(--text-size-a) !important;
+}
+
+.p-button-label {
+  font-size: var(--text-size-a);
+}
+
+.p-rating {
+  gap: 1px !important;
+}
+
+.p-rating-icon {
+  width: 0.75rem !important;
+  height: 0.75rem !important;
+  color: rgba(100, 116, 139, 0.5) !important;
+}
+
+.p-rating-option-active .p-rating-icon {
+  color: var(--primary-c) !important;
+}
+
+.p-dialog-header {
+  padding: 0.5rem 1rem !important;
+  border-bottom: 1px solid var(--border-a);
+}
+
+.p-dialog {
+  border: none !important;
+  border-radius: 20px !important;
+}
+
+.p-dialog-footer {
+  padding: 1rem !important;
+}
+
+.p-dialog-content {
+  padding: 1rem 1.5rem 0 !important;
+}
+
+.p-dialog-title {
+  font-size: var(--text-size-b) !important;
+}
+
+.p-overflow-hidden {
+  overflow: initial !important;
+}
+.p-badge {
+  min-width: 1rem !important;
+  height: 1rem !important;
+}
+
+.p-drawer-title {
+  font-size: var(--text-size-c) !important;
+}
+
+.p-message-text {
+  font-size: var(--text-size-a) !important;
+}
+
+.p-message-icon{
+  font-size: var(--text-size-b) !important;
+} 
+
+.p-drawer-header{
+  padding: 1rem 1.5rem !important; 
+}
+
+.p-drawer-title{
+  font-size: var(--text-size-c) !important;
+}

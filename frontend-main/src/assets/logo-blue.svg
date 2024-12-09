@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="250"
+   height="40"
+   viewBox="0 0 66.145832 10.583334"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   sodipodi:docname="logo-blue.svg"
+   inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-main/src/assets/logo-blue.png"
+   inkscape:export-xdpi="96"
+   inkscape:export-ydpi="96"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:zoom="7.1257476"
+     inkscape:cx="53.748746"
+     inkscape:cy="31.294962"
+     inkscape:window-width="1488"
+     inkscape:window-height="778"
+     inkscape:window-x="312"
+     inkscape:window-y="74"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     units="px"
+     width="250px" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <g
+       aria-label="αdαbuy"
+       transform="matrix(0.89246455,0,0,0.80452416,-0.87515845,1.0151411)"
+       id="text2"
+       style="font-size:11.0306px;font-family:Manrope;-inkscape-font-specification:Manrope;letter-spacing:-0.517061px;fill:#0866ff;fill-opacity:1;stroke:#ff9a00;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       inkscape:export-filename="/home/debian/Desktop/drawing.svg"
+       inkscape:export-xdpi="96"
+       inkscape:export-ydpi="96">
+      <path
+         d="m 3.0156501,7.8927869 q -0.5695927,0 -0.9939949,-0.279212 Q 1.6009757,7.3343628 1.3701604,6.8541181 1.1393451,6.3738734 1.1393451,5.7707754 q 0,-0.6142665 0.2345381,-1.0907884 0.238261,-0.4802448 0.6663861,-0.7557341 0.4281251,-0.2754892 1.0051634,-0.2754892 0.4020654,0 0.7185057,0.1451903 0.3164404,0.1414675 0.5398099,0.3983425 L 4.1548353,4.3784379 V 3.7604485 H 5.0483138 V 7.7811021 H 4.1548353 V 7.1556672 l 0.148913,0.1861412 Q 4.0803788,7.5986835 3.7490471,7.7475966 3.4177154,7.8927869 3.0156501,7.8927869 Z M 3.1794545,6.9918628 q 0.3238859,0 0.5211958,-0.152636 0.2010328,-0.1526359 0.2903806,-0.4281251 0.089348,-0.2754893 0.089348,-0.6403263 0,-0.3648371 -0.089347,-0.6403264 Q 3.9016831,4.8549598 3.7043732,4.7023239 3.5107861,4.5496879 3.1943458,4.5496879 2.889074,4.5496879 2.6694272,4.698601 2.4497803,4.8437914 2.3306499,5.1192806 2.2115194,5.3947699 2.2115194,5.778221 q 0,0.3313316 0.096793,0.6068208 0.1005164,0.2754893 0.3127175,0.4430166 0.2159239,0.1638044 0.5584246,0.1638044 z"
+         style="-inkscape-font-specification:'Manrope Ultra-Bold';fill:#0866ff;fill-opacity:1;stroke:none;stroke-width:0"
+         id="path12645"
+         inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/path12645.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <path
+         d="m 7.372275,7.8927869 q -0.5547008,0 -0.9716577,-0.279212 Q 5.9836607,7.3343628 5.7491226,6.8541181 5.5183072,6.3738734 5.5183072,5.7707754 q 0,-0.6142665 0.2345382,-1.0907884 0.238261,-0.4802448 0.6663863,-0.7557341 0.4281249,-0.2754892 1.0051635,-0.2754892 0.5733156,0 0.964212,0.2792121 0.390896,0.279212 0.5919298,0.7594568 0.2010339,0.4802447 0.2010339,1.0833428 0,0.603098 -0.2047559,1.0833427 Q 8.7757802,7.3343628 8.3737152,7.6135749 7.9716504,7.8927869 7.372275,7.8927869 Z M 7.53608,6.9918628 q 0.3387771,0 0.5398093,-0.152636 0.2047563,-0.1526359 0.2941039,-0.4281251 0.08935,-0.2754893 0.08935,-0.6403263 0,-0.3648371 -0.08935,-0.6403264 Q 8.2806411,4.8549598 8.0833359,4.7023239 7.8897486,4.5496879 7.5733083,4.5496879 q -0.3387778,0 -0.5584242,0.1675273 -0.2159244,0.1638044 -0.3201633,0.4430165 -0.1042395,0.2754891 -0.1042395,0.6105437 0,0.3387772 0.100517,0.6179893 Q 6.7915145,6.664254 6.9999923,6.8280584 7.2084708,6.9918628 7.53608,6.9918628 Z M 8.4593402,7.7811021 V 5.0262099 H 8.3327642 V 2.4202307 H 9.352822 v 5.3608714 z"
+         style="-inkscape-font-specification:'Manrope Ultra-Bold';fill:#0866ff;fill-opacity:1;stroke:none;stroke-width:0"
+         id="path12647"
+         inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/path12645.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <path
+         d="m 11.699122,7.8927869 q -0.569593,0 -0.993995,-0.279212 Q 10.284447,7.3343628 10.053632,6.8541181 9.8228151,6.3738734 9.8228151,5.7707754 q 0,-0.6142665 0.2345409,-1.0907884 0.23826,-0.4802448 0.666386,-0.7557341 0.428124,-0.2754892 1.005162,-0.2754892 0.402066,0 0.718506,0.1451903 0.316441,0.1414675 0.53981,0.3983425 L 12.838307,4.3784379 V 3.7604485 h 0.893479 V 7.7811021 H 12.838307 V 7.1556672 l 0.148913,0.1861412 q -0.223369,0.2568751 -0.554701,0.4057882 -0.331332,0.1451903 -0.733397,0.1451903 z m 0.163805,-0.9009241 q 0.323885,0 0.521195,-0.152636 0.201033,-0.1526359 0.290381,-0.4281251 0.08935,-0.2754893 0.08935,-0.6403263 0,-0.3648371 -0.08935,-0.6403264 -0.08935,-0.2754892 -0.286658,-0.4281251 -0.193587,-0.152636 -0.510028,-0.152636 -0.305271,0 -0.524918,0.1489131 -0.219647,0.1451904 -0.338777,0.4206796 -0.119131,0.2754893 -0.119131,0.6589404 0,0.3313316 0.09679,0.6068208 0.100516,0.2754893 0.312717,0.4430166 0.215924,0.1638044 0.558425,0.1638044 z"
+         style="-inkscape-font-specification:'Manrope Ultra-Bold';fill:#0866ff;fill-opacity:1;stroke:none;stroke-width:0"
+         id="path12649"
+         inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/path12645.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <path
+         d="m 16.398248,7.8927869 q -0.599375,0 -1.00144,-0.279212 -0.402066,-0.2792121 -0.606821,-0.7594568 -0.201032,-0.4802447 -0.201032,-1.0833427 0,-0.6030981 0.201032,-1.0833428 0.201033,-0.4802448 0.591929,-0.7594568 0.390897,-0.2792121 0.964212,-0.2792121 0.577039,0 1.005164,0.2754892 0.428125,0.2754893 0.662663,0.7557341 0.238262,0.4765219 0.238262,1.0907884 0,0.603098 -0.234539,1.0833427 -0.230815,0.4802447 -0.647772,0.7594568 -0.416956,0.279212 -0.971658,0.279212 z M 14.417704,7.7811021 V 2.4202307 h 1.020055 v 2.6059792 h -0.126576 v 2.7548922 z m 1.81674,-0.7892393 q 0.327609,0 0.536086,-0.1638044 0.208479,-0.1638044 0.308996,-0.4392937 0.100516,-0.2792121 0.100516,-0.6179893 0,-0.3350546 -0.104239,-0.6105438 -0.10424,-0.279212 -0.323886,-0.4430164 -0.215925,-0.1675273 -0.554702,-0.1675273 -0.31644,0 -0.51375,0.152636 -0.193587,0.1526359 -0.282934,0.4281251 -0.08935,0.2754893 -0.08935,0.6403264 0,0.364837 0.08935,0.6403263 0.08934,0.2754892 0.29038,0.4281251 0.204755,0.152636 0.543533,0.152636 z"
+         style="-inkscape-font-specification:'Manrope Ultra-Bold';fill:#0866ff;fill-opacity:1;stroke:none;stroke-width:0"
+         id="path12651"
+         inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/path12645.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <path
+         d="m 20.218787,7.9002326 q -0.472799,0 -0.770625,-0.1600816 Q 19.150336,7.5800694 18.982809,7.3343628 18.819004,7.0886562 18.74827,6.8243355 18.677537,6.5562919 18.662645,6.3366451 18.647754,6.1169982 18.647754,6.0164819 V 3.7604485 h 1.0275 v 1.898642 q 0,0.1377446 0.0149,0.3536686 0.01489,0.2122012 0.09307,0.4281252 0.07818,0.215924 0.253153,0.3611142 0.178696,0.1451903 0.502582,0.1451903 0.130298,0 0.279211,-0.040951 0.148913,-0.040951 0.279213,-0.1563588 0.130298,-0.1191304 0.212201,-0.3462229 0.08563,-0.2308153 0.08563,-0.603098 l 0.580761,0.2754891 q 0,0.476522 -0.193588,0.8934786 Q 21.588801,7.3864825 21.197904,7.6433576 20.81073,7.9002327 20.2188,7.9002327 Z m 1.30299,-0.1191305 V 6.4483299 H 21.395201 V 3.7604485 h 1.020055 v 4.0206536 z"
+         style="-inkscape-font-specification:'Manrope Ultra-Bold';fill:#0866ff;fill-opacity:1;stroke:none;stroke-width:0"
+         id="path12653"
+         inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/path12645.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+      <path
+         d="m 23.62238,9.5680593 0.774347,-2.1294573 0.01489,0.625435 -1.749728,-4.3035885 h 1.049837 l 1.176409,3.0452729 h -0.23826 l 1.168968,-3.0452729 h 1.012609 l -2.270925,5.8076108 z"
+         style="-inkscape-font-specification:'Manrope Ultra-Bold';fill:#0866ff;fill-opacity:1;stroke:none;stroke-width:0"
+         id="path12655"
+         inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-seller/src/assets/path12645.png"
+         inkscape:export-xdpi="96"
+         inkscape:export-ydpi="96" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,67 @@
+type POSIXTime =
+  Int
+
+pub type StateMachineDatum {
+  state: Int,
+  seller: VerificationKeyHash,
+  collateral: Int,
+  price: Int,
+  buyer: Option<VerificationKeyHash>,
+  range: Option<POSIXTime>,
+}
+
+pub type StateMachineInput {
+  Cancel
+  Locking { buyer_param: VerificationKeyHash, range_param: POSIXTime }
+  Return
+  Shipping
+  Received
+}
+
+validator statemachine(threadtoken: PolicyId) {
+  spend(
+    datum_opt: Option<StateMachineDatum>,
+    redeemer: StateMachineInput,
+    own_ref: OutputReference,
+    transaction: Transaction,
+  ) -> Bool {
+        expect Some(datum) = datum_opt
+        
+        when (datum, redeemer) is {
+          (StateMachineDatum { state, seller, collateral, price, .. }, Cancel) -> {
+            let must_be_state = state == 0  
+
+            let must_be_signed =
+              list.has(transaction.extra_signatories, seller)
+
+            expect Some(sm_input) = 
+              list.find(transaction.inputs, fn(input) { input.output_reference == own_ref })            
+
+            expect Some(sm_output) = 
+              list.find(transaction.outputs, fn(output) { output.address == sm_input.output.address })
+            
+            let must_be_policy = list.has(assets.policies(sm_output.value), threadtoken)
+
+            let new_data: Data = StateMachineDatum {
+              state : -1,
+              seller : seller,
+              collateral : collateral,
+              price: price,
+              buyer: None,
+              range: None
+            }
+
+            let must_be_datum = InlineDatum(new_data) == sm_output.datum
+
+            and {
+              must_be_state?,
+              must_be_signed?,
+              must_be_policy?,
+              must_be_datum?
+            }
+          }
+
+          _ -> False
+        }
+  }
+}
