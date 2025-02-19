@@ -27,8 +27,8 @@
      inkscape:document-units="px"
      showgrid="false"
      inkscape:zoom="0.27282898"
-     inkscape:cx="-18.326499"
-     inkscape:cy="252.90568"
+     inkscape:cx="-20.159149"
+     inkscape:cy="238.24449"
      inkscape:window-width="1920"
      inkscape:window-height="1048"
      inkscape:window-x="1920"
@@ -39,6 +39,12 @@
      inkscape:deskcolor="#d1d1d1" />
   <defs
      id="defs5719">
+    <rect
+       x="-52.464077"
+       y="-547.15807"
+       width="1451.2368"
+       height="2134.4197"
+       id="rect5614" />
     <rect
        x="-329.02549"
        y="579.22476"
@@ -58,18 +64,18 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:202.703px;line-height:0;font-family:Manrope;-inkscape-font-specification:Manrope;letter-spacing:-9.50169px;display:inline;fill:#ffffff;stroke:#ff9a00;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
-       x="168.63086"
-       y="825.91742"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:202.703px;line-height:0;font-family:Manrope;-inkscape-font-specification:Manrope;letter-spacing:-4.47px;display:inline;fill:#ececec;stroke:#ff9a00;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       x="252.27235"
+       y="824.35388"
        id="text2"
        inkscape:export-filename="./text2.png"
        inkscape:export-xdpi="96"
        inkscape:export-ydpi="96"><tspan
          sodipodi:role="line"
          id="tspan2"
-         x="168.63086"
-         y="825.91742"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:202.703px;font-family:Manrope;-inkscape-font-specification:'Manrope Ultra-Bold';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0">αdαbuy</tspan></text>
+         x="252.27235"
+         y="824.35388"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:202.703px;font-family:Manrope;-inkscape-font-specification:'Manrope Bold';fill:#ececec;fill-opacity:1;stroke:none;stroke-width:0">Pairfy</tspan></text>
     <text
        xml:space="preserve"
        id="text29993"
@@ -86,7 +92,7 @@
          y="1378.2314" /></text>
     <text
        xml:space="preserve"
-       style="font-weight:800;font-size:72.5168px;line-height:0;font-family:Manrope;-inkscape-font-specification:'Manrope Ultra-Bold';letter-spacing:-0.849807px;fill:#ffffff;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       style="font-weight:800;font-size:72.5168px;line-height:0;font-family:Manrope;-inkscape-font-specification:'Manrope Ultra-Bold';letter-spacing:-0.849807px;fill:#ececec;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
        x="154.89702"
        y="1005.7272"
        id="text3"><tspan
@@ -94,22 +100,14 @@
          id="tspan3"
          x="154.89702"
          y="1005.7272"
-         style="font-size:72.5168px;fill:#ffffff;stroke-width:0">Cardano Marketplace</tspan></text>
+         style="font-size:72.5168px;fill:#ececec;stroke-width:0">Cardano Marketplace</tspan></text>
     <text
        xml:space="preserve"
        id="text4"
        style="fill:#f2f2f2;paint-order:stroke fill markers;-inkscape-font-specification:'Manrope Ultra-Bold';font-family:Manrope;font-size:85.33333333px;line-height:0;letter-spacing:-1px;stroke-width:0;stroke-linejoin:round;stroke-linecap:round;font-weight:800;white-space:pre;shape-inside:url(#rect4)" />
-    <path
-       style="fill:#ffe000;fill-opacity:1;stroke-width:1.92007"
-       d="m 951.23171,698.03332 -25.1651,17.62185 a 7.6795251,7.6795251 0 0 1 -8.8092,-12.58167 l 25.1654,-17.62185 a 7.6794879,7.6794879 0 1 1 8.8089,12.58167 z"
-       id="path1420" />
-    <path
-       style="fill:#ffe000;fill-opacity:1;stroke-width:1.92007"
-       d="m 877.64863,667.2373 17.62185,-25.16524 a 7.6794904,7.6794904 0 1 1 12.58163,8.80898 l -17.62181,25.16534 a 7.6794907,7.6794907 0 0 1 -12.58167,-8.80908 z"
-       id="path1418" />
-    <path
-       style="fill:#ffe000;fill-opacity:1;stroke-width:1.92007"
-       d="m 828.17313,647.10844 7.95218,-29.67291 a 7.6794609,7.6794609 0 1 1 14.8355,3.97514 l -7.95208,29.67291 a 7.6794656,7.6794656 0 1 1 -14.8356,-3.97514 z"
-       id="path1416" />
+    <text
+       xml:space="preserve"
+       id="text5612"
+       style="line-height:1.25;font-family:'IBM Plex Sans';font-size:40px;-inkscape-font-specification:'IBM Plex Sans';white-space:pre;shape-inside:url(#rect5614)" />
   </g>
 </svg>
