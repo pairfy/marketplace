@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = dirname(__filename);
 
-const sqlDirectoryPath = path.join(__dirname, "src/db");
+const sqlDirectoryPath = path.join(__dirname, "src/database");
 
 const connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,
@@ -71,7 +71,6 @@ function executeScripts() {
           connection.query(sqlScript, (err, results) => {
             if (err) {
               console.error(`SETUP: Error executing ${file}:`, err);
-              process.exit(1);
             } else {
               console.log(`SETUP: ${file} executed successfully.`);
               if (index === SQLS.length - 1) {

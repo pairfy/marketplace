@@ -1,25 +1,5 @@
 <template>
     <main>
-        <Toolbar>
-            <template #start>
-                <Button icon="pi pi-chevron-left" class="mr-2" text severity="secondary" @click="goBackRoute" />
-                <Breadcrumb :model="navItems">
-                    <template #item="{ item }">
-                        <span style="font-weight: 600;">{{ item.label }}</span>
-                    </template>
-                    <template #separator> / </template>
-                </Breadcrumb>
-            </template>
-
-            <template #center>
-
-            </template>
-
-            <template #end>
-
-            </template>
-        </Toolbar>
-
         <div class="card">
             <div class="title">
                 Create Product
@@ -29,21 +9,20 @@
                 <div class="left-column">
                     <div class="left-column-item">
                         <div class="formulary">
-                            <InputText v-model="productName" type="text" placeholder="Product Name"
-                                v-keyfilter='/^[a-zA-Z0-9("-.)/+$ ]+$/' :invalid="formErrors.name" />
+                            <InputText v-model="productName" type="text" placeholder="Name"
+                                v-keyfilter='/^[a-zA-Z0-9("-°-–.”)/+$ ]+$/' :invalid="formErrors.name" />
 
                             <InputGroup>
-                                <InputNumber v-model="productPrice" type="number" placeholder="Product Price"
-                                    :invalid="formErrors.price" :min="0" :useGrouping="false"
-                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }" />
+                                <InputNumber v-model="productPrice" type="number" placeholder="Price"
+                                    :invalid="formErrors.price" :min="0" :max="9999999" :useGrouping="false"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }" suffix=" USD" />
 
-                                <InputNumber v-model="productCollateral" type="number" placeholder="Product Collateral"
-                                    :invalid="formErrors.collateral" :min="0" :useGrouping="false"
-                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)', margin: '0 1rem' }" />
 
-                                <InputText v-model="productSKU" type="text" placeholder="Product SKU"
+                                <InputText v-model="productSKU" type="text" placeholder="SKU"
                                     v-keyfilter="/^[a-zA-Z0-9-]+$/" :invalid="formErrors.sku"
-                                    style="border-radius: var(--p-inputtext-border-radius)" />
+                                    style="border-radius: var(--p-inputtext-border-radius); margin-left: 1rem;"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }"
+                                    v-tooltip.right="'Stock keeping unit ID must be unique.'" />
                             </InputGroup>
 
 
@@ -57,9 +36,48 @@
                                     style="border-radius: var(--p-inputtext-border-radius)"
                                     :invalid="formErrors.brand" />
                             </InputGroup>
+
+                            <InputGroup>
+                                <InputNumber v-model="productWeight" type="number" placeholder="Weight (kg)"
+                                    :invalid="formErrors.weight" :min="0" :max="9999" :useGrouping="false"
+                                    :minFractionDigits="0" :maxFractionDigits="3"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }" />
+
+                                <InputNumber v-model="productLength" type="number" placeholder="Length (cm)"
+                                    :invalid="formErrors.length" :min="0" :max="9999" :useGrouping="false"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)', marginLeft: '1rem' }"
+                                    :minFractionDigits="0" :maxFractionDigits="2" />
+
+                                <InputNumber v-model="productWidth" type="number" placeholder="Width (cm)"
+                                    :invalid="formErrors.width" :min="0" :max="9999" :useGrouping="false"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)', marginLeft: '1rem' }"
+                                    :minFractionDigits="0" :maxFractionDigits="2" />
+
+                                <InputNumber v-model="productHeight" type="number" placeholder="Height (cm)"
+                                    :invalid="formErrors.height" :min="0" :max="9999" :useGrouping="false"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)', marginLeft: '1rem' }"
+                                    :minFractionDigits="0" :maxFractionDigits="2" />
+                            </InputGroup>
+
+
+                            <InputGroup>
+                                <InputText v-model="productCity" type="text" placeholder="Origin City"
+                                    v-keyfilter="{ pattern: /^[A-Za-z0-9.,'\- ]{1,100}$/, validateOnly: true }"
+                                    :invalid="formErrors.origin"
+                                    style="border-radius: var(--p-inputtext-border-radius);"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }"
+                                    v-tooltip.right="'City from which the package is sent. Important to know the shipping time. Can affect your trust score.'" />
+
+                                <InputText v-model="productPostal" type="text" placeholder="Origin Postal"
+                                    v-keyfilter="{ pattern: /^[A-Za-z0-9.,'@+&/(~)°#\-\s]{1,50}$/, validateOnly: true }"
+                                    :invalid="formErrors.postal"
+                                    style="border-radius: var(--p-inputtext-border-radius); margin-left: 1rem;"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }"
+                                    v-tooltip.right="'Important to know the shipping time. Can affect your trust score.'" />
+                            </InputGroup>
                         </div>
                     </div>
-
+                    <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
                     <div v-if="editor" class="editor" :class="{ invalid: formErrors.features }">
                         <div class="editor-control">
                             <div class="editor-control-group">
@@ -153,13 +171,13 @@
                         <editor-content :editor="editor" />
                     </div>
 
-                    <!--/////////////////////////////-->
+                    <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
                     <div class="left-column-item">
                         <div class="uploader" :class="{ invalid: formErrors.image_set }">
                             <Toast />
                             <FileUpload ref="fileupload" name="image" :url="mediaImagesURL"
                                 @upload="onImagesUpload($event)" :withCredentials="true" :multiple="true"
-                                accept="image/*" :maxFileSize="1000000" @select="onSelectedFiles">
+                                accept="image/*" :maxFileSize="3000000" @select="onSelectedFiles">
                                 <template #header="{ chooseCallback, uploadCallback, clearCallback, files }">
                                     <div class="uploader-top">
                                         <div class="uploader-control">
@@ -229,8 +247,7 @@
                         </div>
                     </div>
                 </div>
-
-                <!--///////////////////////////////////////-->
+                <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
                 <div class="right-column">
                     <div class="box">
                         <div class="subtitle" v-tooltip="'List of important features'">
@@ -239,12 +256,12 @@
 
                         <div class="box-content">
                             <Button type="button" label="Generate" :loading="bulletListLoading"
-                                @click="handleBulletList" style="font-size: var(--text-size-a); margin-bottom: 1rem"
+                                @click="handleBulletList" style="font-size: var(--text-size-1); margin-bottom: 1rem"
                                 variant="outlined" :disabled="!productEditorCounter" />
 
 
                             <AutoComplete inputId="productBulletList" v-model="productBulletList" multiple fluid
-                                :typeahead="false" :inputStyle="{ fontSize: 'var(--text-size-a)' }"
+                                :typeahead="false" :inputStyle="{ fontSize: 'var(--text-size-1)' }"
                                 :invalid="formErrors.bullet_list" size="large" placeholder=""
                                 removeTokenIcon="pi pi-minus" />
                         </div>
@@ -257,7 +274,7 @@
 
                         <div class="box-content">
                             <Select v-model="productCategory" :options="productCategories" optionLabel="name"
-                                placeholder="Select a category" style="font-size: var(--text-size-a)" fluid
+                                placeholder="Select a category" style="font-size: var(--text-size-1)" fluid
                                 :invalid="formErrors.category" />
                         </div>
                     </div>
@@ -265,13 +282,13 @@
 
                     <div class="box">
                         <div class="subtitle">
-                            Tags
+                            keywords
                         </div>
 
                         <div class="box-content">
                             <AutoComplete v-model="productKeywords" inputId="multiple-ac-2" multiple fluid
                                 placeholder="Keywords" :typeahead="false"
-                                :inputStyle="{ fontSize: 'var(--text-size-a)' }" :invalid="formErrors.keywords" />
+                                :inputStyle="{ fontSize: 'var(--text-size-1)' }" :invalid="formErrors.keywords" />
                         </div>
                     </div>
 
@@ -284,7 +301,7 @@
                         <div class="box-content">
 
                             <div class="box-content-flex">
-                                <InputText v-model="productColorName" type="text" placeholder="Color Name"
+                                <InputText v-model="productColorName" type="text" placeholder="Color name"
                                     v-keyfilter="/^[a-zA-Z0-9 ]+$/" style="margin-right: 1rem;"
                                     :invalid="formErrors.color_name" />
 
@@ -300,7 +317,7 @@
                         </div>
 
                         <div class="box-content">
-                            <SelectButton v-model="productQuality" :options="productStateOptions"
+                            <SelectButton v-model="productQuality" :options="productQualityOptions"
                                 aria-labelledby="basic" :invalid="formErrors.quality" />
                         </div>
                     </div>
@@ -308,6 +325,10 @@
                     <div class="box">
                         <div class="subtitle">
                             Discount
+
+                            <span class="price-discount">
+                                {{ discountResult }}
+                            </span>
                         </div>
 
                         <div class="box-content">
@@ -319,9 +340,6 @@
                                     style="border-radius: var(--p-inputtext-border-radius); margin-left: 1rem;"
                                     :invalid="formErrors.discount" :disabled="!productDiscount" />
 
-                                <span class="price-discount">
-                                    {{ discountResult }}
-                                </span>
                             </div>
                         </div>
                     </div>
@@ -340,10 +358,10 @@
 
                     <div class="box-buttons">
                         <Button type="button" label="Discard" icon="pi pi-trash" :loading="sendMessageLoading" outlined
-                            style="font-size: var(--text-size-a)" fluid />
+                            fluid />
 
-                        <Button type="button" label="Publish" icon="pi pi-check" :loading="sendMessageLoading"
-                            @click="beforeCreate" style="font-size: var(--text-size-a)" fluid />
+                        <Button type="button" label="Publish" :loading="sendMessageLoading" @click="beforeCreate"
+                            style="color: var(--text-w)" fluid />
                     </div>
                 </div>
             </div>
@@ -352,14 +370,15 @@
 </template>
 
 <script setup>
-import Sortable from 'sortablejs';
 import gql from 'graphql-tag';
+import Sortable from 'sortablejs';
 import StarterKit from '@tiptap/starter-kit';
 import ListItem from '@tiptap/extension-list-item';
 import TextStyle from '@tiptap/extension-text-style';
 import Placeholder from '@tiptap/extension-placeholder';
 import CharacterCount from '@tiptap/extension-character-count';
 import dashboardAPI from "@/views/api"
+import categories from '@/assets/categories.json'
 import { onMounted, ref, nextTick, computed, onBeforeUnmount } from 'vue';
 import { useToast } from "primevue/usetoast";
 import { useMutation } from '@vue/apollo-composable';
@@ -367,6 +386,7 @@ import { Editor, EditorContent } from '@tiptap/vue-3';
 import { useRouter } from 'vue-router';
 import { HOST } from '@/api';
 
+const categoryList = ref(categories);
 
 const { getBulletList } = dashboardAPI();
 
@@ -378,52 +398,42 @@ const uploadImages = () => {
 
 const toast = useToast();
 
-const router = useRouter()
-
-const showSuccess = (content) => {
-    toast.add({ severity: 'success', summary: 'Success Message', detail: content, life: 5000 });
-};
-
-const showError = (content) => {
-    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000 });
-};
+const router = useRouter();
 
 const mediaImagesURL = computed(() => HOST + '/api/media/create-image')
 
-const navItems = ref([
-    { label: 'Dashboard' },
-    { label: 'Create Product' }
-]);
-
-////////////////////////////////
+////////////////////////////////////////////////////////////////
 
 const productName = ref(null);
+
 const productPrice = ref(null);
-const productCollateral = ref(null);
+
 const productSKU = ref(null);
+
 const productModel = ref(null);
+
 const productBrand = ref(null);
+
+const productWeight = ref(null);
+
+const productLength = ref(null);
+
+const productWidth = ref(null);
+
+const productHeight = ref(null);
+
+const productCity = ref(null);
+
+const productPostal = ref(null);
 
 const productBulletList = ref(null);
 
-const productCategories = ref([
-    { name: "Electronics", code: "electronics" },
-    { name: "Books", code: "books" },
-    { name: "Music", code: "music" },
-    { name: "Movies", code: "movies" },
-    { name: "Games", code: "games" },
-    { name: "Clothing & Accessories", code: "clothing-accessories" },
-    { name: "Home & Garden", code: "home-garden" },
-    { name: "Beauty & Personal Care", code: "beauty-personal-care" },
-    { name: "Health & Household", code: "health-household" },
-    { name: "Grocery & Gourmet Food", code: "grocery-gourmet-food" },
-    { name: "Toys, Hobbies & Collectibles", code: "toys-hobbies-collectibles" },
-    { name: "Sports & Outdoors", code: "sports-outdoors" },
-    { name: "Automotive & Industrial", code: "automotive-industrial" },
-    { name: "Pet Supplies", code: "pets-supplies" },
-    { name: "Office Supplies & Equipment", code: "office-supplies-equipment" },
-    { name: "Digital Content & Software", code: "digital-content-software" },
-]);
+const productCategories = ref(
+    Object.values(categoryList.value).map(item => ({
+        name: item.name,
+        code: item.name
+    }))
+);
 
 const productCategory = ref(null);
 
@@ -433,15 +443,17 @@ const productColor = ref("000000");
 
 const productColorName = ref(null);
 
-const productStateOptions = ref(['New', 'Used']);
+const productQualityOptions = ref(['New', 'Used', 'Refurbished']);
 
 const productQuality = ref(null);
-
-const productPaused = ref(false);
 
 const productDiscount = ref(false);
 
 const productDiscountValue = ref(0);
+
+const productPaused = ref(false);
+
+/////////////////////////////////////////////////////
 
 const files = ref([]);
 
@@ -560,33 +572,39 @@ onErrorProductCreated(error => {
 })
 
 onProductCreated(result => {
-    showSuccess("The product has been created");
+    showSuccess("The product has been created.");
 })
 
 const formErrors = ref({
-    "name": false,
-    "price": false,
-    "collateral": false,
-    "sku": false,
-    "model": false,
-    "brand": false,
-    "features": false,
-    "category": false,
-    "keywords": false,
-    "bullet_list": false,
-    "paused": false,
-    "color": false,
-    "color_name": false,
-    "quality": false,
-    "image_set": false,
-    "video_set": false,
-    "discount": false
+    name: false,
+    price: false,
+    sku: false,
+    model: false,
+    brand: false,
+    features: false,
+    category: false,
+    keywords: false,
+    bullet_list: false,
+    paused: false,
+    color: false,
+    color_name: false,
+    quality: false,
+    image_set: false,
+    video_set: false,
+    discount: false,
+    shipping_weight: false,
+    shipping_length: false,
+    shipping_width: false,
+    shipping_height: false,
+    shipping_city: false,
+    shipping_postal: false,
+    shipping_instructions: false,
+    shipping_fragile: false
 });
 
 const checkMandatory = () => {
     formErrors.value.name = productName.value === null;
     formErrors.value.price = productPrice.value === null;
-    formErrors.value.collateral = productCollateral.value === null;
     formErrors.value.sku = productSKU.value === null;
     formErrors.value.model = productModel.value === null;
     formErrors.value.brand = productBrand.value === null;
@@ -598,6 +616,12 @@ const checkMandatory = () => {
     formErrors.value.color_name = productColorName.value === null;
     formErrors.value.quality = productQuality.value === null;
     formErrors.value.discount = productDiscount.value && productDiscountValue.value < 1;
+    formErrors.value.shipping_weight = productWeight.value === null;
+    formErrors.value.shipping_length = productLength.value === null;
+    formErrors.value.shipping_width = productWidth.value === null;
+    formErrors.value.shipping_height = productHeight.value === null;
+    formErrors.value.shipping_city = productCity.value === null;
+    formErrors.value.shipping_postal = productPostal.value === null;
     formErrors.value.image_set = productImageSet.value.length > productImageSetLimit.value || productImageSet.value.length === 0;
     formErrors.value.video_set = false;
 
@@ -622,7 +646,6 @@ const submitProduct = () => {
         "createProductVariable": {
             "name": productName.value,
             "price": parseInt(productPrice.value),
-            "collateral": parseInt(productCollateral.value),
             "sku": productSKU.value,
             "model": productModel.value,
             "brand": productBrand.value,
@@ -633,18 +656,22 @@ const submitProduct = () => {
             "paused": productPaused.value ? 1 : 0,
             "color": productColor.value,
             "color_name": productColorName.value,
+            "variations": "none",
             "quality": productQuality.value,
+            "image_set": productImageSet.value.join(','),
+            "video_set": "none",
             "discount": productDiscount.value,
             "discount_value": productDiscount.value ? productDiscountValue.value : 0,
-            "image_set": productImageSet.value.join(','),
-            "video_set": ""
+            "shipping_weight": productWeight.value,
+            "shipping_length": productLength.value,
+            "shipping_width": productWidth.value,
+            "shipping_height": productHeight.value,
+            "shipping_city": productCity.value,
+            "shipping_postal": productPostal.value,
+            "shipping_instructions": "none",
+            "shipping_fragile": false
         }
     })
-}
-
-
-const goBackRoute = () => {
-    router.go(-1)
 }
 
 const discountResult = computed(() => {
@@ -656,7 +683,7 @@ const discountResult = computed(() => {
 
     const discountedPrice = productPrice.value - discountAmount;
 
-    return Math.trunc(discountedPrice) + " USD";
+    return Math.round(discountedPrice) + " USD";
 })
 
 
@@ -674,6 +701,13 @@ onBeforeUnmount(() => {
     }
 });
 
+const showSuccess = (content) => {
+    toast.add({ severity: 'success', summary: 'Success Message', detail: content, life: 5000 });
+};
+
+const showError = (content) => {
+    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000 });
+};
 </script>
 
 <style scoped>
@@ -681,18 +715,8 @@ onBeforeUnmount(() => {
     height: 0.35rem;
 }
 
-::v-deep(.p-inputtext) {
-    font-size: var(--text-size-a);
-}
-
 ::v-deep(.p-select-label) {
-    font-size: var(--text-size-a);
-}
-
-::v-deep(.p-toolbar) {
-    padding: 0 1rem;
-    background: transparent;
-    border-radius: 1rem;
+    font-size: var(--text-size-1);
 }
 
 ::v-deep(.p-colorpicker-preview) {
@@ -700,15 +724,15 @@ onBeforeUnmount(() => {
 }
 
 ::v-deep(.p-chip) {
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
 }
 
 ::v-deep(.p-message-text) {
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
 }
 
 ::v-deep(.p-togglebutton) {
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
 }
 
 ::v-deep(.p-fileupload-header) {
@@ -716,25 +740,17 @@ onBeforeUnmount(() => {
     background: transparent;
 }
 
-main {
-    padding: 1rem 2rem;
-    flex: 1 1 auto;
-    position: relative;
-}
-
-
 .card {
     display: flex;
     flex-direction: column;
-    border: 1px solid var(--border-a);
-    border-radius: 1rem;
-    padding: 1.5rem;
-    margin-top: 1rem;
+    padding: 2rem;
+    background: var(--background-a);
 }
 
 .title {
     margin-bottom: 1.5rem;
     font-weight: 700;
+    font-size: var(--text-size-2);
 }
 
 .card-wrap {
@@ -749,8 +765,6 @@ main {
     gap: 1rem;
 }
 
-.left-column-item {}
-
 .formulary {
     display: flex;
     flex-direction: column;
@@ -758,7 +772,7 @@ main {
 }
 
 .right-column {
-    padding: 0 1rem;
+    margin-left: 2rem;
     display: flex;
     flex-direction: column;
 }
@@ -771,7 +785,7 @@ main {
 
 .subtitle {
     border-bottom: 1px solid var(--border-a);
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
     font-weight: 700;
     padding: 1rem;
 }
@@ -817,7 +831,7 @@ main {
     border-radius: 4px;
     background: transparent;
     color: var(--text-b);
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -868,7 +882,7 @@ main {
     justify-content: center;
     flex-direction: column;
     align-items: center;
-    font-size: var(--text-size-b);
+    font-size: var(--text-size-1);
     color: var(--text-b);
 }
 
@@ -892,7 +906,7 @@ main {
     overflow-x: hidden;
     padding: 1rem;
     color: var(--text-a);
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
     outline: none;
     box-sizing: border-box;
 }
@@ -960,11 +974,12 @@ main {
     justify-content: center;
     color: var(--text-b);
     margin-right: 0.5rem;
+    cursor: pointer;
 }
 
 .editor-control button svg {
-    width: var(--text-size-b);
-    height: var(--text-size-b);
+    width: var(--text-size-2);
+    height: var(--text-size-2);
 }
 
 .editor-control button.is-active {
@@ -972,17 +987,18 @@ main {
 }
 
 .editor-control-counter {
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
     color: var(--text-b);
 }
 
 .price-discount {
     background: var(--background-b);
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
     margin-left: 1rem;
     padding: 5px;
-    font-weight: 500;
+    font-weight: 400;
     border-radius: 0.25rem;
+    white-space: nowrap;
 }
 
 

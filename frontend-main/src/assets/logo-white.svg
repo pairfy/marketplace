@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="87"
+   height="30"
+   viewBox="0 0 87 30"
+   version="1.1"
+   id="SVGRoot"
+   sodipodi:docname="logo-white.svg"
+   inkscape:version="1.1.2 (0a00cf5339, 2022-02-04)"
+   inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-main/src/assets/logo-white.png"
+   inkscape:export-xdpi="121.6"
+   inkscape:export-ydpi="121.6"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview137"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="8.0000004"
+     inkscape:cx="71.624997"
+     inkscape:cy="11.312499"
+     inkscape:window-width="1451"
+     inkscape:window-height="827"
+     inkscape:window-x="2032"
+     inkscape:window-y="60"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="layer1"
+     inkscape:pageshadow="2"
+     showguides="false"
+     inkscape:lockguides="false"
+     width="90px"
+     height="30px" />
+  <defs
+     id="defs132">
+    <rect
+       x="11.236365"
+       y="7.2846913"
+       width="69.72084"
+       height="10.069939"
+       id="rect3" />
+    <rect
+       x="12.94258"
+       y="23.094154"
+       width="88.413605"
+       height="18.186064"
+       id="rect1" />
+    <rect
+       x="-1.4777668"
+       y="42.333267"
+       width="127.8846"
+       height="23.821753"
+       id="rect3454" />
+    <clipPath
+       id="b983e3c625">
+      <path
+         d="m 142,147.30078 h 115 v 72.75 H 142 Z m 0,0"
+         clip-rule="nonzero"
+         id="path1144" />
+    </clipPath>
+    <clipPath
+       id="0e8c13dd3a">
+      <path
+         d="m 70.261719,116.35938 h 89.156251 v 70.49999 H 70.261719 Z m 0,0"
+         clip-rule="nonzero"
+         id="path1147" />
+    </clipPath>
+    <clipPath
+       id="b983e3c625-3">
+      <path
+         d="m 142,147.30078 h 115 v 72.75 H 142 Z m 0,0"
+         clip-rule="nonzero"
+         id="path1144-6" />
+    </clipPath>
+    <clipPath
+       id="0e8c13dd3a-7">
+      <path
+         d="m 70.261719,116.35938 h 89.156251 v 70.49999 H 70.261719 Z m 0,0"
+         clip-rule="nonzero"
+         id="path1147-5" />
+    </clipPath>
+    <clipPath
+       id="b983e3c625-3-1">
+      <path
+         d="m 142,147.30078 h 115 v 72.75 H 142 Z m 0,0"
+         clip-rule="nonzero"
+         id="path1144-6-2" />
+    </clipPath>
+    <clipPath
+       id="b983e3c625-3-3">
+      <path
+         d="m 142,147.30078 h 115 v 72.75 H 142 Z m 0,0"
+         clip-rule="nonzero"
+         id="path1144-6-6" />
+    </clipPath>
+  </defs>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     style="display:inline">
+    <text
+       xml:space="preserve"
+       style="font-style:italic;font-variant:normal;font-weight:600;font-stretch:normal;font-size:18.6667px;line-height:0;font-family:'IBM Plex Sans';-inkscape-font-specification:'IBM Plex Sans Semi-Bold Italic';letter-spacing:-1.2px;word-spacing:0px;display:inline;fill:#ff385c;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+       x="-0.74666804"
+       y="21.773342"
+       id="text2-3-3"
+       inkscape:export-filename="/home/debian/Documents/GitHub/core/frontend-main/src/assets/logo-white.png"
+       inkscape:export-xdpi="121.6"
+       inkscape:export-ydpi="121.6"><tspan
+         sodipodi:role="line"
+         x="-0.74666804"
+         y="21.773342"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:18.6667px;font-family:manrope;-inkscape-font-specification:'manrope Bold';fill:#000000;fill-opacity:1;stroke:#000000;stroke-width:0;stroke-linecap:square;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:stroke markers fill"
+         id="tspan541421-5-5"
+         dy="0">adamarket</tspan></text>
+    <rect
+       style="fill:#ff2e4d;fill-opacity:1;stroke:#565959;stroke-width:0;stroke-linecap:square;paint-order:stroke markers fill"
+       id="rect9988"
+       width="58.229427"
+       height="1.9999995"
+       x="27.711647"
+       y="26"
+       rx="2.220446e-15"
+       ry="2.220446e-15" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 2"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 3"
+     style="display:inline" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="limit"
+     style="display:none">
+    <rect
+       style="display:inline;opacity:0.557195;fill:#ff5e00;fill-opacity:1;stroke:#0069f5;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1592-1"
+       width="15"
+       height="14.999998"
+       x="1.8808064e-06"
+       y="14.999999" />
+    <rect
+       style="display:inline;opacity:0.557195;fill:#ff0000;stroke:#0069f5;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       id="rect1592"
+       width="120"
+       height="14.999998"
+       x="1.8808064e-06"
+       y="6.7562792e-07" />
+  </g>
+</svg>

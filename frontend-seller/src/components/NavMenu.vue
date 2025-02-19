@@ -1,40 +1,60 @@
 <template>
-  <div class="navigation">
-    <img class="logo" src="@/assets/logo.svg" alt="logo">
-    <nav>
-      <ul>
-        <li :class="{ actived: currentRoute === 'home' }">
-          <RouterLink to="/">
-            <i class="pi pi-home" />
-            <span>Home</span>
-          </RouterLink>
-        </li>
+  <div class="navigation" :class="{ focus: isFocus }" @mouseover="isFocus = true" @mouseleave="isFocus = false">
+    <div class="navigation-item" :class="{ focus: isFocus, actived: isActive('home') }">
+      <RouterLink to="/" :class="{ focus: isFocus }">
+        <div class="image flex">
+          <div class="mask" :class="{ actived: isActive('home') }">
+            <img src="@/assets/icons/home.svg" alt="">
+          </div>
+        </div>
+        <span class="legend" :class="{ focus: isFocus }">Home</span>
+      </RouterLink>
+    </div>
 
-        <li :class="{ actived: currentRoute === 'product-list' }">
-          <RouterLink to="/product-list">
-            <i class="pi pi-list" />
-            <span>Product List</span>
-          </RouterLink>
-        </li>
+    <div class="navigation-item" :class="{ actived: isActive('product-list') }">
+      <RouterLink to="/product-list" :class="{ focus: isFocus }">
+        <div class="image flex">
+          <div class="mask" :class="{ actived: isActive('product-list') }">
+            <img src="@/assets/icons/market.svg" alt="">
+          </div>
+        </div>
+        <span class="legend" :class="{ focus: isFocus }">Product List</span>
+      </RouterLink>
+    </div>
 
-        <li :class="{ actived: currentRoute === 'create-product' }">
-          <RouterLink to="/create-product">
-            <i class="pi pi-plus" />
-            <span>Create Product</span>
-          </RouterLink>
-        </li>
+    <div class="navigation-item" :class="{ actived: isActive('create-product') }">
+      <RouterLink to="/create-product" :class="{ focus: isFocus }">
+        <div class="image flex">
+          <div class="mask" :class="{ actived: isActive('create-product') }">
+            <img src="@/assets/icons/plus.svg" alt="">
+          </div>
+        </div>
+        <span class="legend" :class="{ focus: isFocus }">Create Product</span>
+      </RouterLink>
+    </div>
 
-        <li :class="{ actived: currentRoute === 'product-books' }">
-          <RouterLink to="/product-books">
-            <i class="pi pi-folder" />
-            <span>Product Books</span>
-          </RouterLink>
-        </li>
+    <div class="navigation-item" :class="{ actived: isActive('product-books') }">
+      <RouterLink to="/product-books" :class="{ focus: isFocus }">
+        <div class="image flex">
+          <div class="mask" :class="{ actived: isActive('product-books') }">
+            <img src="@/assets/icons/book.svg" alt="">
+          </div>
+        </div>
+        <span class="legend" :class="{ focus: isFocus }">Product Books</span>
+      </RouterLink>
+    </div>
 
-      </ul>
-    </nav>
 
-
+    <div class="navigation-item" :class="{ actived: isActive('notifications') }">
+      <RouterLink to="/notifications" :class="{ focus: isFocus }">
+        <div class="image flex">
+          <div class="mask" :class="{ actived: isActive('notifications') }">
+            <img src="@/assets/icons/bell.svg" alt="">
+          </div>
+        </div>
+        <span class="legend" :class="{ focus: isFocus }">Notifications</span>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
@@ -52,6 +72,11 @@ const unwatchRoute = watch(
   { immediate: true }
 );
 
+const isActive = (name) => {
+  return currentRoute.value === name
+}
+const isFocus = ref(false);
+
 onBeforeUnmount(() => {
   unwatchRoute()
 });
@@ -60,71 +85,93 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .navigation {
-  background: var(--primary-a);
-  margin-left: 0;
-  width: 17rem;
-  z-index: 10;
-  height: 100%;
-  border-radius: 0 1.5rem 1.5rem 0;
-  overflow: hidden;
-  box-shadow: 0 1px 2px #1212170d;
-  display: flex;
+  background: var(--background-b);
+  align-items: flex-start;
   flex-direction: column;
   -webkit-user-select: none;
   -moz-user-select: none;
+  color: var(--text-b);
   user-select: none;
-  transition: margin .4s cubic-bezier(.05, .74, .2, .99), transform .4s cubic-bezier(.05, .74, .2, .99);
+  transition: 0.2s;
+  overflow: hidden;
+  display: flex;
+  margin-left: 0;
+  width: 64px;
+  z-index: 10;
+  height: 100%;
 }
 
-ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.navigation.focus {
+  width: 17rem;
 }
 
-li {
+.navigation .navigation-item {
+  font-size: var(--text-size-2);
   display: flex;
   align-items: center;
   position: relative;
-  font-weight: 500;
+  font-weight: 400;
   box-shadow: none;
   cursor: pointer;
-  font-size: var(--text-size-a);
-  border: 1px solid transparent;
-  color: var(--text-w);
-}
-
-li i {
-  margin-right: 0.75rem;
-  padding: 0.5rem 0;
-}
-
-li span {
   color: inherit;
 }
 
 a {
-  padding: 0.5rem;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  width: 100%;
+  text-decoration: none;
+  justify-content: flex-start;
+  border-top-left-radius: initial;
+  border-bottom-left-radius: initial;
   display: flex;
+  color: inherit;
   align-items: center;
+  transition: 0.2s;
+}
+
+@media (hover: hover) {
+  a:hover {
+    background-color: var(--background-b);
+  }
+}
+
+.navigation .navigation-item span {
   color: inherit;
 }
 
-.logo {
-  padding: 1.5rem;
+.navigation .navigation-item.actived {
+  color: var(--primary-a);
+
 }
 
-.label {
-  font-size: var(--text-size-a);
-  font-weight: 700;
-  color: inherit;
+.navigation .navigation-item .image {
+  justify-content: center;
+  width: 64px;
+  height: 64px;
 }
 
-.actived {
-  border-left: 2px solid white;
-  color: var(--text-w);
- background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 30%);;
+.navigation .navigation-item .image img {
+  width: var(--text-size-4);
+  height: var(--text-size-4);
 }
+
+.mask {
+  border-radius: 50%;
+  background: transparent;
+  width: 60%;
+  height: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.mask.actived {
+  background: #d3dbe561;
+}
+
+.legend {
+  display: initial;
+  white-space: nowrap;
+  margin-left: 0;
+}
+
 </style>

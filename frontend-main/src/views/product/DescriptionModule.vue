@@ -12,36 +12,47 @@ import ListItem from '@tiptap/extension-list-item';
 import TextStyle from '@tiptap/extension-text-style';
 import productAPI from '@/views/product/api/index';
 import { Editor, EditorContent } from '@tiptap/vue-3';
-import { onMounted, ref, nextTick, onBeforeUnmount, computed, watch } from 'vue';
-
+import { onMounted, ref, onBeforeUnmount, watch } from 'vue';
 
 const { getProductData } = productAPI();
 
 const editor = ref(null);
 
 const setupEditor = async () => {
-    await nextTick(() => {
-        editor.value = new Editor({
-            editable: false,
-            extensions: [
-                StarterKit,
-                TextStyle.configure({ types: [ListItem.name] }),
-            ],
-            editorProps: {
-                attributes: {
-                    class: 'editor-class',
-                },
+    editor.value = new Editor({
+        editable: false,
+        extensions: [
+            StarterKit,
+            TextStyle.configure({ types: [ListItem.name] }),
+        ],
+        editorProps: {
+            attributes: {
+                class: 'editor-class',
             },
-            content: "aa",
-        })
-    });
+        },
+        content: "",
+    })
+
+    if (getProductData.value) {
+        const features = JSON.parse(getProductData.value.features);
+
+        editor.value.commands.setContent(features);
+    }
+
+
 }
 
-watch(getProductData, () => {
-    if (editor) {
-        editor.value.commands.setContent(JSON.parse(getProductData.value?.features));
+const unwatchData = watch(getProductData, async (value) => {
+    if (value) {
+        const features = JSON.parse(value.features);
+
+        if (editor.value) {
+            
+            editor.value.commands.setContent(features);
+        }
     }
-})
+
+}, { immediate: true })
 
 
 onMounted(() => {
@@ -49,7 +60,11 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
-    editor.value.destroy()
+    if (editor.value) {
+        editor.value.destroy()
+    }
+
+    unwatchData()
 })
 
 
@@ -58,7 +73,7 @@ onBeforeUnmount(() => {
 <style lang="css" scoped>
 ::v-deep(.editor-class) {
     line-height: 2rem;
-    color: var(--text-b);
+    font-size: var(--text-size-1);
 }
 
 .title {

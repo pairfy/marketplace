@@ -6,9 +6,11 @@ nats context select local
 
 nats stream ls
 
-nats stream delete product #delete stream
+nats stream delete product 
 
-nats consumer ls mystream
+#//////////////////////
+
+nats consumer ls product
 
 nats consumer info product service-gateway-consumer
 

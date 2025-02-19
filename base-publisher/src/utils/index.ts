@@ -14,4 +14,19 @@ const catcher = (message?: any, error?: any, bypass?: boolean) => {
 
 const generateId = customAlphabet("0123456789ABCDEFGHIKLMNOPQRSTUVWXYZ", 15);
 
-export { logger, catcher, generateId }
+const sleep = (timeInMs: number) =>
+    new Promise((resolve) => setTimeout(() => resolve(false), timeInMs));
+  
+
+const errorEvents: string[] = [
+    "exit",
+    "SIGINT",
+    "SIGTERM",
+    "SIGQUIT",
+    "uncaughtException",
+    "unhandledRejection",
+    "SIGHUP",
+    "SIGCONT",
+  ];
+
+export { logger, catcher, generateId, sleep, errorEvents }

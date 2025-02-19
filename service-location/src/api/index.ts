@@ -1,14 +1,14 @@
 import axios from "axios";
 
-//axios.defaults.withCredentials = true;
-//kubectl get nodes -o wide
 
-const API = axios.create({
-  baseURL: "http://192.168.65.9:9080",
-  timeout: 20000,
+const geoAPI = axios.create({
+  baseURL: "https://ipinfo.io/",
+  timeout: 30000,
   headers: {
-    "Content-Type": "application/json"
+    "Content-Type": "application/json",
+  //  "Access-Control-Allow-Credentials": true,
   },
 });
 
-export default API;
+
+export { geoAPI };

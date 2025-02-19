@@ -22,27 +22,58 @@ spec:
                   fieldPath: metadata.name
             - name: POD_TIMEOUT
               value: "120000"
-            - name: DATABASE_HOST
+            - name: DATABASE_HOST  
               valueFrom:
                 configMapKeyRef:
                   name: database-config
-                  key: master
+                  key: master  
             - name: DATABASE_PORT
               valueFrom:
                 configMapKeyRef:
                   name: database-config
-                  key: port
+                  key: port                                     
             - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: db-password
-                  key: password
+                  key: password   
             - name: DATABASE_NAME
-              value: service_state
+              value: service_gateway       
             - name: DATABASE_USER
-              value: marketplace
+              value: marketplace 
             - name: REDIS_HOST
               value: redis://service-state-redis:6379
+            - name: QUERY_LIMIT
+              value: "1000"        
+            - name: QUERY_INTERVAL
+              value: "120000"       
+            - name: SCAN_RANGE
+              value: "5"                               
+            - name: PROJECT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: blockfrost-key
+                  key: key        
+            - name: KUPO_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: kupo-key
+                  key: key 
+            - name: OGMIOS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: ogmios-key
+                  key: key   
+            - name: ELASTIC_NODE
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-endpoint
+                  key: key
+            - name: ELASTIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-api-key
+                  key: key                                             
           resources:
             limits:
               memory: "500Mi"

@@ -1,5 +1,5 @@
-import { Logger } from "tslog";
 import { customAlphabet } from "nanoid";
+import { Logger } from "tslog";
 
 const logger = new Logger({
   name: "POD",
@@ -17,4 +17,35 @@ const catcher = async (message?: any, error?: any, bypass?: boolean) => {
 
 const generateId = customAlphabet("0123456789ABCDEFGHIKLMNOPQRSTUVWXYZ", 15);
 
-export { logger, catcher, generateId };
+const checkDatabase = async (database: any) => {
+  let interval: any = null;
+
+  let connection: any = null;
+
+  const ping = async () => {
+    try {
+      connection = await database.client.getConnection();
+
+      await connection.ping();
+
+      console.log("Database Online");
+    } catch (error) {
+      logger.error("Database Error", error);
+
+      if (connection) {
+        await connection.rollback();
+      }
+
+      clearInterval(interval);
+
+    } finally {
+      if (connection) {
+        connection.release();
+      }
+    }
+  };
+
+  interval = setInterval(ping, 30_000);
+};
+
+export { logger, catcher, generateId, checkDatabase };

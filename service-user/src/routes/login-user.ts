@@ -1,12 +1,12 @@
+import Cardano from "@emurgo/cardano-serialization-lib-nodejs";
 import { BadRequestError } from "../errors";
 import { Request, Response } from "express";
 import { createToken } from "../utils/token";
 import { UserToken, userMiddleware } from "../utils/user";
 import { _ } from "../utils/pino";
 import { getPubKeyHash } from "../utils/crypto";
-import Cardano from "@emurgo/cardano-serialization-lib-nodejs";
-import DB from "../db";
 import { getUsername } from "../utils/nano";
+import DB from "../db";
 
 const verifyDataSignature = require("@cardano-foundation/cardano-verify-datasignature");
 
@@ -41,7 +41,7 @@ const loginUserHandler = async (req: Request, res: Response) => {
     }
 
     connection = await DB.client.getConnection();
-    
+
     await connection.beginTransaction();
 
     const username = getUsername();
@@ -89,7 +89,7 @@ const loginUserHandler = async (req: Request, res: Response) => {
 
     const USER = rows[0];
 
-    const userData: UserToken = {
+    const tokenData: UserToken = {
       pubkeyhash: USER.pubkeyhash,
       role: "USER",
       address: USER.address,
@@ -99,11 +99,18 @@ const loginUserHandler = async (req: Request, res: Response) => {
 
     console.log(schemeValue);
 
+    const token = createToken(tokenData);
+
     req.session = {
-      jwt: createToken(userData),
+      jwt: token,
     };
 
     await connection.commit();
+
+    const userData = {
+      ...tokenData,
+      token,
+    };
 
     res.status(200).send({ success: true, data: userData });
   } catch (err) {

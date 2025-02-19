@@ -5,20 +5,7 @@
   width: 100%;
 }
 
-a {
-  text-decoration: none;
-  transition: 0.1s;
-  padding: 3px;
-  border-radius: 6px;
-  border-top-left-radius: initial;
-  border-bottom-left-radius: initial;
-}
 
-@media (hover: hover) {
-  a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-}
 
 @media (min-width: 1024px) {
   body {
@@ -61,4 +48,8 @@ a {
 
 .p-message-text {
   font-size: var(--text-size-a) !important;
+}
+
+.p-inputtext{
+  font-size: var(--text-size-1) !important;
 }

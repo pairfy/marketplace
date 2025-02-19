@@ -12,6 +12,7 @@
     "typescript": "^5.6.3"
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^8.17.0",
     "@nats-io/jetstream": "^3.0.0-28",
     "@nats-io/transport-node": "^3.0.0-26",
     "express": "^4.21.1",

@@ -1,104 +1,293 @@
 <template>
-    <div class="buy">
-        <Dialog v-model:visible="showBuyDialog" modal header="Transaction" :style="{ width: '25rem' }"
-            :draggable="false">
-            <template #header>
+    <Skeleton v-if="!getProductData" width="100%" height="500px" />
 
-            </template>
+    <div class="card" v-if="getProductData">
+        <Dialog v-model:visible="toggleDialog" modal header="Payment" :style="{ width: '56rem', height: '60rem' }"
+            :draggable="false" dismissableMask>
 
-            <div class="dialog-sub">Buy ({{ selectedQuantity.code }}) units</div>
+            <div class="dialog">
+                <div class="grid">
+                    <div class="grid-item left">
+                        <div class="dialog-row">
+                            <div class="dialog-title flex">
+                                Shipping Address
+                            </div>
 
-            <div class="dialog-name">
-                Razer - Blade 16 - 16" Gaming Laptop -
-                OLED QHD + 240 Hz
-                - Intel i9 -14900HX - NVIDIA GeForce RTX 4080 - 32 GB RAM - 1 TB SSD - Black
+                            <div class="dialog-country flex">
+                                <img :alt="getLocationData?.country" src="@/assets/flag_placeholder.png"
+                                    :class="`flag flag-${getLocationData?.country.toLowerCase()}`" />
+
+                                <span>{{ getLocationData?.name }}, {{ getLocationData?.country }}</span>
+                            </div>
+
+
+                            <div class="dialog-input">
+                                <IftaLabel>
+                                    <InputText id="city" v-model="orderForm.city" fluid placeholder="Miami, Florida"
+                                        :invalid="orderFormErrors.city" autofocus
+                                        v-keyfilter="{ pattern: /^[A-Za-z0-9.'\- ]{1,100}$/, validateOnly: true }" />
+
+                                    <label for="city">City / State / Department</label>
+                                </IftaLabel>
+                            </div>
+
+                            <div class="dialog-input">
+                                <IftaLabel>
+                                    <InputText id="address" v-model="orderForm.address" fluid placeholder=""
+                                        :invalid="orderFormErrors.address"
+                                        v-keyfilter="{ pattern: /^[A-Za-z0-9.,'@+&/()°#\-\s]{1,150}$/, validateOnly: true }" />
+
+                                    <label for="address">Address</label>
+                                </IftaLabel>
+                            </div>
+
+                            <div class="dialog-input">
+                                <IftaLabel>
+                                    <InputText id="name" v-model="orderForm.receiver" fluid
+                                        :invalid="orderFormErrors.receiver"
+                                        v-keyfilter="{ pattern: /^[A-Za-z0-9 ]{1,100}$/, validateOnly: true }" />
+                                    <label for="name">Receiver Name</label>
+                                </IftaLabel>
+                            </div>
+
+                            <div class="dialog-input">
+                                <IftaLabel>
+                                    <InputText id="postal" v-model="orderForm.postal" fluid
+                                        :invalid="orderFormErrors.postal"
+                                        v-keyfilter="{ pattern: /^[A-Za-z0-9.,'@+&/(~)°#\-\s]{1,50}$/, validateOnly: true }" />
+                                    <label for="postal">ZIP/Postal</label>
+                                </IftaLabel>
+                            </div>
+
+                            <div class="dialog-input">
+                                <IftaLabel>
+                                    <InputText id="indications" v-model="orderForm.other" fluid
+                                        v-keyfilter="{ pattern: /^[A-Za-z0-9 ]{1,100}$/, validateOnly: true }" />
+                                    <label for="name">Other Indications / Contact ( optional )</label>
+                                </IftaLabel>
+                            </div>
+
+                            <div class="dialog-message">
+                                <Message severity="secondary">
+                                    Data is encrypted and decrypted end-to-end for shipping using AES256-4096 / RSA /
+                                    PGP.
+
+                                    <a href="https://www.lace.io/bugbountyprogram" target="_blank"
+                                        rel="noopener noreferrer">
+                                        Read more about 1M USD Lace wallet challenge with PGP encryptation.
+                                    </a>
+                                </Message>
+                            </div>
+                        </div>
+
+                        <Divider />
+
+                        <div class="dialog-row">
+                            <div class="dialog-title flex">
+                                Payment method
+                            </div>
+
+                            <div class="payments">
+                                <div class="payment-item selected">
+                                    <span>ADA</span>
+                                </div>
+                                <div class="payment-item disabled">
+                                    <span>IUSD</span>
+                                </div>
+                                <div class="payment-item disabled">
+
+                                    <span>USDM</span>
+                                </div>
+                                <div class="payment-item disabled">
+                                    <span>USDA</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid-item right">
+                        <div class="dialog-title flex">
+                            Total
+                        </div>
+
+                        <div class="dialog-values flex">
+                            <span>Protected</span>
+
+                            <span>Yes</span>
+                        </div>
+
+                        <div class="dialog-values flex">
+                            <span>Shipping Cost</span>
+
+                            <span>Free</span>
+                        </div>
+
+                        <div class="dialog-values flex">
+                            <span>Total Fiat Price</span>
+
+                            <span>{{ computedTotalFiat }} USD</span>
+                        </div>
+
+                        <div class="dialog-values flex">
+                            <span>Exchange Rate</span>
+
+                            <span>{{ getADAprice }} USD</span>
+                        </div>
+
+                        <div class="dialog-values flex">
+                            <span>Quantity</span>
+
+                            <span>{{ selectedQuantity }}</span>
+                        </div>
+
+                        <Divider />
+
+                        <div class="dialog-values flex">
+                            <span>Total Asset</span>
+                            <span>{{ computedTotalPrice }} ADA</span>
+                        </div>
+
+                        <div class="dialog-control">
+                            <Button label="Buy" @click="onBuyHandle" style="color: var(--text-w);" :loading="isLoading"
+                                fluid />
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-
-
-            <div class="dialog-total">
-                Total: {{ computedTotalPrice }} ADA
-            </div>
-
-
-            <div class="dialog-msg">
-                <Message size="small" icon="pi pi-exclamation-circle" severity="info">
-                    The transaction is valid for 5 minutes. The seller has 1 hour to respond otherwise your money will
-                    be refunded.
-                </Message>
-            </div>
-
-
-            <template #footer>
-                <Button label="Cancel" text severity="secondary" @click="showBuyDialog = false" autofocus />
-                <Button label="Buy" outlined severity="secondary" @click="onConfirmedBuy" autofocus />
-            </template>
         </Dialog>
 
 
-        <Skeleton v-if="!getProductData" width="100%" height="500px" />
+        <div class="card-brand">
+            <span>{{ getProductData.brand }}</span>
+        </div>
 
-        <div v-if="getProductData">
-            <div class="buy-brand">
-                {{ getProductData.brand }}
+        <div class="card-stock" :class="{ red: getProductData.available < 1 }">
+            <span>{{ getStockLabel(getProductData.available) }}</span>
+        </div>
+
+        <div class="card-rating flex">
+            <Rating v-model="productRating" :stars="5" readonly />
+            <span>{{ getProductData.rating }}</span>
+            <div class="reviews">{{ getProductData.reviews }} reviews</div>
+        </div>
+
+        <div class="card-full flex green">
+            <span>free shipping</span>
+        </div>
+
+        <div class="card-within">
+            <span> Arrives on {{ arrivalDate }} buying within the next</span>
+
+            <span>{{ withinRange }}</span>
+        </div>
+
+        <div class="card-available">
+            <span>Available ({{ getProductData.available }})</span>
+        </div>
+
+        <div class="card-control">
+            <InputNumber v-model="selectedQuantity" inputId="horizontal-buttons" showButtons buttonLayout="horizontal"
+                :step="1" fluid :format="false" :min="1" :max="10">
+                <template #incrementbuttonicon>
+                    <span class="pi pi-plus" />
+                </template>
+                <template #decrementbuttonicon>
+                    <span class="pi pi-minus" />
+                </template>
+            </InputNumber>
+
+            <Button label="Buy Now" fluid @click="onBuyProduct()" style="color: var(--text-w);"
+                :disabled="getProductData.available < 1" />
+            <Button label="Add To Cart" fluid variant="outlined" severity="secondary" />
+        </div>
+
+        <div class="card-terms flex">
+            <div class="card-terms-icon">
+                <span>✓</span>
+                <i class="pi pi-shield" />
             </div>
-
-            <div class="buy-sku">
-                <span>SKU: {{ getProductData.sku.split(":")[0] }}</span>
-            </div>
-
-            <div class="buy-stock" :class="{ green: 15 > 0, }">
-                {{ getStockLabel(15) }}
-            </div>
-
-
-            <div class="buy-rating flex">
-                <Rating v-model="productRating" :stars="5" readonly />
-                <span> 4.5 </span>
-                <span style="color: var(--text-b)">(1250 reviews)</span>
-            </div>
-
-            <div class="buy-available">
-                Available (15 of 20)
-            </div>
-
-            <div class="buy-control">
-                <Select v-model="selectedQuantity" :options="quantityOptions" optionLabel="name" placeholder="Units"
-                    variant="filled" size="small" />
-                <Button label="Buy Now" fluid @click="openBuyDialog()" />
-                <Button label="Add to Cart" fluid outlined />
+            <div class="card-terms-box">
+                <span class="term-title">Purchase Protection.</span> Receive the product you expected or get your money
+                back.
             </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import headerAPI from '@/components/header/api';
-import productAPI from '@/views/product/api/index';
 import gql from 'graphql-tag';
+import dayjs from 'dayjs';
+import productAPI from '@/views/product/api/index';
+import headerAPI from "@/components/header/api/index";
 import { ref, computed, inject } from "vue";
 import { useMutation } from '@vue/apollo-composable';
 import { useToast } from "primevue/usetoast";
 import { balanceTx } from "@/api/wallet";
+import { useRouter } from 'vue-router';
+import { Buffer } from 'buffer'
 
 const { applyDiscount, convertUSDToADA } = inject('utils');
 
-
-const { getADAprice } = headerAPI();
-
-const { getProductData } = productAPI();
+const router = useRouter();
 
 const toast = useToast();
 
-const showSuccess = (content) => {
-    toast.add({ severity: 'success', summary: 'Success Message', detail: content, life: 5000 });
-};
+const { togglePanel, getADAprice, getCurrentUser, getLocationData } = headerAPI();
 
-const showError = (content) => {
-    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000 });
-};
+const { getProductData, getArrivalDate, getArrivalData } = productAPI();
 
-const selectedQuantity = ref({ name: '1', code: 1 });
+getArrivalDate({
+    "origin": "Bogotá, Cundinamarca, CO"
+})
+
+const orderForm = ref({
+    city: getLocationData.value?.city || null,
+    address: null,
+    receiver: null,
+    postal: getLocationData.value?.postal || null,
+    other: null
+});
+
+
+const orderFormErrors = ref({
+    city: false,
+    address: false,
+    receiver: false,
+    postal: false,
+    other: false
+});
+
+const validateForm = () => {
+    orderFormErrors.value.city = [orderForm.value.city === null, orderForm.value.city?.length < 1].includes(true);
+    orderFormErrors.value.address = [orderForm.value.address === null, orderForm.value.address?.length < 1].includes(true);
+    orderFormErrors.value.receiver = [orderForm.value.receiver === null, orderForm.value.receiver?.length < 1].includes(true);
+    orderFormErrors.value.postal = [orderForm.value.postal === null, orderForm.value.postal?.length < 1].includes(true);
+
+    return !Object.values(orderFormErrors.value).includes(true);
+}
+
+const isLoading = ref(false)
+
+const onBuyHandle = () => {
+    isLoading.value = true;
+
+    if (!validateForm()) {
+        isLoading.value = false;
+
+        return showError('Mandatory Fields')
+    }
+
+    console.log(orderForm.value);
+
+    const orderData = JSON.stringify(orderForm.value);
+
+    const data = Buffer.from(orderData).toString('base64');
+
+    onConfirmedBuy(data);
+}
+
+const selectedQuantity = ref(1);
 
 const computedTotalPrice = computed(() => {
     let product = getProductData.value;
@@ -111,43 +300,51 @@ const computedTotalPrice = computed(() => {
 
         let price = convertUSDToADA(discounted, getADAprice.value);
 
-        return price * selectedQuantity.value.code
+        return Math.round(price * selectedQuantity.value)
     }
 
     return 0;
 })
 
-const quantityOptions = ref([
-    { name: '1', code: 1 },
-    { name: '2', code: 2 },
-    { name: '3', code: 3 },
-    { name: '4', code: 4 },
-    { name: '5', code: 5 },
-    { name: '6', code: 6 },
-    { name: '7', code: 7 },
-    { name: '8', code: 8 },
-    { name: '9', code: 9 },
-    { name: '10', code: 10 }
-]);
+const computedTotalFiat = computed(() => {
+    let product = getProductData.value;
 
-const productRating = ref(4);
+    if (product) {
+        let discounted = applyDiscount(product.discount,
+            product.price,
+            product.discount_value
+        );
+
+
+        return Math.round(discounted * selectedQuantity.value)
+    }
+
+    return 0;
+})
+
+const productRating = ref(getProductData.value?.rating);
 
 const getStockLabel = (readyStock) => {
     return readyStock > 0 ? "In Stock" : "Out Stock";
 }
 
-const showBuyDialog = ref(false);
+const toggleDialog = ref(false);
 
-const openBuyDialog = () => {
-    showBuyDialog.value = true;
+const onBuyProduct = () => {
+    if (!getCurrentUser.value) {
+        return togglePanel(true)
+    }
+
+    toggleDialog.value = true;
 }
 
-const { mutate: sendMessage, loading: sendMessageLoading, onError: onCreateOrderError, onDone: onOrderCreated } = useMutation(gql`
-mutation($createOrderVariable: CreateOrderInput!){
-    createOrder(createOrderInput: $createOrderVariable){
+const { mutate: pendingEndpoint, onError: onErrorPendingEndpoint, onDone: onDonePendingEndpoint } = useMutation(gql`
+mutation($pendingEndpointVariable: PendingEndpointInput!){
+    pendingEndpoint(pendingEndpointInput: $pendingEndpointVariable){
         success
         payload {
             cbor
+            order
         }
     }
 }
@@ -156,25 +353,39 @@ mutation($createOrderVariable: CreateOrderInput!){
         clientId: 'gateway'
     })
 
-onCreateOrderError(error => {
+onErrorPendingEndpoint(error => {
     showError(error);
 })
 
 
-onOrderCreated(async result => {
+onDonePendingEndpoint(async result => {
     const response = result.data;
 
-    if (response.createOrder.success === true) {
+    if (response.pendingEndpoint.success === true) {
         try {
-            const txHash = await balanceTx(response.createOrder.payload.cbor);
+            const { cbor, order } = response.pendingEndpoint.payload;
 
-            showSuccess("Transaction submited");
+            const txHash = await balanceTx(cbor);
 
-            console.log(`Transaction submitted with hash: ${txHash}`);
+            showSuccess("Submitted", `Transaction Hash: ${txHash}`);
+
+            console.log(`Transaction Hash: ${txHash}`);
+
+            router.push({
+                name: 'order',
+                params: {
+                    id: order
+                },
+                query: {
+                    tx: txHash
+                }
+            })
+            isLoading.value = false
         } catch (err) {
             console.error(err);
 
             showError(err);
+            isLoading.value = false
         }
     }
 
@@ -182,88 +393,270 @@ onOrderCreated(async result => {
 })
 
 
-const onConfirmedBuy = () => {
-    sendMessage({
-        "createOrderVariable": {
+const onConfirmedBuy = (data) => {
+    pendingEndpoint({
+        "pendingEndpointVariable": {
             "product_id": getProductData.value.id,
-            "product_units": selectedQuantity.value.code,
+            "product_units": selectedQuantity.value,
+            "data": data
         }
     })
 }
+
+const arrivalDate = computed(() => calculateArrivalDay(getArrivalData.value?.duration));
+
+const withinRange = computed(() => calculateRemainingTimeOfDay());
+
+const calculateRemainingTimeOfDay = () => {
+
+    const now = dayjs();
+
+    const midnight = dayjs().endOf('day');
+
+    const duration = midnight.diff(now);
+
+    const hours = Math.floor(duration / (1000 * 60 * 60));
+
+    const minutes = Math.floor((duration % (1000 * 60 * 60)) / (1000 * 60));
+
+
+    return `${hours} h ${minutes} min`;
+};
+
+
+function calculateArrivalDay(durationInSeconds) {
+
+    const arrivalDate = dayjs().add(durationInSeconds, 'second');
+
+    const arrivalDay = arrivalDate.format('dddd DD');
+
+    return arrivalDay;
+};
+
+const showSuccess = (title, content) => {
+    toast.add({ severity: 'success', summary: title, detail: content, life: 5000 });
+};
+
+const showError = (content) => {
+    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000 });
+};
+
 </script>
 
 <style lang="css" scoped>
-.buy {
+a {
+    font-weight: 600;
+}
+
+.card {
     border: 1px solid var(--border-a);
-    border-radius: 8px;
     min-height: 100px;
     display: flex;
     flex-direction: column;
     padding: 1rem;
+    width: 275px;
+    margin-left: auto;
+    border-radius: 6px;
+    max-height: 600px;
 }
 
-.buy-control {
+.card-control {
     display: grid;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 1rem;
 }
 
-.buy-available {
-    font-size: var(--text-size-a);
-    font-weight: 400;
-    margin-top: 1rem;
-    color: var(--text-b);
-}
-
-.buy-brand {
-    font-weight: 700;
-    font-size: var(--text-size-a);
+.card-brand {
+    font-size: var(--text-size-1);
+    margin-bottom: 1rem;
     text-transform: capitalize;
+    font-weight: 700;
 }
 
-.buy-sku {
-    margin-top: 1rem;
-    font-size: var(--text-size-a);
+.card-stock {
+    font-size: var(--text-size-1);
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+    font-weight: 700;
 }
 
-.buy-legend {
-    margin-top: 1rem;
+.card-rating {
+    margin-bottom: 1rem;
 }
 
-.buy-rating {
-    margin-top: 1rem;
-}
-
-.buy-rating span {
+.card-rating span {
     margin-left: 0.5rem;
-    font-size: var(--text-size-a);
-}
-
-.buy-stock {
-    color: var(--red-a);
+    font-size: var(--text-size-2);
     font-weight: 600;
-    margin-top: 1rem;
 }
 
-.buy-stock.green {
-    color: var(--green-a);
-}
-
-.dialog-name {
-    margin-top: 1rem;
-}
-
-.dialog-msg {
-    margin-top: 1rem;
-}
-
-.dialog-sub {
+.card-stock {
+    font-size: var(--text-size-2);
+    margin-bottom: 1rem;
+    text-transform: capitalize;
     font-weight: 500;
 }
 
-.dialog-total {
-    margin-top: 1rem;
+.card-within {
+    font-size: var(--text-size-1);
+    margin-bottom: 1rem;
+}
+
+.card-within span:nth-child(2) {
+    margin-left: 0.25rem;
+    color: var(--text-a);
     font-weight: 600;
-    font-size: var(--text-size-c);
+}
+
+.card-available {
+    font-size: var(--text-size-1);
+    margin-bottom: 1rem;
+    text-transform: capitalize;
+    font-weight: 400;
+}
+
+.card-full {
+    font-weight: 500;
+    text-transform: capitalize;
+    margin-bottom: 1rem;
+    font-size: var(--text-size-1);
+}
+
+.card-full i {
+    margin: 0 0.25rem;
+}
+
+.reviews {
+    font-size: var(--text-size-0);
+    margin-left: 0.5rem;
+    text-decoration: underline;
+}
+
+.dialog-values {
+    justify-content: space-between;
+    font-weight: 500;
+    font-size: var(--text-size-1);
+    margin-top: 1rem;
+}
+
+
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    width: 100%;
+    color: var(--text-a);
+}
+
+.grid-item {
+    text-align: center;
+}
+
+.grid-item.right {
+    padding-left: 1rem;
+    border-left: 1px dashed var(--border-a);
+}
+
+.dialog {
+    padding: 0.5rem;
+}
+
+.dialog-title {
+    font-weight: 600;
+    line-height: 2rem;
+    font-size: var(--text-size-3);
+}
+
+.dialog-control {
+    margin-top: 1rem;
+}
+
+.dialog-input {
+    margin-top: 1rem;
+}
+
+.dialog-row {
+    margin-bottom: 1rem;
+}
+
+.payments {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: repeat(auto-fit, 120px);
+    margin-top: 1rem;
+    width: 100%;
+}
+
+.payment-item {
+    width: 120px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid var(--border-a);
+    font-weight: 500;
+}
+
+.payment-item span {
+    font-size: var(--text-size-1);
+}
+
+.payment-item.selected {
+    border: 1px solid var(--primary-a);
+}
+
+.payment-item.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.dialog-message {
+    margin-top: 1rem;
+}
+
+.dialog-country {
+    margin-top: 1rem;
+}
+
+.dialog-country span {
+    font-size: var(--text-size-2);
+    color: var(--text-a);
+    font-weight: 500;
+    margin-left: 1rem;
+}
+
+.card-terms {
+    margin-top: 1rem;
+    height: 80px;
+    box-sizing: border-box;
+}
+
+.card-terms-icon {
+    width: 50px;
+    display: flex;
+    align-items: flex-start;
+    color: var(--text-b);
+    height: inherit;
+    position: relative;
+    padding-top: 4px;
+}
+
+.card-terms-icon span {
+    position: absolute;
+    right: 11px;
+    top: 3px;
+    font-size: 10px;
+}
+
+.card-terms-box {
+    font-size: var(--text-size-0);
+    color: var(--text-b);
+    height: inherit;
+}
+
+.term-title {
+    font-weight: 600;
+    color: var(--text-a);
 }
 </style>

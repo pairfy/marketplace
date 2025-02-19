@@ -48,7 +48,7 @@ function applyDiscount(
 
   const discountedPrice = productPrice - discountAmount;
 
-  return Math.trunc(discountedPrice);
+  return Math.round(discountedPrice);
 }
 
 /**
@@ -73,26 +73,31 @@ function convertUSDToLovelace(usdAmount: number, adaPrice: number): number {
   return Math.round(amountInLovelace);
 }
 
-async function getContractCollateral(
-  productCollateral: number,
-  productUnits: number,
-  adaPrice: number
-) {
+async function getContractFee(contractPrice: number) {
   try {
-    if (productCollateral < 0) {
-      throw new Error("USD amount cannot be negative.");
+    if (contractPrice < 0) {
+      throw new Error("INTERNAL_ERROR_GCF");
     }
 
-    if (productUnits <= 0) {
-      throw new Error("productUnits negative");
+    if (!process.env.FEE_PERCENT) {
+      throw new Error("INTERNAL_ERROR_GCF");
     }
 
-    const total = productCollateral * productUnits;
+    const percent = parseInt(process.env.FEE_PERCENT as string);
 
-    return convertUSDToLovelace(total, adaPrice);
+    if (percent < 0) {
+      throw new Error("INTERNAL_ERROR_GCF");
+    }
+
+    if (percent > 20) {
+      throw new Error("INTERNAL_ERROR_GCF");
+    }
+    const result = (contractPrice * percent) / 100;
+    
+    return Math.round(result);
   } catch (err) {
     throw err;
   }
 }
 
-export { getContractPrice, getContractCollateral };
+export { getContractPrice, getContractFee };

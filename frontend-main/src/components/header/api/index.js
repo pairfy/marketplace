@@ -10,8 +10,8 @@ const headerAPI = () => {
   const currentUser = async (params) =>
     await store.dispatch("header/currentUser", params);
 
-  const showPanel = async (params) =>
-    await store.dispatch("header/showPanel", params);
+  const togglePanel = async (params) =>
+    await store.dispatch("header/togglePanel", params);
 
   const connectWallet = async (params) =>
     await store.dispatch("header/connectWallet", params);
@@ -34,25 +34,31 @@ const headerAPI = () => {
   const setADAprice = async (data) =>
     await store.dispatch("header/setADAprice", data);
 
-  const startTx = async (data) => await store.dispatch("header/startTx", data);
+  const getLocation = async (data) =>
+    await store.dispatch("header/getLocation", data);
 
+  const setLocation = async (data) =>
+    await store.dispatch("header/setLocation", data);
+  
   return {
     currentSeller,
-    showPanel,
+    togglePanel,
+    setLocation,
     currentUser,
     logoutUser,
     loginSeller,
+    getLocation,
     logoutSeller,
     loginUser,
-    startTx,
     setupLucid,
     connectWallet,
     setADAprice,
     getCurrentSeller: computed(() => store.getters["header/getCurrentSeller"]),
     getCurrentUser: computed(() => store.getters["header/getCurrentUser"]),
-    drawerVisible: computed(() => store.getters["header/drawerVisible"]), 
+    panelVisible: computed(() => store.getters["header/panelVisible"]), 
     getLucid: computed(() => store.getters["header/getLucid"]),
-    getADAprice: computed(() => store.getters["header/getADAprice"])
+    getADAprice: computed(() => store.getters["header/getADAprice"]),
+    getLocationData: computed(() => store.getters["header/getLocationData"])
   };
 };
 

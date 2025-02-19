@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: service-feed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      role: service-feed 
+  template:
+    metadata:
+      labels:
+        role: service-feed 
+    spec:
+      containers:
+        - name: service-feed 
+          image: pairfy/service-feed 
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: POD_TIMEOUT
+              value: "120000"
+            - name: REDIS_HOST
+              value: redis://service-state-redis:6379
+            - name: INTERVAL_MS
+              value: "604800000"       
+            - name: BEST_SELLER
+              value: "false"                     
+            - name: ELASTIC_NODE
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-endpoint
+                  key: key
+            - name: ELASTIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-api-key
+                  key: key               
+          resources:
+            limits:
+              memory: "300Mi"
+            requests:
+              memory: "256Mi"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: service-feed
+spec:
+  selector:
+    role: service-feed
+  ports:
+    - name: service-feed
+      protocol: TCP
+      port: 8000
+      targetPort: 8000

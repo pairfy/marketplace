@@ -33,7 +33,7 @@ spec:
             - name: STREAM_SUBJECT
               value: product.*              
             - name: QUERY_INTERVAL
-              value: "10000"    
+              value: "30000"    
             - name: QUERY_LIMIT
               value: "500"                                   
           resources:

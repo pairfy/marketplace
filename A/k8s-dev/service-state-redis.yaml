@@ -46,7 +46,7 @@ spec:
           image: redis
           resources:
             limits:
-              memory: "500Mi"
+              memory: "1Gi"
             requests:
               memory: "256Mi"
           volumeMounts:

@@ -1,40 +1,24 @@
 <template>
-    <div class="wrap">
-        <div class="mask" />
+    <div class="body">
         <div class="container">
             <div class="card-header">
                 <span @click="backRoute">Back</span>
-                <div class="flex" style="margin: 0 0.5rem;">
+                <div class="flex">
                     <i class="pi pi-angle-right" />
                 </div>
                 <span>Home</span>
-                <div class="flex" style="margin: 0 0.5rem;">
+                <div class="flex">
                     <i class="pi pi-angle-right" />
                 </div>
                 <span>Categories</span>
-                <div class="flex" style="margin: 0 0.5rem;">
+                <div class="flex">
                     <i class="pi pi-angle-right" />
                 </div>
                 <span>{{ getProductData?.category }}</span>
             </div>
-            <div class="card">
-                <div class="card-left">
-                    <div class="card-image-preview">
-                        <MediaModule />
-                        <PreviewModule />
-                    </div>
-
-                    <Divider/>
-                    <DescriptionModule/>
-                </div>
-                <div class="card-right">
-                    <BuyModule />
-                </div>
-            </div>
-
-            <div class="footer">
-                
-            </div>
+            <ProductCard />
+            <Divider />
+            <DescriptionModule />
         </div>
     </div>
 </template>
@@ -42,27 +26,21 @@
 <script setup>
 import gql from 'graphql-tag';
 import productAPI from '@/views/product/api/index';
-import MediaModule from './MediaModule.vue';
-import PreviewModule from './PreviewModule.vue';
 import DescriptionModule from '@/views/product/DescriptionModule.vue';
-import BuyModule from "@/views/product/BuyModule.vue"
+import MiniGrid from '@/views/product/MiniGrid.vue';
+import ProductCard from '@/views/product/ProductCard.vue';
+import { onBeforeUnmount, ref, watch } from "vue";
 import { useRouter, useRoute } from 'vue-router';
 import { useQuery } from '@vue/apollo-composable'
-import { ref, watch } from "vue";
+import { useToast } from "primevue/usetoast";
+
+const toast = useToast();
 
 const { setProductData, getProductData } = productAPI();
-
-const showError = (content) => {
-    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000, closable: false });
-};
 
 const route = useRoute()
 
 const router = useRouter()
-
-const backRoute = () => {
-    router.go(-1)
-}
 
 const queryVariablesRef = ref({
     "getProductVariable": {
@@ -74,27 +52,34 @@ const queryEnabled = ref(false)
 const { result: getProductResult, onError: onGetProductError } = useQuery(gql`
 query ($getProductVariable: GetProductInput!) {
     getProduct(getProductInput: $getProductVariable) {
-        id
-        name
-        price
-        collateral
-        sku
-        model
-        brand
-        features
-        category
-        keywords
-        bullet_list
-        paused
-        color
-        color_name
-        quality
-        media_url
-        image_path
-        image_set
-        video_set
-        discount
-        discount_value
+        success
+        payload { 
+            id
+            name
+            price
+            sku
+            model
+            brand
+            features
+            category
+            keywords
+            bullet_list
+            paused
+            color
+            color_name
+            quality
+            media_url
+            image_path
+            image_set
+            video_set
+            discount
+            discount_value
+            rating
+            reviews
+            best_seller
+            sold
+            available
+        }
     }
 }
 `,
@@ -115,7 +100,7 @@ const updateQueryVariables = (id) => {
     }
 }
 
-watch(
+const unwatchRoute = watch(
     () => route.params.id,
     (id) => {
         if (id) {
@@ -126,10 +111,9 @@ watch(
     { immediate: true }
 );
 
-watch(getProductResult, value => {
+const unwatchGetProduct = watch(getProductResult, value => {
     if (value) {
-        console.log(value);
-        setProductData(value.getProduct)
+        setProductData(value.getProduct.payload)
     }
 })
 
@@ -137,12 +121,23 @@ onGetProductError(error => {
     showError(error);
 })
 
+const backRoute = () => {
+    router.go(-1)
+}
 
+const showError = (content) => {
+    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000, closable: true });
+};
+
+onBeforeUnmount(() => {
+    unwatchRoute()
+    unwatchGetProduct()
+})
 
 </script>
 
 <style lang="css" scoped>
-.wrap {
+.body {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -152,71 +147,42 @@ onGetProductError(error => {
 }
 
 .mask {
-    height: 250px;
+    height: 150px;
     width: inherit;
     position: relative;
     z-index: 1;
     background-repeat: no-repeat;
     background-size: cover;
-    background-image: url("https://http2.mlstatic.com/D_NQ_898353-MLA80842011878_122024-OO.webp");
+    background-position-y: 15%;
 }
 
 .container {
-    display: flex;
-    flex-direction: column;
-    margin-top: -100px;
-    max-width: 1200px;
-    width: 80%;
-    height: auto;
-    position: relative;
-    z-index: 10;
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
-    overflow: hidden;
     background: var(--background-a);
+    border: 1px solid var(--border-a);
+    border-radius: 6px;
+    flex-direction: column;
+    max-width: var(--body-a);
+    position: relative;
+    display: flex;
+    width: 100%;
+    height: auto;
+    z-index: 10;
+    overflow: hidden;
+    padding: 1.5rem;
+    margin-top: 1rem;
 }
 
 .card-header {
-    padding: 1rem;
     display: flex;
     align-items: center;
-    background: var(--background-b);
-    font-size: var(--text-size-a);
-    color: var(--text-b);
-    border: 1px solid var(--border-a);
+    font-size: var(--text-size-0);
+    text-transform: capitalize;
     border-bottom: none;
-    border-top-right-radius: 8px;
-    border-top-left-radius: 8px;
+    color: var(--text-b);
 }
 
-.card {
-    display: grid;
-    grid-template-columns: 75% 25%;
-    padding: 1.5rem;
-    box-sizing: border-box;
-    border: 1px solid var(--border-a);
-}
-
-.card-left {
-    display: grid;
-    grid-template-rows: auto auto auto 1fr;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-    padding-right: 1.5rem;
-}
-
-.card-right {
-    min-height: 100vh;
-}
-
-.card-image-preview {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1rem;
-}
-
-.footer {
-    height: 200px;
-    display: flex;
+.card-header div {
+    margin: 0 0.5rem;
+    color: var(--text-b);
 }
 </style>

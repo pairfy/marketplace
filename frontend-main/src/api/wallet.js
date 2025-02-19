@@ -72,20 +72,24 @@ const getBalance = async () => {
   return adaBalance.toString()
 }
 
-const getMessage = () => {
-  const message = 'PLEASE SIGN TO AUTHENTICATE YOUR PUBLIC SIGNATURE'
+const getMessage = (mode) => {
+  let message = 'PLEASE SIGN TO AUTHENTICATE YOUR PUBLIC SIGNATURE'
+
+  if (mode === 'seller') {
+    message = 'SIGN TO AUTHENTICATE YOUR PUBLIC SIGNATURE'
+  }
 
   return Buffer.from(message, 'utf8').toString('hex')
 }
 
-const signMessage = async () => {
+const signMessage = async (mode) => {
   if (!enabledWalletAPI) {
     await reconnect()
   }
 
   const address = await getAddress()
 
-  const signature = await enabledWalletAPI.signData(address, getMessage())
+  const signature = await enabledWalletAPI.signData(address, getMessage(mode))
 
   return [signature, address]
 }
@@ -146,14 +150,18 @@ const walletClient = () => {
   }
 }
 
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////
 
 const balanceTx = async (unbalancedTx) => {
   const utx = CardanoWasm.Transaction.from_hex(unbalancedTx)
 
-  console.log(utx)
+  console.log(
+    '/////////////////////////////////////////////////////////////////////////////////////////',
+  )
 
-  const tx = CardanoWasm.Transaction.new(utx.body(), utx.witness_set())
+  console.log('OLD BODY', utx.to_json())
+
+  const tx = CardanoWasm.Transaction.new(utx.body(), utx.witness_set(), utx.auxiliary_data())
 
   let txVkeyWitnesses = await enabledWalletAPI.signTx(
     Buffer.from(tx.to_bytes(), 'utf8').toString('hex'),
@@ -168,7 +176,11 @@ const balanceTx = async (unbalancedTx) => {
 
   newTransactionWitnessSet.set_vkeys(txVkeyWitnesses.vkeys())
 
-  const signedTx = CardanoWasm.Transaction.new(tx.body(), newTransactionWitnessSet)
+  const signedTx = CardanoWasm.Transaction.new(tx.body(), newTransactionWitnessSet, tx.auxiliary_data())
+
+  console.log(
+    '/////////////////////////////////////////////////////////////////////////////////////////',
+  )
 
   console.log('NEWBODY', signedTx.to_json())
 

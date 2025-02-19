@@ -9,36 +9,92 @@ import {
   SpendingValidator,
   validatorToAddress,
   paymentCredentialOf,
+  Lucid,
+  Network,
 } from "@lucid-evolution/lucid";
-import { lucid, validators } from "./index.js";
-
-const NETWORK = "Preprod";
-
-const PENDING_UNTIL = 15; // env minutes
+import { provider, serializeParams, validators } from "./index.js";
 
 /**Generates a CBOR transaction to be signed and sent in the browser by the buyer. */
 async function pendingTransactionBuilder(
+  operatorPubKeyHash: string,
   externalWalletAddress: string,
   sellerPubKeyHash: string,
   contractPrice: bigint,
-  contractCollateral: bigint,
-  validUntil: bigint,
-  pendingUntil: bigint,
-  shippingUntil: bigint
+  fee: bigint,
+  metadata: any
 ) {
+  //////////////////////////////////////////////////
+
+  let NETWORK: Network = "Preprod";
+
+  if (!process.env.NETWORK_ENV) {
+    throw new Error("NETWORK_ENV unset");
+  }
+
+  if (process.env.NETWORK === "Mainnet") {
+    NETWORK = "Mainnet";
+  }
+
+  //////////////////////////////////////////////////
+
+  const lucid = await Lucid(provider, NETWORK);
+
+  //////////////////////////////////////////////////
+
+  const txValidTime = BigInt(process.env.TX_VALID_TIME as string);
+
+  const txWatchWindow = BigInt(process.env.TX_WATCH_WINDOW as string);
+
+  const pendingRange = BigInt(process.env.PENDING_RANGE as string);
+
+  const shippingRange = BigInt(process.env.SHIPPING_RANGE as string);
+
+  const expiringRange = BigInt(process.env.EXPIRING_RANGE as string);
+
+  //////////////////////////////////////////////////
+
+  const now = BigInt(Date.now());
+
+  const validToMs = now + txValidTime;
+
+  const watchUntil = now + txValidTime + txWatchWindow;
+
+  const pendingUntil = now + txValidTime + txWatchWindow + pendingRange;
+
+  const shippingUntil =
+    now + txValidTime + txWatchWindow + pendingRange + shippingRange;
+
+  const expireUntil =
+    now +
+    txValidTime +
+    txWatchWindow +
+    pendingRange +
+    shippingRange +
+    expiringRange;
+
+  //////////////////////////////////////////////////
+
   const externalWalletUtxos = await lucid.utxosAt(externalWalletAddress);
 
   lucid.selectWallet.fromAddress(externalWalletAddress, externalWalletUtxos);
 
   const buyerPubKeyHash = paymentCredentialOf(externalWalletAddress).hash;
-  ////////////////////////////////
-  const minLovelace = contractPrice; //fee
+
+  //////////////////////////////////////////////////
+
+  const txCollateral = 2_000_000n;
+
+  const minLovelace = contractPrice + txCollateral;
 
   const findIndex = externalWalletUtxos.findIndex(
     (item) => item.assets.lovelace > minLovelace
   );
 
   const utxo = externalWalletUtxos[findIndex];
+
+  if (!utxo) {
+    throw new Error("MIN_LOVELACE");
+  }
 
   const utxoRef = new Constr(0, [
     String(utxo.txHash),
@@ -51,7 +107,7 @@ async function pendingTransactionBuilder(
     type: "PlutusV3",
     script: applyParamsToScript(
       applyDoubleCborEncoding(validators.threadToken),
-      [tokenName, utxoRef, validUntil]
+      [tokenName, utxoRef, validToMs]
     ),
   };
 
@@ -61,45 +117,43 @@ async function pendingTransactionBuilder(
 
   ///////////////////////////////////////
 
+  const stateMachineParams = [
+    threadTokenPolicyId,
+    operatorPubKeyHash,
+    sellerPubKeyHash,
+    buyerPubKeyHash,
+    contractPrice,
+    fee,
+    pendingUntil,
+    shippingUntil,
+    expireUntil,
+  ];
+
+  const serializedParams = serializeParams(stateMachineParams);
+
   const stateMachineScript: SpendingValidator = {
     type: "PlutusV3",
     script: applyParamsToScript(
       applyDoubleCborEncoding(validators.stateMachine),
-      [
-        threadTokenPolicyId,
-        sellerPubKeyHash,
-        buyerPubKeyHash,
-        contractPrice,
-        contractCollateral,
-        pendingUntil
-      ]
+      stateMachineParams
     ),
   };
 
   ////////////////////////////////////////////
+
   const datumValues = {
-    state: BigInt(0)
+    state: BigInt(0),
+    delivery: null,
   };
 
   const StateMachineDatum = Data.Object({
-    state: Data.Integer()
+    state: Data.Integer(),
+    delivery: Data.Nullable(Data.Integer()),
   });
 
   type DatumType = Data.Static<typeof StateMachineDatum>;
 
   const DatumType = StateMachineDatum as unknown as DatumType;
-
-  /*
-  const getUTXObyunit = await lucid.utxoByUnit("4243c29b2d04e0ce751286f77fb40fd6749efec0ea45c4ac7e791caf746872656164746f6b656e");
-
-  if (getUTXObyunit.datum) {
-    console.log(getUTXObyunit);
-    const datum = Data.from(getUTXObyunit.datum, StateMachineDatum);
-
-    console.log(datum);
-  }
-
-  */
 
   const stateMachineDatum = Data.to(datumValues, DatumType);
 
@@ -131,83 +185,70 @@ async function pendingTransactionBuilder(
     )
     .attach.MintingPolicy(threadTokenScript)
     .addSigner(externalWalletAddress)
-    .validTo(Number(validUntil))
+    .validTo(Number(validToMs))
+    .attachMetadata(77, metadata)
     .complete({
       changeAddress: externalWalletAddress,
-      setCollateral: 1_000_000n,
+      setCollateral: txCollateral,
       coinSelection: false,
       localUPLCEval: false,
     });
 
   const cbor = transaction.toCBOR();
 
-  console.log("ThreadToken: ", threadTokenPolicyId);
-
-  console.log("Unit: ", assetUnit);
-
-  console.log("stateMachineAddress: ", stateMachineAddress);
-
-  console.log("CBOR---------------------------------------");
-
-  console.log(cbor);
-
   return {
     threadTokenPolicyId,
     stateMachineAddress,
-    tokenName,
+    serializedParams,
+    assetUnit,
     cbor,
+    watchUntil,
+    pendingUntil,
+    shippingUntil,
+    expireUntil,
   };
 }
 
-function main() {
-  const now = Date.now();
-
-  const TX_VALID_TIME = 5; //tx valid until
-
-  const WATCH_TX_WINDOW = 15; //Observation window limit for the detection of the first transaction
-
-  const PENDING_UNTIL = 60; // 15minutes for the seller to accept;
-
-  const SHIPPING_UNTIL = 1440; // 24h to shipping;
-
-  ///////////////////////////////////////////////
-
-  const validUntil = now + TX_VALID_TIME * 60 * 1000;
-
-  const pendingUntil =
-    now + (TX_VALID_TIME + WATCH_TX_WINDOW + PENDING_UNTIL * 60 * 1000);
-
-  const shippingUntil =
-    now +
-    (TX_VALID_TIME +
-      WATCH_TX_WINDOW +
-      PENDING_UNTIL +
-      SHIPPING_UNTIL * 60 * 1000);
-
+async function main() {
+  const operatorPubKeyHash =
+    "a239e6c2bbd6a9f3249d65afef89c28e1471ed07c529ec06848cc141";
 
   const externalWalletAddress =
-    "addr_test1qz3rnekzh0t2nueyn4j6lmufc28pgu0dqlzjnmqxsjxvzs24qtjuxnphyqxz46t40nudnm3kxu8hkau2mq6nw7svg7jswruwy3";
+    "addr_test1qp6xhlulkdnm7wa3kf07yj389weg34329jk34tfwx75pw0urvzxsjpchzgnhfmvz35ap356vg3a2c2af34zl4va7cfzqtyf6jn";
+
+  const sellerPubKeyHash =
+    "a239e6c2bbd6a9f3249d65afef89c28e1471ed07c529ec06848cc141";
 
   const contractPrice = 30 * 1_000_000;
 
-  const contractCollateral = 10 * 1_000_000;
+  const fee = 2_000_000;
 
-  const sellerPubKeyHash =
-    "659fa0cf862b8460989af5f1200118a910ca04ae31b65aaa767d2b65";
+  const metadata = { msg: "example" };
 
-  pendingTransactionBuilder(
+  const BUILDER = await pendingTransactionBuilder(
+    operatorPubKeyHash,
     externalWalletAddress,
     sellerPubKeyHash,
     BigInt(contractPrice),
-    BigInt(contractCollateral),
-    BigInt(validUntil),
-    BigInt(pendingUntil),
-    BigInt(shippingUntil)
+    BigInt(fee),
+    metadata
   );
+
+  console.log("--------------------------------------------------------");
+
+  console.log("ThreadToken: ", BUILDER.threadTokenPolicyId);
+
+  console.log("Unit: ", BUILDER.assetUnit);
+
+  console.log("stateMachineAddress: ", BUILDER.stateMachineAddress);
+
+  console.log("stateMachineParams: ", BUILDER.serializedParams);
+
+  console.log("--------------------------------------------------------");
+
+  console.log(BUILDER.cbor);
 }
 
 //main();
 
 export { pendingTransactionBuilder };
-
-//two signature, collateral, validto, paramterice price, collateral, seller, buyer

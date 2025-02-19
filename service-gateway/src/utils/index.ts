@@ -1,7 +1,7 @@
 import { Logger } from "tslog";
 import { customAlphabet } from "nanoid";
-import { redisClient } from "../db/redis.js";
-import { database } from "../db/client.js";
+import { redisClient } from "../database/redis.js";
+import { database } from "../database/client.js";
 
 const logger = new Logger({
   name: "POD",
@@ -36,4 +36,8 @@ const errorEvents: string[] = [
   "SIGCONT",
 ];
 
-export { logger, catcher, getProductId, errorEvents };
+function getCurrentTimestamp() {
+  return new Date().toISOString().replace("T", " ").substring(0, 19);
+}
+
+export { logger, catcher, getProductId, errorEvents, getCurrentTimestamp };

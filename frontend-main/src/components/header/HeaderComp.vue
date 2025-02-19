@@ -1,74 +1,95 @@
 <template>
     <header>
         <DrawerComp />
+        <PriceBar />
         <div class="header">
             <div class="header-col left">
-                <img class="logo" src="@/assets/logo-blue.png" alt="">
+                <img class="brand" src="@/assets/logo-white.svg" alt="" @click="toHome">
+
+                <LocationComp />
             </div>
             <div class="header-col center">
                 <SearchComp />
             </div>
             <div class="header-col right">
-                <OverlayBadge class="header-button" value="1" severity="danger" @click="toggle">
-                    <i class="pi pi-bell" style="font-size: var(--text-size-c)" />
-                </OverlayBadge>
 
-                <Popover ref="op">
-                    <div class="notifications">
-                        notification list
-                    </div>
-                </Popover>
+                <CartComp />
 
-                <div v-if="!getCurrentUser" class="connect-wallet" @click="showPanel(true)">
-                    Connect Wallet
-                </div>
+                <AgentButton />
 
-                <div v-if="getCurrentUser" class="connect-wallet" @click="showPanel(true)">
-                    {{ getCurrentUser.address.slice(0, 15) }}
-                </div>
             </div>
         </div>
 
+        <NavComp />
 
-        <div class="menu">
-            <div class="menu-col left">
-                <NavComp />
-            </div>
-            <div class="menu-col center">
-
-            </div>
-            <div class="menu-col right">
-                <div class="ada-price">ADA ${{ getADAprice }}</div>
-            </div>
-        </div>
     </header>
 
 </template>
 
 <script setup>
+import gql from 'graphql-tag';
 import headerAPI from "@/components/header/api/index";
+import LocationComp from '@/components/header/LocationComp.vue';
+import AgentButton from "@/components/header/AgentButton.vue";
 import DrawerComp from "@/components/header/DrawerComp.vue";
 import SearchComp from "@/components/header/SearchComp.vue";
+import CartComp from "@/components/header/CartComp.vue";
 import NavComp from "@/components/header/NavComp.vue";
-import gql from 'graphql-tag';
+import PriceBar from "@/components/header/PriceBar.vue";
 import { useQuery } from '@vue/apollo-composable';
-import { ref, watch } from "vue";
+import { onBeforeUnmount, watch, ref } from "vue";
+import { useRoute, useRouter } from 'vue-router'
 
-const { showPanel, getCurrentUser, setADAprice, getADAprice } = headerAPI();
 
-const op = ref();
+const route = useRoute()
 
-const toggle = (event) => {
-    op.value.toggle(event);
-}
+const router = useRouter()
+
+const watchRoute = watch(
+    () => route.params.country,
+    (n, o) => {
+        let currentRoute = router.currentRoute.value;
+
+        if (n === undefined && o === undefined) return;
+
+        if (n) {
+            let savedRoute = localStorage.getItem('location');
+
+            if (savedRoute) {
+                let parsed = JSON.parse(savedRoute);
+
+                if (parsed.country.toLowerCase() !== n) {
+                    return router.push({
+                        name: currentRoute.name,
+                        params: {
+                            ...currentRoute.params,
+                            country: parsed.country.toLowerCase()
+                        },
+                        query: currentRoute.query
+                    });
+                }
+            }
+        }
+
+        if (typeof n === 'string' && typeof o === 'string') {
+            return location.reload()
+        }
+
+    },
+    {
+        immediate: true
+    }
+)
+
+const { setADAprice } = headerAPI();
 
 const queryOptions = {
-    pollInterval: 60_000,
+    pollInterval: 60000,
     clientId: 'query'
 }
 
 const { result: onGetAssetPriceResult, onError: onGetAssetPriceError } = useQuery(gql`
-      query getUsers {
+      query getAssetPrice {
         getAssetPrice 
       }
 `,
@@ -76,38 +97,58 @@ const { result: onGetAssetPriceResult, onError: onGetAssetPriceError } = useQuer
     queryOptions
 );
 
-watch(onGetAssetPriceResult, value => setADAprice(value.getAssetPrice));
+const watchAssetPrice = watch(onGetAssetPriceResult, value => setADAprice(value.getAssetPrice));
 
 onGetAssetPriceError(error => {
     console.log(error)
+})
+
+
+const toHome = () => {
+    router.push({
+        name: 'home',
+        query: {}
+    })
+}
+
+onBeforeUnmount(() => {
+    watchAssetPrice()
+    watchRoute()
+    watchLocation()
 })
 
 </script>
 
 <style scoped>
 header {
-    background: var(--background-a);
+    width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border-bottom: 1px solid var(--border-a);
+    font-size: var(--text-size-1);
+    background: var(--background-d);  
+    color: var(--text-a);
 }
 
-.header {
+.header{
     padding: 0.5rem 0;
 }
 
-.header,
-.menu {
-    max-width: 1200px;
+
+.brand {
+    cursor: pointer;
+    height: 46px;
+}
+
+.header {
     display: grid;
     grid-template-columns: 20% 60% 20%;
+    max-width: var(--body-a);
     width: 100%;
 }
 
-.header-col,
-.menu-col {
+.header-col {
     text-align: center;
     display: flex;
     align-items: center;
@@ -121,44 +162,4 @@ header {
     justify-content: flex-start;
 }
 
-.menu {
-    padding: 0.5rem 0;
-}
-
-.menu-col {}
-
-.menu-col.right {
-    justify-content: flex-end;
-}
-
-.menu-col.left {
-    justify-content: flex-start;
-}
-
-.connect-wallet {
-    background: var(--primary-c);
-    border-radius: 8px;
-    padding: 0.5rem;
-    min-width: 120px;
-    font-weight: 500;
-    color: var(--text-w);
-    font-size: var(--text-size-a);
-    cursor: pointer;
-}
-
-.header-button {
-    margin: 0 2rem;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-}
-
-.notifications {
-    width: 300px;
-}
-
-.ada-price {
-    font-size: var(--text-size-a);
-    font-weight: 500;
-}
 </style>
