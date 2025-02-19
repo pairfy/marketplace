@@ -1,6 +1,6 @@
-# Adabuy marketplace
+# Pairfy marketplace
 
-Adabuy is an e-commerce protocol that uses smart contracts for the process of selling and buying physical products on Cardano using the ADA cryptocurrency.
+Pairfy is an e-commerce protocol that uses smart contracts for the process of selling and buying physical products on Cardano using the ADA cryptocurrency.
 
 ![Descripción de la imagen](z/docs/portada.png)
 
@@ -8,7 +8,7 @@ Adabuy is an e-commerce protocol that uses smart contracts for the process of se
 
 ### Introduction
 
-Adabuy is an electronic commerce protocol that uses smart contracts to decentralize functional requirements necessary for the processes of selling and buying a physical product. Any community member can list a product for sale and any community member can purchase the product using their Cardano wallet. The normal dynamics of an e-commerce is that the user buys a product and then receives it and in most cases this happens. But there are other cases where there is no effective delivery of the product and the conflict must be resolved.  It can be solved using blockchain hardware or by using human intermediaries (mediators). The fundamental idea behind Adabuy is to avoid the use of expensive equipment, oracles or tracking infrastructure to determine whether a product has been delivered. Instead, use mediators to resolve unsuccessful product negotiations. Binance P2P and MercadoLibre use this system to resolve dispute cases where the seller and buyer can make use of the appeal resource. To encourage users to buy from Adabuy instead of the traditional marketplace, a liquidity pool helps create discounts on best-selling products. The liquidity pool is a way to return the money from the fees to the users and sell the products cheaper with a discount. A very effective feature to compete with the traditional market that collects a large percentage of fees that are not returned to users.
+Pairfy is an electronic commerce protocol that uses smart contracts to decentralize functional requirements necessary for the processes of selling and buying a physical product. Any community member can list a product for sale and any community member can purchase the product using their Cardano wallet. The normal dynamics of an e-commerce is that the user buys a product and then receives it and in most cases this happens. But there are other cases where there is no effective delivery of the product and the conflict must be resolved.  It can be solved using blockchain hardware or by using human intermediaries (mediators). The fundamental idea behind Pairfy is to avoid the use of expensive equipment, oracles or tracking infrastructure to determine whether a product has been delivered. Instead, use mediators to resolve unsuccessful product negotiations. Binance P2P and MercadoLibre use this system to resolve dispute cases where the seller and buyer can make use of the appeal resource. To encourage users to buy from Pairfy instead of the traditional marketplace, a liquidity pool helps create discounts on best-selling products. The liquidity pool is a way to return the money from the fees to the users and sell the products cheaper with a discount. A very effective feature to compete with the traditional market that collects a large percentage of fees that are not returned to users.
 
 ### P2P trading and Mediator Scalability
 
