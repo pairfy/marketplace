@@ -28,7 +28,7 @@
      showgrid="false"
      inkscape:zoom="0.27282898"
      inkscape:cx="-20.159149"
-     inkscape:cy="252.90568"
+     inkscape:cy="238.24449"
      inkscape:window-width="1920"
      inkscape:window-height="1048"
      inkscape:window-x="1920"
@@ -64,7 +64,7 @@
      id="layer1">
     <text
        xml:space="preserve"
-       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:202.703px;line-height:0;font-family:Manrope;-inkscape-font-specification:Manrope;letter-spacing:-9.50169px;display:inline;fill:#ffffff;stroke:#ff9a00;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:202.703px;line-height:0;font-family:Manrope;-inkscape-font-specification:Manrope;letter-spacing:-4.47px;display:inline;fill:#ececec;stroke:#ff9a00;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:stroke fill markers"
        x="252.27235"
        y="824.35388"
        id="text2"
@@ -75,7 +75,7 @@
          id="tspan2"
          x="252.27235"
          y="824.35388"
-         style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-size:202.703px;font-family:Manrope;-inkscape-font-specification:'Manrope Ultra-Bold';fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0">Pairfy</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:202.703px;font-family:Manrope;-inkscape-font-specification:'Manrope Bold';fill:#ececec;fill-opacity:1;stroke:none;stroke-width:0">Pairfy</tspan></text>
     <text
        xml:space="preserve"
        id="text29993"
@@ -92,7 +92,7 @@
          y="1378.2314" /></text>
     <text
        xml:space="preserve"
-       style="font-weight:800;font-size:72.5168px;line-height:0;font-family:Manrope;-inkscape-font-specification:'Manrope Ultra-Bold';letter-spacing:-0.849807px;fill:#ffffff;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
+       style="font-weight:800;font-size:72.5168px;line-height:0;font-family:Manrope;-inkscape-font-specification:'Manrope Ultra-Bold';letter-spacing:-0.849807px;fill:#ececec;stroke-width:0;stroke-linecap:round;stroke-linejoin:round;paint-order:stroke fill markers"
        x="154.89702"
        y="1005.7272"
        id="text3"><tspan
@@ -100,7 +100,7 @@
          id="tspan3"
          x="154.89702"
          y="1005.7272"
-         style="font-size:72.5168px;fill:#ffffff;stroke-width:0">Cardano Marketplace</tspan></text>
+         style="font-size:72.5168px;fill:#ececec;stroke-width:0">Cardano Marketplace</tspan></text>
     <text
        xml:space="preserve"
        id="text4"

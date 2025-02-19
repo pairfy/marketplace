@@ -2,8 +2,6 @@
 
 Pairfy is an e-commerce protocol that uses smart contracts for the process of selling and buying physical products on Cardano using the ADA cryptocurrency.
 
-![Descripción de la imagen](z/docs/portada.png)
-
 [Whitepaper V1](z/latex/whitepaper.pdf) 👈
 
 ### Introduction
