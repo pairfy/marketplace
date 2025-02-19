@@ -22,5 +22,3 @@ kubectl create secret generic elastic-endpoint --from-literal=key=word-word-word
 
 kubectl create secret generic elastic-api-key --from-literal=key=word-word-word-word-word
 
-
-
