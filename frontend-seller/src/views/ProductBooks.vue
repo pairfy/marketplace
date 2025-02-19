@@ -1,243 +1,209 @@
 <template>
-    <div class="card">
-        <Dialog v-model:visible="bookConfigDialog" :style="{ width: '400px' }" header="Edit Book" :modal="true"
-            :draggable="false" dismissableMask>
+    <main>
+        <div class="card">
+            <Dialog v-model:visible="bookConfigDialog" :style="{ width: '400px' }" header="Edit Book" :modal="true"
+                :draggable="false" dismissableMask>
 
 
-            <template #default>
-                <div class="dialog-content">
-                    <div class="dialog-row">
-                        <Message severity="secondary" icon="pi pi-exclamation-circle">
-                            The product book allows to manage keeping stock, stock ready to sell and stock blocked by
-                            active orders in the blockchain.
-                        </Message>
-                    </div>
-                    <div class="dialog-row">
-                        <div class="dialog-content-title">
-                            Configuration
+                <template #default>
+                    <div class="dialog-content">
+                        <div class="dialog-row">
+                            <Message severity="secondary" icon="pi pi-exclamation-circle">
+                                The product book allows to manage keeping and ready stock.
+                            </Message>
                         </div>
-                        <InputGroup>
-                            <InputNumber v-model="bookForm.keeping_stock" type="number" placeholder="Stock"
-                                :invalid="bookFormErrors.keeping_stock" :min="0" :useGrouping="false"
-                                :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }" />
-
-                            <InputNumber v-model="bookForm.ready_stock" type="number" placeholder="Ready To Sell"
-                                :invalid="bookFormErrors.ready_stock" :min="0" :useGrouping="false"
-                                :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)', marginLeft: '1rem' }" />
-                        </InputGroup>
-                    </div>
-                    <div class="dialog-row">
-                        <Message severity="secondary" icon="pi pi-exclamation-circle">
-                            Disable purchases disables the option to purchase the product.
-                        </Message>
-                    </div>
-
-                    <div class="dialog-row">
-                        <div class="dialog-content-title">
-                            Disable Purchases
+                        <div class="dialog-row">
+                            <div class="dialog-title">
+                                Configuration
+                            </div>
                         </div>
-                        <ToggleSwitch v-model="bookForm.disable_purchases" />
+                        <div class="dialog-row">
+                            <IftaLabel>
+                                <InputNumber v-model="bookForm.keeping_stock" id="keeping" type="number"
+                                    placeholder="Stock" :invalid="bookFormErrors.keeping_stock" :min="0" :max="9999"
+                                    :useGrouping="false"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }" fluid />
+
+                                <label for="keeping">Keeping stock</label>
+                            </IftaLabel>
+                        </div>
+                        <div class="dialog-row">
+                            <IftaLabel>
+                                <InputNumber v-model="bookForm.ready_stock" id="ready" type="number"
+                                    placeholder="Ready To Sell" :invalid="bookFormErrors.ready_stock" :min="0"
+                                    :max="9999" :useGrouping="false"
+                                    :inputStyle="{ borderRadius: 'var(--p-inputtext-border-radius)' }" fluid />
+                                <label for="ready">Ready to sell</label>
+                            </IftaLabel>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
 
-            <template #footer>
-                <Button label="Discard" variant="outlined" @click="bookConfigDialog = false" />
-                <Button label="Done" @click="onConfigDone" />
-            </template>
-        </Dialog>
+                <template #footer>
+                    <Button label="Discard" variant="outlined" @click="bookConfigDialog = false" />
+                    <Button label="Done" @click="onConfigDone" style="color: var(--text-w);" />
+                </template>
+            </Dialog>
 
-        <!--/////////////////////////-->
+            <DataTable class="card-datatable" ref="dt" :value="books" dataKey="id" :paginator="true" :rows="15"
+                :filters="filters" @page="updateCursor()" @rowSelect="goEditProduct" selectionMode="single"
+                paginatorTemplate="PrevPageLink   NextPageLink  CurrentPageReport"
+                currentPageReportTemplate="Showing {first} to {last}">
+                <template #paginatorstart>
+                    <div style="color: var(--text-b);">
+                        <span>{{ bookCount }} Books</span>
+                    </div>
+                </template>
 
-        <Toolbar class="mb-6">
-            <template #start>
-                <Button icon="pi pi-chevron-left" class="mr-2" text severity="secondary" @click="goBack" />
+                <template #header>
+                    <div class="datatable-header">
+                        <div class="datatable-control">
+                            <Button label="Export" icon="pi pi-upload" variant="outlined" @click="exportCSV($event)" />
+                        </div>
+                        <div class="datatable-search">
+                            <IconField>
+                                <InputIcon>
+                                    <i class="pi pi-search" />
+                                </InputIcon>
+                                <InputText v-model="filters['global'].value" placeholder="Search..." />
+                            </IconField>
+                        </div>
+                    </div>
+                </template>
 
-                <Breadcrumb :model="navItems">
-                    <template #item="{ item }">
-                        <span style="font-weight: 600;">{{ item.label }}</span>
+
+                <Column header="Image">
+                    <template #body="slotProps">
+                        <img :src="buildImageUrl(slotProps.data)" :alt="slotProps.data.image" class="datatable-image" />
                     </template>
-                    <template #separator> / </template>
-                </Breadcrumb>
-            </template>
 
-            <template #end>
-                <IconField style="margin-right: 1rem;">
-                    <InputIcon>
-                        <i class="pi pi-search" />
-                    </InputIcon>
-                    <InputText v-model="filters['global'].value" placeholder="Search..." />
-                </IconField>
-
-                <Button label="Export" icon="pi pi-upload" severity="secondary" @click="exportCSV($event)" />
-            </template>
-        </Toolbar>
+                </Column>
 
 
-        <DataTable class="card-datatable" ref="dt" :value="books" dataKey="id" :paginator="true" :rows="15"
-            :filters="filters" @page="updateCursor()" @rowSelect="goEditProduct" selectionMode="single"
-            paginatorTemplate="PrevPageLink   NextPageLink  CurrentPageReport"
-            currentPageReportTemplate="Showing {first} to {last}">
-            <template #paginatorstart>
-                <div style="color: var(--text-b);">
-                    <span>{{ bookCount }} Books</span>
-                </div>
-            </template>
+                <Column field="id" header="ID" sortable style="max-width: 8rem">
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
 
-            <template #header>
-                <div class="datatable-header">
-                    <RouterLink to="/create-product">
-                        .
-                    </RouterLink>
-                </div>
-            </template>
+                    <template #body="slotProps">
+                        {{ formatWithDots(slotProps.data.id, 7) }}
+                    </template>
+                </Column>
 
+                <Column field="sku" header="SKU" sortable style="max-width: 8rem">
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
 
-            <Column header="Image">
-                <template #body="slotProps">
-                    <img :src="buildImageUrl(slotProps.data)" :alt="slotProps.data.image" class="datatable-image" />
-                </template>
+                    <template #body="slotProps">
+                        {{ formatSKU(slotProps.data.sku) }}
+                    </template>
+                </Column>
+                <Column field="name" header="Name" sortable style="min-width: 8rem; text-transform: capitalize;">
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
+                    <template #body="slotProps">
+                        {{ reduceByLength(slotProps.data.name, 50) }}
+                    </template>
 
-            </Column>
+                </Column>
+                <Column field="price" header="Price" sortable style="min-width: 8rem">
+                    <template #body="slotProps">
+                        <Tag :value="formatCurrency(slotProps.data.price)" severity="secondary" />
+                    </template>
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
+                </Column>
 
+                <Column field="discount_value" header="Discount" sortable
+                    style="min-width: 8rem; text-transform: capitalize;">
+                    <template #body="slotProps">
+                        <div v-if="slotProps.data.discount">
+                            <Tag :value="`- ${slotProps.data.discount_value}%`" severity="contrast" />
+                        </div>
+                        <div v-else>
+                            -
+                        </div>
+                    </template>
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
+                </Column>
 
-            <Column field="id" header="ID" sortable style="max-width: 8rem">
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
+                <Column field="book_keeping_stock" header="Keeping" sortable
+                    style="min-width: 4rem; text-transform: capitalize;">
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
+                </Column>
 
-                <template #body="slotProps">
-                    {{ formatWithDots(slotProps.data.id, 7) }}
-                </template>
-            </Column>
+                <Column field="book_ready_stock" header="Ready" sortable
+                    style="min-width: 4rem; text-transform: capitalize;">
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
+                </Column>
 
-            <Column field="sku" header="SKU" sortable style="max-width: 8rem">
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
+                <Column field="book_blocked_stock" header="Locked" sortable
+                    style="min-width: 4rem; text-transform: capitalize;">
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
+                </Column>
 
-                <template #body="slotProps">
-                    {{ formatSKU(slotProps.data.sku) }}
-                </template>
-            </Column>
-            <Column field="name" header="Name" sortable style="min-width: 8rem; text-transform: capitalize;">
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-                <template #body="slotProps">
-                    {{ reduceByLength(slotProps.data.name, 50) }}
-                </template>
+                <Column field="book_ready_stock" header="Stock" sortable style="min-width: 4rem">
+                    <template #body="slotProps">
+                        <Tag :value="slotProps.data.book_ready_stock ? '' : ''"
+                            :severity="getLabelColor(slotProps.data.book_ready_stock ? 1 : 0)" />
+                    </template>
+                    <template #sorticon="{ sortOrder }">
+                        <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
+                        <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
+                        <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
+                    </template>
+                </Column>
 
-            </Column>
-            <Column field="price" header="Price" sortable style="min-width: 8rem">
-                <template #body="slotProps">
-                    <Tag :value="formatCurrency(slotProps.data.price)" severity="secondary" />
-                </template>
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-            </Column>
+                <Column :exportable="false" style="min-width: 4rem; border-right: none;">
+                    <template #body="slotProps">
+                        <div class="datatable-control">
+                            <Button icon="pi pi-cog" outlined size="small" rounded
+                                @click="beforeEditBook(slotProps.data)" />
 
-            <Column field="discount_value" header="Discount" sortable
-                style="min-width: 8rem; text-transform: capitalize;">
-                <template #body="slotProps">
-                    <div v-if="slotProps.data.discount">
-                        <Tag :value="`- ${slotProps.data.discount_value}%`" severity="contrast" />
-                    </div>
-                    <div v-else>
-                        -
-                    </div>
-                </template>
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-            </Column>
-
-            <Column field="collateral" header="Collateral" sortable style="min-width: 8rem;">
-                <template #body="slotProps">
-                    {{ formatCurrency(slotProps.data.collateral) }}
-                </template>
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-            </Column>
-
-            <Column field="book_keeping_stock" header="Keeping" sortable
-                style="min-width: 4rem; text-transform: capitalize;">
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-            </Column>
-
-            <Column field="book_ready_stock" header="Ready" sortable
-                style="min-width: 4rem; text-transform: capitalize;">
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-            </Column>
-
-            <Column field="book_blocked_stock" header="Locked" sortable
-                style="min-width: 4rem; text-transform: capitalize;">
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-            </Column>
-
-            <Column field="book_ready_stock" header="ST" sortable style="min-width: 4rem">
-                <template #body="slotProps">
-                    <Tag :value="slotProps.data.book_ready_stock ? '' : ''"
-                        :severity="getLabelColor(slotProps.data.book_ready_stock ? 1 : 0)" />
-                </template>
-                <template #sorticon="{ sortOrder }">
-                    <i v-if="sortOrder === 0" class="pi pi-sort-alt arrow" />
-                    <i v-else-if="sortOrder === 1" class="pi pi-arrow-up arrow" />
-                    <i v-else-if="sortOrder === -1" class="pi pi-arrow-down arrow" />
-                </template>
-            </Column>
-
-
-            <Column :exportable="false" style="min-width: 4rem">
-                <template #body="slotProps">
-                    <div class="datatable-control">
-                        <Button icon="pi pi-cog" outlined size="small" rounded
-                            @click="beforeEditBook(slotProps.data)" />
-
-                        <Button icon="pi pi-eye" outlined size="small" rounded />
-                    </div>
-                </template>
-            </Column>
-        </DataTable>
-    </div>
+                            <Button icon="pi pi-eye" outlined size="small" rounded />
+                        </div>
+                    </template>
+                </Column>
+            </DataTable>
+        </div>
+    </main>
 </template>
 
 <script setup>
 import gql from 'graphql-tag';
-import dayjs from 'dayjs';
-import { ref, computed, watch } from 'vue';
+import { ref, computed, watch, onBeforeUnmount } from 'vue';
 import { useQuery, useMutation } from '@vue/apollo-composable';
 import { FilterMatchMode } from '@primevue/core/api';
 import { useToast } from 'primevue/usetoast';
 import { useRouter } from 'vue-router';
 import { inject } from 'vue';
-
 
 const { formatWithDots, reduceByLength, formatCurrency } = inject('utils')
 
@@ -245,21 +211,8 @@ const toast = useToast();
 
 const router = useRouter();
 
-const navItems = ref([
-    { label: 'Dashboard' },
-    { label: 'Product Books' }
-]);
-
-const showSuccess = (content) => {
-    toast.add({ severity: 'success', summary: 'Success Message', detail: content, life: 5000 });
-};
-
-const showError = (content) => {
-    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000 });
-};
-
 const queryOptions = {
-    pollInterval: 1500,
+    pollInterval: 1000,
     clientId: "gateway"
 }
 
@@ -276,7 +229,6 @@ query($getBooksVariable: GetBooksInput!){
             id
             name
             price
-            collateral
             sku
             media_url
             image_path
@@ -299,7 +251,7 @@ query($getBooksVariable: GetBooksInput!){
 );
 
 onGetBooksError(error => {
-    showError("The connection to the server has failed, please try again later.");
+    showError("Request failed please try again later.");
 })
 
 const updateCursor = () => {
@@ -314,29 +266,30 @@ const booksTemp = ref([]);
 
 const books = computed(() => booksTemp.value);
 
-watch(getBooksResult, value => {
-    if (value) {
-        booksTemp.value.push(...value.getBooks.books)
-    }
-}, { immediate: true })
-
-const bookCount = computed(() => getBooksResult.value?.getBooks.count);
-
-const dt = ref();
-
-const bookConfigDialog = ref(false);
-
 const bookForm = ref({
     keeping_stock: null,
-    ready_stock: null,
-    disable_purchases: false
+    ready_stock: null
 });
 
 const bookFormErrors = ref({
     keeping_stock: false,
-    ready_stock: false,
-    disable_purchases: false
+    ready_stock: false
 });
+
+const bookCount = ref(() => 0);
+
+const unwatchBooks = watch(getBooksResult, value => {
+    if (value) {
+
+        bookCount.value = value.getBooks.count;
+
+        booksTemp.value = value.getBooks.books;
+    }
+}, { immediate: true })
+
+const dt = ref();
+
+const bookConfigDialog = ref(false);
 
 const selectedBook = ref(null);
 
@@ -369,12 +322,9 @@ const onConfigDone = () => {
         "updateBookVariable": {
             "id": selectedBook.value.id,
             "keeping_stock": bookForm.value.keeping_stock,
-            "ready_stock": bookForm.value.ready_stock,
-            "disable_purchases": bookForm.value.disable_purchases
+            "ready_stock": bookForm.value.ready_stock
         }
     });
-
-    booksTemp.value = [];
     bookConfigDialog.value = false;
 }
 
@@ -390,7 +340,8 @@ const buildImageUrl = (data) => {
 
 const beforeEditBook = (data) => {
     selectedBook.value = data;
-
+    bookForm.value.keeping_stock = data.book_keeping_stock;
+    bookForm.value.ready_stock = data.book_ready_stock;
     bookConfigDialog.value = true;
 };
 
@@ -410,10 +361,6 @@ const getLabelColor = (status) => {
     }
 };
 
-const goBack = () => {
-    router.go(-1)
-}
-
 const goEditProduct = (event) => {
     router.push({
         name: 'edit-product',
@@ -422,22 +369,34 @@ const goEditProduct = (event) => {
         }
     })
 }
+
+onBeforeUnmount(() => {
+    unwatchBooks();
+});
+
+const showSuccess = (content) => {
+    toast.add({ severity: 'success', summary: 'Success Message', detail: content, life: 5000 });
+};
+
+const showError = (content) => {
+    toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000 });
+};
 </script>
 
 
 <style scoped>
 ::v-deep(.p-toolbar) {
-    padding: 0 1rem;
-    background: transparent;
+    padding: 1rem;
+    background: var(--background-a);
     border-radius: 1rem;
 }
 
 ::v-deep(button) {
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
 }
 
 ::v-deep(.p-inputtext) {
-    font-size: var(--text-size-a);
+    font-size: var(--text-size-1);
 }
 
 
@@ -448,7 +407,9 @@ const goEditProduct = (event) => {
 
 ::v-deep(.p-datatable-header-cell) {
     background: transparent;
-    border-top: 1px solid var(--border-a);
+    border: 1px solid var(--border-a);
+    border-left: none;
+    color: var(--text-a);
 }
 
 ::v-deep(.p-datatable-paginator-bottom) {
@@ -460,19 +421,7 @@ const goEditProduct = (event) => {
     font-weight: 600;
 }
 
-.p-datatable {
-    font-size: var(--text-size-a);
-    border: 1px solid var(--border-a);
-    border-radius: 1rem;
-}
-
-.p-tag {
-    font-size: var(--text-size-a);
-    font-weight: 600;
-}
-
 .card {
-    padding: 1rem 2rem;
     display: flex;
     flex-direction: column;
 }
@@ -491,20 +440,21 @@ const goEditProduct = (event) => {
     margin-bottom: 1.5rem;
 }
 
-.dialog-content-title {
-    font-size: var(--text-size-a);
+.dialog-title {
+    font-size: var(--text-size-1);
     margin-bottom: 0.5rem;
     color: var(--text-b);
     font-weight: 600;
 }
 
 .card-datatable {
-    margin-top: 1rem;
+    background: var(--background-a);
 }
 
 .datatable-header {
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 
 .datatable-image {
@@ -522,7 +472,7 @@ const goEditProduct = (event) => {
 }
 
 .datatable-control button {
-    margin-left: 1rem;
+    margin-right: 1rem;
 }
 
 

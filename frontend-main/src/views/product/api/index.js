@@ -10,9 +10,14 @@ const productAPI = () => {
   const setProductData = async params =>
     await store.dispatch('product/setProductData', params)
 
+  const getArrivalDate = async params =>
+    await store.dispatch('product/getArrivalDate', params)
+  
   return {
     sleep,
     setProductData,
+    getArrivalDate,
+    getArrivalData:  computed(() => store.getters['product/getArrivalData']),
     getProductData: computed(() => store.getters['product/getProductData'])
   }
 }

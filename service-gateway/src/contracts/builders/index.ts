@@ -1,12 +1,12 @@
-import * as dotenv from 'dotenv';
-import { Blockfrost, Lucid } from "@lucid-evolution/lucid";
-import { blueprint } from './plutus.js';
+import * as dotenv from "dotenv";
+import { Kupmios } from "@lucid-evolution/lucid";
+import { blueprint } from "./plutus.js";
 
 dotenv.config();
 
-const provider = new Blockfrost(
-  "https://cardano-preprod.blockfrost.io/api/v0",
- process.env.PROJECT_ID
+const provider = new Kupmios(
+  process.env.KUPO_KEY as string,
+  process.env.OGMIOS_KEY as string,
 );
 
 type Validators = {
@@ -37,9 +37,33 @@ function readValidators(): Validators {
   };
 }
 
-const lucid = await Lucid(provider, "Preprod");
-
 
 const validators = readValidators();
 
-export { provider, readValidators, lucid, validators };
+function serializeParams(array: any[]) {
+  return array.join(",");
+}
+
+  /**
+   *
+   *  @type {string} threadTokenPolicyId 0
+   *  @type {string} operatorPubKeyHash 1
+   *  @type {string} sellerPubKeyHash 2
+   *  @type {string} buyerPubKeyHash 3
+   *  @type {number} contractPrice 4
+   *  @type {number} contractFee 5
+   *  @type {number} pendingUntil 6
+   *  @type {number} shippingUntil 7
+   *  @type {number} expireUntil 8 
+   */
+function deserializeParams(params: string) {
+  return params.split(",");
+}
+
+export {
+  provider,
+  readValidators,
+  validators,
+  serializeParams,
+  deserializeParams,
+};

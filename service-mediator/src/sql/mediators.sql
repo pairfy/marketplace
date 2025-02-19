@@ -16,5 +16,6 @@ create table if not exists mediators(
   schema_t timestamp default current_timestamp,
   schema_v int unsigned not null,
   primary key(id),
-  unique(email, username)
+  unique(email),
+  unique(username)
 ) ENGINE=InnoDB;

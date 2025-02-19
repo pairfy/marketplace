@@ -1,8 +1,10 @@
 export default () => ({
   userData: null,
-  drawerVisible: false,
+  sellerData: null,
+  panelVisible: false,
   walletConnected: false,
   walletName: null,
   lucidClient: null,
   ADAprice: null,
+  locationData: null
 })

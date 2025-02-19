@@ -1,123 +1,151 @@
-import axiosAPI from "@/api/axios";
+import countries from '@/assets/country.json'
+import axiosAPI from '@/api/axios'
+import { ref } from 'vue'
+
+const countryData = ref(countries)
 
 const currentSeller = async ({ commit }) => {
   try {
-    const response = await axiosAPI.get("/api/seller/current-seller");
+    const response = await axiosAPI.get('/api/seller/current-seller')
 
-    commit("currentSeller", response.data.sellerData);
+    const sellerData = response.data.sellerData
 
-    return { ok: true, response: response.data };
+    if (sellerData) {
+      commit('currentSeller', sellerData)
+    }
+
+    return { ok: true, response: response.data }
   } catch (error) {
-    throw { success: false, response: error.response.data };
+    throw { success: false, response: error.response.data }
   }
-};
+}
 
 const currentUser = async ({ commit }) => {
   try {
-    const response = await axiosAPI.get("/api/user/current-user");
+    const response = await axiosAPI.get('/api/user/current-user')
 
-    commit("currentUser", response.data.userData);
+    const userData = response.data.userData
 
-    return { ok: true, response: response.data };
+    if (userData) {
+      commit('currentUser', userData)
+    }
+
+    return { ok: true, response: response.data }
   } catch (error) {
-    throw { success: false, response: error.response.data };
+    throw { success: false, response: error.response.data }
   }
-};
+}
 
+const getLocation = async ({ commit }, params) => {
+  try {
+    const currentLocation = localStorage.getItem('location')
+
+    if (currentLocation) {
+      return commit('setLocation', JSON.parse(currentLocation))
+    }
+
+    const response = await axiosAPI.post('/api/location/get-location', params)
+
+    const scheme = {
+      ...response.data.payload,
+      name: countryData.value[response.data.payload.country],
+    }
+
+    console.log(scheme)
+
+    commit('setLocation', scheme)
+
+    return { ok: true, response: response.data }
+  } catch (error) {
+    throw { ok: false, response: error.response.data }
+  }
+}
+
+const setLocation = async ({ commit }, params) => {
+  commit('setLocation', scheme)
+}
 const loginSeller = async ({ commit }, params) => {
   try {
-    const response = await axiosAPI.post("/api/seller/login-seller", params);
+    const response = await axiosAPI.post('/api/seller/login-seller', params)
 
-    commit("currentSeller", response.data.data);
+    commit('currentSeller', response.data.data)
 
-    return { ok: true, response: response.data };
+    return { ok: true, response: response.data }
   } catch (error) {
-    throw { ok: false, response: error.response.data };
+    throw { ok: false, response: error.response.data }
   }
-};
+}
 
 const loginUser = async ({ commit }, params) => {
   try {
-    const response = await axiosAPI.post("/api/user/login-user", params);
+    const response = await axiosAPI.post('/api/user/login-user', params)
 
-    commit("currentUser", response.data.data);
+    commit('currentUser', response.data.data)
 
-    return { ok: true, response: response.data };
+    return { ok: true, response: response.data }
   } catch (error) {
-    return { ok: false, response: error.response.data };
+    throw { ok: false, response: error.response.data }
   }
-};
+}
 
 const logoutSeller = async ({ commit }, params) => {
   try {
-    const response = await axiosAPI.get("/api/seller/logout", params);
+    const response = await axiosAPI.get('/api/seller/logout', params)
 
-    commit("currentSeller", null);
+    commit('currentSeller', null)
 
-    return { ok: true, response: response.data };
+    localStorage.removeItem('authToken')
+
+    return { ok: true, response: response.data }
   } catch (error) {
-    throw { ok: false, response: error.response.data };
+    throw { ok: false, response: error.response.data }
   }
-};
+}
 
 const logoutUser = async ({ commit }, params) => {
   try {
-    localStorage.removeItem('enabled-wallet');
+    localStorage.removeItem('enabled-wallet')
 
-    const response = await axiosAPI.get("/api/user/logout", params);
+    const response = await axiosAPI.get('/api/user/logout', params)
 
-    commit("currentUser", null);
+    commit('currentUser', null)
 
-    return { ok: true, response: response.data };
+    localStorage.removeItem('authToken')
+
+    return { ok: true, response: response.data }
   } catch (error) {
-    throw { ok: false, response: error.response.data };
+    throw { ok: false, response: error.response.data }
   }
-};
+}
 
-
-const showPanel = async ({ commit }, params) => {
-  commit("showPanel", params);
-};
-
+const togglePanel = async ({ commit }, params) => {
+  commit('togglePanel', params)
+}
 
 const connectWallet = async ({ commit }, params) => {
-  console.log(params);
-  commit("connectWallet", params);
-};
-
-
-const startTx = async (_, params) => {
-  try {
-    const response = await axiosAPI.post("/api/gate/start-tx", params);
-
-    console.log(response);
-
-    //commit("createProduct", response.data.payload);
-
-    return { ok: true, response: response.data };
-  } catch (error) {
-    throw { ok: false, response: error.response.data };
-  }
-};
+  console.log(params)
+  commit('connectWallet', params)
+}
 
 const setupLucid = async ({ commit }, data) => {
-  commit("setupLucid", data);
-};
+  commit('setupLucid', data)
+}
 
 const setADAprice = async ({ commit }, data) => {
-  commit("setADAprice", data);
-};
+  commit('setADAprice', data)
+}
 
 export {
   logoutUser,
   currentUser,
   connectWallet,
   setupLucid,
-  startTx,
+  getLocation,
   currentSeller,
   loginSeller,
-  showPanel,
+  togglePanel,
   logoutSeller,
   loginUser,
-  setADAprice
-};
+  setADAprice,
+  setLocation,
+}

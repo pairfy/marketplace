@@ -10,60 +10,57 @@
   align-items: center;
 }
 
-.p-select-sm .p-select-label {
-  font-size: var(--text-size-a) !important;
+.red {
+  color: var(--red-a);
+}
+
+.green {
+  color: var(--green-a);
+}
+
+.gray{
+  color: var(--text-b);
+}
+
+.cyan{
+  color: var(--cyan-a);
+}
+
+.blue{ 
+  color: var(--blue-a);
+}
+
+.primary{ 
+  color: var(--blue-a);
+}
+
+.p-select-label {
+  font-size: var(--text-size-1) !important;
 }
 
 .p-select-option {
-  font-size: var(--text-size-a) !important;
-}
-
-.p-button-label {
-  font-size: var(--text-size-a);
-}
-
-.p-rating {
-  gap: 1px !important;
+  font-size: var(--text-size-1) !important;
 }
 
 .p-rating-icon {
-  width: 0.75rem !important;
-  height: 0.75rem !important;
-  color: rgba(100, 116, 139, 0.5) !important;
-}
-
-.p-rating-option-active .p-rating-icon {
-  color: var(--primary-c) !important;
+  width: 12px !important;
+  height: 12px !important;
 }
 
 .p-dialog-header {
-  padding: 0.5rem 1rem !important;
   border-bottom: 1px solid var(--border-a);
 }
 
 .p-dialog {
   border: none !important;
-  border-radius: 20px !important;
 }
 
 .p-dialog-footer {
-  padding: 1rem !important;
-}
-
-.p-dialog-content {
-  padding: 1rem 1.5rem 0 !important;
+  border-top: 1px solid var(--border-a);
 }
 
 .p-dialog-title {
   font-size: var(--text-size-b) !important;
-}
-
-.p-overflow-hidden {
-  overflow: initial !important;
-}
-.p-badge {
-  min-width: 1rem !important;
-  height: 1rem !important;
 }
 
 .p-drawer-title {
@@ -71,7 +68,8 @@
 }
 
 .p-message-text {
-  font-size: var(--text-size-a) !important;
+  font-size: var(--text-size-1) !important;
+  text-align: start;
 }
 
 .p-message-icon{
@@ -84,4 +82,40 @@
 
 .p-drawer-title{
   font-size: var(--text-size-c) !important;
+}
+
+.p-inputtext, .p-textarea{
+  font-size: var(--text-size-1) !important;
+}
+
+.p-button-label {
+  font-size: var(--text-size-1);
+  color: inherit;
+}
+
+.p-tooltip {
+  font-size: var(--text-size-0);
+}
+
+.p-overflow-hidden{
+  padding-right: 15px !important;
+}
+
+.p-overlay-mask{
+  backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(1px);
+}
+
+.p-overlaybadge {
+  position: relative;
+  align-items: center;
+  display: flex;
+}
+
+.p-badge{
+  font-size: 9px !important;
+}
+
+.best{
+  background: var(--background-c);
 }

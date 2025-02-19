@@ -28,6 +28,11 @@ const clientGatewayOptions = {
     cache
 }
 
+const clientNotificationOptions = {
+    uri: HOST + '/api/notification/graphql',
+    cache
+}
+
 const productClient = new ApolloClient({
     ...defaultOptions,
     ...clientProductOptions,
@@ -39,5 +44,11 @@ const gatewayClient = new ApolloClient({
 });
 
 
+const notificationClient = new ApolloClient({
+    ...defaultOptions,
+    ...clientNotificationOptions,
+});
 
-export { productClient, gatewayClient }
+
+
+export { productClient, gatewayClient, notificationClient }

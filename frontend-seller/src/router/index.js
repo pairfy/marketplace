@@ -28,11 +28,15 @@ const router = createRouter({
       name: 'edit-product',
       component: () => import('../views/EditProduct.vue'),
     },
-
     {
       path: '/product-books',
       name: 'product-books',
       component: () => import('../views/ProductBooks.vue'),
+    },
+    {
+      path: '/notifications',
+      name: 'notifications',
+      component: () => import('../views/NotificationView.vue'),
     },
   ],
 })

@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 
 const __dirname = dirname(__filename);
 
-const sqlDirectoryPath = path.join(__dirname, "src/db");
+const sqlDirectoryPath = path.join(__dirname, "src/database");
 
 const connection = mysql.createConnection({
   host: process.env.DATABASE_HOST,

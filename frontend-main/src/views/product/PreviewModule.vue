@@ -1,64 +1,76 @@
 <template>
-    <div class="preview">
+    <div class="preview" v-if="getProductData">
 
-        <Skeleton v-if="!getProductData" width="100%" height="100%" />
+        <div class="preview-name">
+            {{ getProductData.name }}
+        </div>
 
-        <div v-if="getProductData" class="preview-wrap">
-            <div class="preview-top">
-                {{ getProductData.quality }} | +5 sold
-            </div>
+        <div class="preview-model">
+            <span>Model {{ getProductData.model }} <span>
+                </span> SKU {{ getProductData.sku.split(":")[0] }} </span>
+            <span class="gray"> +{{ getProductData.sold }} Sold</span>
+        </div>
 
-            <div class="preview-name">
-                {{ getProductData.name }}
-            </div>
+        <Divider />
 
-            <div class="preview-model">
-                <span>Model: {{ getProductData.model }} </span>
-            </div>
+        <div class="preview-price flex">
+            <div>US $</div>
+            <span>
+                {{ formatCurrency(
+                    applyDiscount(getProductData.discount,
+                        getProductData.price,
+                        getProductData.discount_value)
+                ) }}
+            </span>
+        </div>
 
-            <Divider />
+        <div class="preview-discount" v-if="getProductData.discount">
+            <TagComp :tag="`- ${getProductData.discount_value}%`" type="contrast" />
 
-            <div class="preview-price flex">
-                <div>$</div>
-                <span>
-                    {{ formatCurrency(
-                        applyDiscount(getProductData.discount,
-                            getProductData.price,
-                            getProductData.discount_value)
-                    ) }}
-                </span>
-            </div>
 
-            <div class="preview-discount" v-if="getProductData.discount">
-                <Tag :value="`- ${getProductData.discount_value}%`" style="background: var(--red-a);" />
+            <TagComp :tag="`${formatCurrency(getProductData.price)} USD`" type=""
+                style="margin: 0 1rem; text-decoration: line-through;" />
 
-                <Tag :value="`$${getProductData.price}`" severity="secondary"
-                    style="text-decoration: line-through; margin: 0 1rem;" />
 
-                <Tag :value="`${convertUSDToADA(applyDiscount(getProductData.discount,
+            <TagComp :tag="`${convertUSDToADA(
+                applyDiscount(getProductData.discount,
                     getProductData.price,
-                    getProductData.discount_value), getADAprice)} ADA`" severity="secondary" />
-            </div>
+                    getProductData.discount_value), getADAprice)} ADA`" type="" />
 
+        </div>
 
-            <div class="preview-variants flex ">
-                <span>Color</span>
-                <span>:</span>
-                <label> {{ getProductData.color_name }}</label>
-                <div :style="{ backgroundColor: `#${getProductData.color}` }" />
-            </div>
+        <Divider />
 
+        <div class="preview-color flex ">
+            <span>Color</span>
+            <span>:</span>
+            <label> {{ getProductData.color_name }}</label>
+            <div :style="{ backgroundColor: `#${getProductData.color}` }" />
+        </div>
 
-            <div class="preview-about">About this item</div>
-            <ul class="preview-bullet">
-                <li v-for="item in bulletList" :key="item">{{ item }}</li>
-            </ul>
+        <div class="preview-condition flex">
+            <span>Condition</span>
+            <span>:</span>
+            <label> {{ getProductData.quality }}</label>
+        </div>
+
+        <div class="preview-about">About this item</div>
+        <ul class="preview-bullet">
+            <li v-for="item in bulletList" :key="item">{{ item }}</li>
+        </ul>
+
+        <div class="preview-keywords">
+            <Tag severity="secondary" style="margin-right: 1rem;" v-for="item in keywordList" :key="item">
+                <span>{{ item }}</span>
+            </Tag>
         </div>
     </div>
+
 </template>
 
 <script setup>
 import headerAPI from '@/components/header/api';
+import TagComp from '@/components/TagComp.vue';
 import productAPI from '@/views/product/api/index';
 import { inject, computed } from 'vue';
 
@@ -74,6 +86,15 @@ const bulletList = computed(() => {
     return strings.sort((a, b) => a.length - b.length);
 });
 
+const keywordList = computed(() => {
+    const datum = getProductData.value;
+
+    if (datum) {
+        return datum.keywords.split(',');
+    }
+
+    return []
+})
 
 </script>
 
@@ -82,14 +103,10 @@ const bulletList = computed(() => {
     min-height: 400px;
 }
 
-.preview-wrap {
-    padding: 1rem;
-}
-
 .preview-name {
-    font-size: var(--text-size-c);
-    font-weight: 600;
-    margin-top: 1rem;
+    font-size: var(--text-size-4);
+    line-height: 2.25rem;
+    font-weight: 500;
 }
 
 .preview-rating {
@@ -97,28 +114,22 @@ const bulletList = computed(() => {
 }
 
 .preview-price {
-    font-size: var(--text-size-f);
     margin-top: 1rem;
+    font-weight: 500;
+    font-size: var(--text-size-5);
 }
 
 .preview-price div {
-    font-size: 15px;
-    margin-bottom: 12px;
-    margin-right: 6px;
+    margin-right: 0.25rem;
 }
 
 .preview-discount {
     margin-top: 1rem;
 }
 
-.preview-top,
 .preview-model {
     display: flex;
-    color: var(--text-b);
-    font-size: var(--text-size-a);
-}
-
-.preview-model {
+    font-size: var(--text-size-1);
     margin-top: 1rem;
 }
 
@@ -127,34 +138,41 @@ const bulletList = computed(() => {
 }
 
 .preview-about {
+    margin-top: 1rem;
     font-weight: 600;
-    font-size: var(--text-size-b);
-    margin-top: 2rem;
+    font-size: var(--text-size-2);
 }
 
 .preview-bullet {
-    font-size: var(--text-size-a);
+    margin-top: 1rem;
+    font-size: var(--text-size-1);
     padding-left: 1rem;
 }
 
 .preview-bullet li {
-    line-height: 1.5rem;
-    margin-top: 8px;
+    line-height: 2rem;
     padding-left: 10px;
 }
 
-.preview-variants {
-    margin-top: 2rem;
+.preview-color,
+.preview-condition {
+    margin-top: 1rem;
+    text-transform: capitalize;
 }
 
-.preview-variants label {
+.preview-color label,
+.preview-condition label {
     font-weight: 600;
     margin: 0 0.5rem;
 }
 
-.preview-variants div {
+.preview-color div {
     width: 15px;
     height: 15px;
     border-radius: 50%;
+}
+
+.preview-keywords {
+    margin-top: 1rem;
 }
 </style>

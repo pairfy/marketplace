@@ -6,18 +6,40 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: HomeView,
+      redirect: '/us',
     },
     {
-      path: '/product/:id',
+      path: '/:country',
+      name: 'home',
+      component: HomeView,
+      props: true,
+    },
+    {
+      path: '/:country/product/:id',
       name: 'product',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/product/ProductView.vue'),
+      props: true,
+    },
+    {
+      path: '/:country/search',
+      name: 'search',
+      component: () => import('../views/search/SearchView.vue'),
+      props: true,
+    },
+    {
+      path: '/:country/order/:id',
+      name: 'order',
+      component: () => import('../views/order/OrderView.vue'),
+      props: true,
     },
   ],
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition; // Restore scroll position when navigating back
+    } else {
+      return { top: 0, left: 0 }; // Scroll to top with smooth effect
+    }
+  },
 })
 
 export default router

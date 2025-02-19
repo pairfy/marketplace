@@ -60,6 +60,16 @@ spec:
               value: service-query-group
             - name: DURABLE_NAME
               value: service-query-consumer
+            - name: ELASTIC_NODE
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-endpoint
+                  key: key
+            - name: ELASTIC_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-api-key
+                  key: key                     
           resources:
             limits:
               memory: "500Mi"

@@ -1,17 +1,17 @@
 <template>
     <div class="media">
-        <Skeleton v-if="!getProductData" width="100%" height="100%" />
-
         <section v-if="getProductData">
-            <div class="media-nav">
-                <div class="media-item" :class="{ selected: selectedImageIndex === index }"
-                    v-for="(item, index) in productImageList" :key="item" @click="selectImage(index)">
+            <div class="nav">
+                <div class="nav-item flex" :class="{ selected: selectedImageIndex === index }"
+                    v-for="(item, index) in productImageList" :key="item" @click="selectImage(index)"
+                    @mouseover="selectImage(index)">
                     <img :src="item" alt="item">
                 </div>
             </div>
+
             <div class="media-image">
-                <Image :src="productImageList[selectedImageIndex]" alt="Image" width="200" previewIcon="pi-search" 
-                    preview />
+                <Image :src="productImageList[selectedImageIndex]" alt="Image" :imageStyle="{ width: '100%', maxWidth: '600px', maxHeight: '600px', borderRadius: '0px' }"
+                    previewIcon="pi-search" preview />
             </div>
         </section>
 
@@ -19,8 +19,8 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue';
 import productAPI from '@/views/product/api/index';
+import { computed, ref } from 'vue';
 
 const { getProductData } = productAPI();
 
@@ -53,39 +53,42 @@ section {
     display: flex;
 }
 
-.media-nav {
+.nav {
     display: flex;
     flex-direction: column;
+    padding-left: 2px;
+}
+
+.nav-item {
+    border: none;
+    border-radius: 6px;
+    overflow: hidden;
+    cursor: pointer;
+    justify-content: center;
+    margin-bottom: 1rem;
+    width: 70px;
+    height: 70px;
+    border: 1px solid var(--border-a);
+}
+
+.nav-item.selected {
+    border: none;
+    outline: 2px solid var(--text-a);
+}
+
+.nav-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
 }
 
 .media-image {
     justify-content: center;
+    align-items: flex-start;
+    min-height: 600px;
+    max-height: 600px;
     display: flex;
-    align-items: center;
     width: 100%;
-}
-
-.media-item {
-    border: 1px solid var(--border-a);
-    border-radius: 8px;
-    width: 56px;
-    height: 56px;
-    margin-bottom: 1rem;
-    overflow: hidden;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.media-item.selected {
-    border: 2px solid var(--text-a);
-}
-
-.media-item img {
-    width: 50px;
-    height: 50px;
-    object-fit: contain;
 }
 
 ::v-deep(.p-image-preview-mask:hover) {

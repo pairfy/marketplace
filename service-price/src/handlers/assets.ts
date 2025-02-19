@@ -1,5 +1,5 @@
 import { redisClient } from "../db/redis.js";
-import { axiosAPI } from "../axios/index.js";
+import { axiosAPI } from "../api/index.js";
 import { logger } from "../utils/index.js";
 
 type BinanceResponse = { mins: number; price: string; closeTime: number };

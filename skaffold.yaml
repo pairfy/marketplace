@@ -29,7 +29,15 @@ build:
       sync:
         manual:
           - src: 'src/**/*.ts'
-            dest: .                        
+            dest: .     
+    - image: pairfy/service-matrix
+      context: service-matrix
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .                                
     - image: pairfy/service-product
       context: service-product
       docker:
@@ -61,15 +69,15 @@ build:
       sync:
         manual:
           - src: 'src/**/*.ts'
-            dest: .              
-    - image: pairfy/service-session
-      context: service-session
+            dest: .       
+    - image: pairfy/service-chat
+      context: service-chat
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: 'src/**/*.ts'
-            dest: .            
+            dest: .                                 
     - image: pairfy/service-query
       context: service-query
       docker:
@@ -133,7 +141,15 @@ build:
       sync:
         manual:
           - src: 'src/**/*.ts'
-            dest: .                              
+            dest: .   
+    - image: pairfy/service-notification
+      context: service-notification
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .                                       
     - image: pairfy/testing
       context: testing
       docker:
@@ -142,3 +158,11 @@ build:
         manual:
           - src: 'src/**/*.ts'
             dest: .                   
+    - image: pairfy/service-feed
+      context: service-feed
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: 'src/**/*.ts'
+            dest: .             

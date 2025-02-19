@@ -6,12 +6,12 @@ import { ApolloServer } from "@apollo/server";
 import { expressMiddleware } from "@apollo/server/express4";
 import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
 import { catcher, errorEvents, logger } from "./utils/index.js";
-import { database } from "./db/client.js";
+import { database } from "./database/client.js";
 import { typeDefs } from "./graphql/types.js";
 import { books, orders } from "./graphql/resolvers.js";
 import { agentMiddleware } from "./middleware/agent.js";
 import { requireAuth } from "./middleware/required.js";
-import { redisClient } from "./db/redis.js";
+import { redisClient } from "./database/redis.js";
 
 const app = express();
 
@@ -20,6 +20,7 @@ const httpServer = http.createServer(app);
 const resolvers = {
   Query: {
     ...books.Query,
+    ...orders.Query
   },
   Mutation: {
     ...books.Mutation,
@@ -88,11 +89,78 @@ const main = async () => {
       throw new Error("REDIS_HOST error");
     }
 
+    if (!process.env.TX_VALID_TIME) {
+      throw new Error("TX_VALID_TIME error");
+    }
+
+    if (!process.env.TX_WATCH_WINDOW) {
+      throw new Error("TX_WATCH_WINDOW error");
+    }
+
+    if (!process.env.PENDING_RANGE) {
+      throw new Error("PENDING_RANGE error");
+    }
+
+    if (!process.env.SHIPPING_RANGE) {
+      throw new Error("SHIPPING_RANGE error");
+    }
+
+    if (!process.env.APPEAL_RANGE) {
+      throw new Error("APPEAL_RANGE error");
+    }
+
+    if(!process.env.EXPIRING_RANGE){
+      throw new Error("EXPIRING_RANGE error");
+    }
+    
+    if(!process.env.DELIVERY_RANGE){
+      throw new Error("DELIVERY_RANGE error");
+    }
+
     if (!process.env.PROJECT_ID) {
       throw new Error("PROJECT_ID error");
     }
-    
 
+    if (!process.env.KUPO_KEY) {
+      throw new Error("KUPO_KEY error");
+    }
+    
+    if (!process.env.OGMIOS_KEY) {
+      throw new Error("OGMIOS_KEY error");
+    }
+
+    if (!process.env.RSA_PRIVATE_KEY) {
+      throw new Error("RSA_PRIVATE_KEY error");
+    }
+
+    if (!process.env.RSA_PUBLIC_KEY) {
+      throw new Error("RSA_PUBLIC_KEY error");
+    }
+
+    if (!process.env.AES_PASSPHRASE) {
+      throw new Error("AES_PASSPHRASE error");
+    }
+
+    if (!process.env.RSA_PASSPHRASE) {
+      throw new Error("RSA_PASSPHRASE error");
+    }
+
+    if (!process.env.FEE_PERCENT) {
+      throw new Error("FEE_PERCENT error");
+    }
+
+    if (!process.env.NETWORK_ENV) {
+      throw new Error("NETWORK_ENV error");
+    }
+
+    if (!process.env.ELASTIC_NODE) {
+      throw new Error("ELASTIC_NODE error");
+    }
+
+    if (!process.env.ELASTIC_KEY) {
+      throw new Error("ELASTIC_KEY error");
+    }
+    
     const sessionOptions: object = {
       maxAge: 168 * 60 * 60 * 1000,
       signed: false,
@@ -161,7 +229,7 @@ const main = async () => {
       expressMiddleware(server, {
         context: async ({ req }) => ({
           sellerData: req.sellerData || null,
-          userData: req.userData || null,
+          userData: req.userData || null
         }),
       })
     );

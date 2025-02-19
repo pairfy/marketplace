@@ -1,7 +1,6 @@
 import {
   uniqueNamesGenerator,
   Config,
-  adjectives,
   colors,
   animals,
 } from "unique-names-generator";
@@ -18,7 +17,7 @@ const getUsername = () => {
 
   const nickname: string = uniqueNamesGenerator(customConfig);
 
-  let nid: string = customAlphabet("0123456789", 6)();
+  let nid: string = customAlphabet("0123456789", 5)();
 
   return nickname + nid;
 };

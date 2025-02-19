@@ -1,9 +1,12 @@
 <template>
-  <div class="wrapper">
+  <div class="body">
     <Toast closeIcon="false" />
     <NavMenu v-if="getUserData" />
 
-    <div class="wrapper-content">
+    <div class="body-content">
+      <div class="header">
+        <img class="logo" src="@/assets/logo.svg" alt="">
+      </div>
       <RouterView />
     </div>
   </div>
@@ -17,13 +20,15 @@ import { RouterView } from 'vue-router';
 import { useToast } from "primevue/usetoast";
 import { provide } from 'vue';
 import { ApolloClients } from '@vue/apollo-composable';
-import { productClient, gatewayClient } from './graphql/index';
+import { productClient, gatewayClient, notificationClient } from './graphql/index';
 import { formatWithDots, reduceByLength, formatCurrency } from "./utils/index"
+import { walletClient } from "@/api/wallet";
 
 provide(ApolloClients, {
   default: productClient,
   product: productClient,
   gateway: gatewayClient,
+  notification: notificationClient
 })
 
 provide('utils', {
@@ -36,16 +41,17 @@ const toast = useToast();
 
 const { getUserData, getUser } = dashboardAPI();
 
-const showSuccess = (content) => {
-  toast.add({ severity: 'secondary', summary: '', detail: content, life: 3000, closable: false });
-};
-
+const { startWalletService } = walletClient();
 
 const showError = (content) => {
   toast.add({ severity: 'error', summary: 'Error Message', detail: content, life: 3000 });
 };
 
 getUser().then(() => console.log('👋 Welcome')).catch(() => showError('AUTH_ERROR'))
+
+startWalletService()
+  .then(() => console.info("WALLET_SERVICE"))
+  .catch((err) => console.error(err));
 
 </script>
 
@@ -59,30 +65,30 @@ getUser().then(() => console.log('👋 Welcome')).catch(() => showError('AUTH_ER
   user-select: none;
 }
 
-.wrapper {
+.body {
   height: 100vh;
   display: flex;
   transition: all .2s ease;
+  background: var(--background-b);
+  background-image: url('@/assets/shape.png');
+  background-repeat: no-repeat;
+  background-size: cover;
 }
 
-.wrapper-content {
+.body-content {
   flex: 1;
   height: 100%;
   overflow-y: scroll;
   overflow-x: hidden;
 }
 
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
+.header {
+  background: var(--background-a);
+  border-bottom: 1px solid var(--border-a);
+  padding: 0 1rem;
+}
 
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
+.logo {
+  height: 2.5rem;
 }
 </style>

@@ -16,42 +16,19 @@
         <div class="entry-left">
             <div class="card">
                 <div class="logo">
-                    <img src="@/assets/logo-white.png" alt="">
+                    <img src="@/assets/logo.svg" alt="">
                 </div>
                 <div class="logan">
-                    <span> Buy and sell products in Cardano.</span>
+                    <span> Buy and sell products in Cardano ecosystem.</span>
                 </div>
                 <div class="subtext">
                     <span>Discover the largest native P2P marketplace where you can trade everything with ADA.</span>
                 </div>
             </div>
-
-            <div class="visual">
-                <ul class="circles">
-                    <li>
-                        <img src="@/assets/lace.svg" alt="">
-                    </li>
-                    <li>
-                        <img src="@/assets/eternl.png" alt="">
-                    </li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li>
-                        <img src="@/assets/vespr.png" alt="">
-                    </li>
-                    <li>
-                        <img src="@/assets/daedalus.svg" alt="">
-                    </li>
-                    <li></li>
-                    <li> <img src="@/assets/nami.svg" alt=""></li>
-                    <li></li>
-                </ul>
-            </div>
         </div>
 
         <div class="entry-right">
-            <!--LOGIN-->
+            <!--////////////////////////////////////////////LOGIN////////////////////////////////////////////-->
             <div v-if="currentMode === 'login'" class="form">
                 <div class="title">
                     <span>Welcome back!</span>
@@ -60,8 +37,8 @@
 
                 <div class="email">
                     <IftaLabel>
-                        <InputText id="email" v-model="loginForm.email" type="email" autofocus fluid 
-                            placeholder="" style=" font-size: var(--text-size-a)" />
+                        <InputText id="email" v-model="loginForm.email" type="email" autofocus fluid
+                            :invalid="loginFormErrors.email" />
                         <label for="email">Email</label>
                     </IftaLabel>
                 </div>
@@ -69,8 +46,8 @@
                 <div class="password">
                     <Fluid>
                         <IftaLabel>
-                            <Password v-model="loginForm.password" inputId="password"  toggleMask
-                                :feedback="false" :inputStyle="{ fontSize: 'var(--text-size-a)' }" />
+                            <Password v-model="loginForm.password" inputId="password" toggleMask :feedback="false"
+                                :inputStyle="{ fontSize: 'var(--text-size-a)' }" :invalid="loginFormErrors.password" />
                             <label for="password">Password</label>
 
                         </IftaLabel>
@@ -82,22 +59,36 @@
                     <span @click="navigateTo('recovery')">Forgot password?</span>
                 </div>
 
-                <div class="control">
-                    <Button label="Login" fluid style=" font-size: var(--text-size-a);" @click="doLogin" />
+                <div class="wallets">
+                    <div class="wallets-item" :class="{ selected: enabledWallet === 'lace' }"
+                        @click="selectWallet('lace')">
+                        <img src="@/assets/lace.svg" alt="">
+                    </div>
+                    <div class="wallets-item" :class="{ selected: enabledWallet === 'eternl' }"
+                        @click="selectWallet('eternl')">
+                        <img src="@/assets/eternl.png" alt="">
+                    </div>
+                    <div class="wallets-item" :class="{ selected: enabledWallet === 'nami' }"
+                        @click="selectWallet('nami')">
+                        <img src="@/assets/nami.svg" alt="">
+                    </div>
                 </div>
 
-                <Divider layout="horizontal" fluid style=" font-size: var(--text-size-a); margin-top: 2rem; "><b>or</b>
-                </Divider>
+                <div class="control">
+                    <Button label="Login" fluid @click="doLogin" style="color: var(--text-w);" />
+                </div>
+
+                <Divider layout="horizontal" fluid style="margin-top: 2rem; "><b>or</b></Divider>
 
                 <div class="bottom">
                     Don't you have an account? <span @click="navigateTo('register')">Sign Up</span>
                 </div>
             </div>
-            <!--LOGIN-->
+            <!--////////////////////////////////////////////LOGIN////////////////////////////////////////////-->
 
 
 
-            <!--REGISTER-->
+            <!--////////////////////////////////////////////REGISTER////////////////////////////////////////////-->
             <div v-if="currentMode === 'register'" class="form">
                 <div class="title">
                     <span>New Account.</span>
@@ -125,8 +116,8 @@
                     <Fluid>
                         <IftaLabel>
 
-                            <Password v-model="registerForm.password" inputId="password" toggleMask
-                                :feedback="true" :inputStyle="{ fontSize: 'var(--text-size-a)' }">
+                            <Password v-model="registerForm.password" inputId="password" toggleMask :feedback="true"
+                                :inputStyle="{ fontSize: 'var(--text-size-a)' }">
 
                                 <template #header>
                                     <div style="font-size: var(--text-size-a);">Pick a password</div>
@@ -151,7 +142,7 @@
 
                 <div class="country">
                     <Select v-model="registerForm.country" :options="countries" filter optionLabel="name"
-                        placeholder="Select a Country" fluid style='font-size: var(--text-size-a);' >
+                        placeholder="Select a Country" fluid style='font-size: var(--text-size-a);'>
                         <template #value="slotProps">
                             <div v-if="slotProps.value" class="country-item">
                                 <img :alt="slotProps.value.label" src="@/assets/flag_placeholder.png"
@@ -196,9 +187,9 @@
                     Do you have an account? <span @click="navigateTo('login')">Sign In</span>
                 </div>
             </div>
-            <!--REGISTER-->
-            <!--RECOVER-->
-            <div v-if="currentMode === 'recovery'" class="form">
+            <!--////////////////////////////////////////////REGISTER////////////////////////////////////////////-->
+            <!--////////////////////////////////////////////RECOVER////////////////////////////////////////////-->
+            <div class="form" v-if="currentMode === 'recovery'">
                 <div class="title">
                     <span>Restore Your Account.</span>
                     <span>Receive a recovery email.</span>
@@ -225,24 +216,30 @@
                 </div>
             </div>
 
-
+            <!--////////////////////////////////////////////RECOVER////////////////////////////////////////////-->
         </div>
     </div>
 </template>
 
 <script setup>
 import dashboardAPI from '@/views/api/index';
-import { ref, watch } from 'vue';
+import { ref, watch, onBeforeUnmount } from 'vue';
 import { useRouter, useRoute } from 'vue-router';
 import { useToast } from "primevue/usetoast";
+import { signMessage, walletClient } from "@/api/wallet";
 
 const toast = useToast();
 
 const { loginUser, createUser } = dashboardAPI();
 
 const loginForm = ref({
-    email: "",
-    password: ""
+    email: null,
+    password: null
+});
+
+const loginFormErrors = ref({
+    email: false,
+    password: false,
 });
 
 const countries = ref([
@@ -306,19 +303,67 @@ const closeRegister = () => {
     navigateTo('login');
 };
 
-const doLogin = async () => {
-    const { ok, response } = await loginUser(loginForm.value);
+////////////////////////////////////////////////////////////////
 
-    if (ok) {
-        router.push({
-            name: 'home',
-            query: {
-            },
-        })
-    } else {
-        showError(response.errors.map(item => item.message))
+const enabledWallet = ref(null);
+
+const updateEnabledWallet = () =>
+    enabledWallet.value = localStorage.getItem("enabled-wallet");
+
+updateEnabledWallet();
+
+window.addEventListener("walletEnabledEvent", () => updateEnabledWallet());
+
+window.addEventListener('storage', () => updateEnabledWallet());
+
+const watchEnabledWallet = setInterval(() => updateEnabledWallet(), 1000);
+
+//////////////////////////////////////////////////////////////
+
+const selectWallet = async (e) => await walletClient().connect(e);
+
+
+const doLogin = async () => {
+    if (!loginForm.value.email) {
+        loginFormErrors.value.email = true
     }
-}
+
+    if (!loginForm.value.password) {
+        loginFormErrors.value.password = true
+    }
+
+    if (Object.values(loginForm.value).includes(null)) {
+        showError('Required Fields');
+        return;
+    }
+
+    if (!enabledWallet.value) {
+        showError('Selected A Wallet');
+        return;
+    }
+
+    await signMessage().then(async ([signature, address]) => {
+        const scheme = {
+            signature,
+            address,
+            terms_accepted: true,
+            ...loginForm.value
+        };
+
+        const { ok, response } = await loginUser(scheme);
+
+        if (ok) {
+            router.push({
+                name: 'home',
+                query: {
+                },
+            })
+        } else {
+            showError(response.errors.map(item => item.message))
+        }
+
+    }).catch((err) => showError(err));
+};
 
 const doRegister = async () => {
     const { ok, response } = await createUser(registerForm.value);
@@ -340,7 +385,11 @@ function navigateTo(mode) {
     })
 }
 
-
+onBeforeUnmount(() => {
+    clearInterval(watchEnabledWallet)
+    window.removeEventListener("walletEnabledEvent", () => updateEnabledWallet());
+    window.removeEventListener("storage", () => updateEnabledWallet());
+});
 
 </script>
 
@@ -382,7 +431,7 @@ function navigateTo(mode) {
     height: 100%;
     display: flex;
     flex-direction: column;
-    background: var(--primary-a);
+    background: var(--background-c);
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
     padding: 3rem;
@@ -408,133 +457,6 @@ function navigateTo(mode) {
     color: var(--text-w);
     padding: 1rem;
     margin-top: 1rem;
-}
-
-.visual {
-    width: 100%;
-    height: 100vh;
-    position: absolute;
-}
-
-.circles {
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    position: relative;
-}
-
-.circles li img {
-    width: 100%;
-    padding: 10%;
-    border-radius: 2rem;
-}
-
-.circles li {
-    position: absolute;
-    display: block;
-    list-style: none;
-    width: 20px;
-    height: 20px;
-    background: rgba(255, 255, 255, 0.2);
-    animation: animate 25s linear infinite;
-    bottom: -150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.circles li:nth-child(1) {
-    left: 25%;
-    width: 80px;
-    height: 80px;
-    animation-delay: 0s;
-}
-
-
-.circles li:nth-child(2) {
-    left: 10%;
-    width: 40px;
-    height: 40px;
-    animation-delay: 2s;
-    animation-duration: 12s;
-}
-
-.circles li:nth-child(3) {
-    left: 70%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 4s;
-}
-
-.circles li:nth-child(4) {
-    left: 40%;
-    width: 60px;
-    height: 60px;
-    animation-delay: 0s;
-    animation-duration: 18s;
-}
-
-.circles li:nth-child(5) {
-    left: 65%;
-    width: 20px;
-    height: 20px;
-    animation-delay: 0s;
-}
-
-.circles li:nth-child(6) {
-    left: 75%;
-    width: 100px;
-    height: 100px;
-    animation-delay: 3s;
-}
-
-.circles li:nth-child(7) {
-    left: 35%;
-    width: 150px;
-    height: 150px;
-    animation-delay: 7s;
-}
-
-.circles li:nth-child(8) {
-    left: 50%;
-    width: 25px;
-    height: 25px;
-    animation-delay: 15s;
-    animation-duration: 45s;
-}
-
-.circles li:nth-child(9) {
-    left: 20%;
-    width: 40px;
-    height: 40px;
-    animation-delay: 2s;
-    animation-duration: 35s;
-}
-
-.circles li:nth-child(10) {
-    left: 85%;
-    width: 150px;
-    height: 150px;
-    animation-delay: 0s;
-    animation-duration: 11s;
-}
-
-@keyframes animate {
-
-    0% {
-        transform: translateY(0) rotate(0deg);
-        opacity: 1;
-        border-radius: 0;
-    }
-
-    100% {
-        transform: translateY(-1000px) rotate(720deg);
-        opacity: 0;
-        border-radius: 50%;
-    }
-
 }
 
 .entry-right {
@@ -624,5 +546,32 @@ function navigateTo(mode) {
 
 .country-item div {
     margin-left: 0.5rem;
+}
+
+.wallets {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(20px, 1fr));
+    grid-auto-rows: 40px;
+    gap: 0.5rem;
+}
+
+.wallets-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border: 1px solid var(--border-a);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.wallets-item img {
+    height: 20px;
+    width: 20px;
+}
+
+.wallets-item.selected {
+    border: 1px solid var(--primary-a);
 }
 </style>

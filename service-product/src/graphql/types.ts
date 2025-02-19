@@ -8,7 +8,6 @@ type Product {
     seller_id: String!
     name: String!
     price: Int!
-    collateral: Int!
     sku: String!
     model: String!
     brand: String!
@@ -19,6 +18,7 @@ type Product {
     paused: Int!
     color: String!
     color_name: String!
+    variations: String!
     quality: String!
     country: String!
     media_url: String!
@@ -28,6 +28,15 @@ type Product {
     video_set: String!
     discount: Boolean!
     discount_value: Int!
+    shipping_weight: Float!
+    shipping_length: Float!
+    shipping_width: Float!
+    shipping_height: Float!
+    shipping_city: String!
+    shipping_postal: String!
+    shipping_instructions: String!
+    shipping_fragile: Boolean!  
+    updated_at: String!  
     created_at: String!
 }
 
@@ -68,7 +77,6 @@ type DeleteProductResponse {
 input CreateProductInput {
   name: String!
   price: Int! 
-  collateral: Int!
   sku: String!              
   model: String!
   brand: String!
@@ -79,17 +87,26 @@ input CreateProductInput {
   paused: Int!
   color: String!
   color_name: String!
+  variations: String!
   quality: String!
   image_set: String!
   video_set: String!
   discount: Boolean!
   discount_value: Int!
+  shipping_weight: Float!
+  shipping_length: Float!
+  shipping_width: Float!
+  shipping_height: Float!
+  shipping_city: String!
+  shipping_postal: String!
+  shipping_instructions: String!
+  shipping_fragile: Boolean!
 }
 
 input UpdateProductInput {
+  id: ID!
   name: String!
   price: Int! 
-  collateral: Int!
   sku: String!              
   model: String!
   brand: String!
@@ -100,12 +117,20 @@ input UpdateProductInput {
   paused: Int!
   color: String!
   color_name: String!
+  variations: String!
   quality: String!
   image_set: String!
   video_set: String!
   discount: Boolean!
   discount_value: Int!
-  id: String!
+  shipping_weight: Float!
+  shipping_length: Float!
+  shipping_width: Float!
+  shipping_height: Float!
+  shipping_city: String!
+  shipping_postal: String!
+  shipping_instructions: String!
+  shipping_fragile: Boolean!   
 }
 
 input DeleteProductInput {

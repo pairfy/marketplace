@@ -40,7 +40,17 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: db-password
-                  key: password   
+                  key: password  
+            - name: ELASTIC_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-endpoint
+                  key: key    
+            - name: ELASTIC_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: elastic-api-key
+                  key: key                                    
             - name: DATABASE_NAME
               value: service_query       
             - name: DATABASE_USER

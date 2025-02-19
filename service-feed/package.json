@@ -1,0 +1,21 @@
+{
+  "name": "service-feed",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "start": "node dist/index.js",
+    "build": "tsc --build"
+  },
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@elastic/elasticsearch": "^8.17.0",
+    "ioredis": "^5.4.1",
+    "nanoid": "^5.0.8",
+    "redis": "^4.7.0",
+    "ts-node": "^10.9.2",
+    "tslog": "^4.9.3"
+  }
+}

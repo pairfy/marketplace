@@ -6,3 +6,5 @@ vitess
 .key
 blockchain
 service-wallet
+secrets.sh
+search

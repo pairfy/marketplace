@@ -2,4 +2,9 @@ const setProductData = (state, data) => {
   state.productData = data;
 };
 
-export { setProductData };
+const getArrivalDate = (state, data) => {
+  state.arrivalData = data;
+};
+
+
+export { setProductData, getArrivalDate };
